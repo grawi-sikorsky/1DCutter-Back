@@ -35,9 +35,9 @@ public class UserModel implements UserDetails {
   }
 
 
-  public UserModel(String username, String email) {
+  public UserModel(String username, String password) {
     this.username = username;
-    this.email = email;
+    this.password = password;
   }
 
   

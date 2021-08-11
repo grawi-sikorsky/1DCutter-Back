@@ -6,6 +6,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import pl.printo3d.onedcutter.cutter1d.services.UserService;
 
@@ -40,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     .antMatchers("/").permitAll()
     .anyRequest().hasAuthority("KIEP");
 
-
+/*
     http.formLogin().permitAll()
       .loginPage("/login").permitAll()
       .defaultSuccessUrl("/", true)
@@ -48,9 +49,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
       .logout().permitAll()
       .logoutSuccessUrl("/")
       .deleteCookies("JSESSIONID");
-
+*/
     http.csrf().disable();
     http.cors();
   }
-
 }
