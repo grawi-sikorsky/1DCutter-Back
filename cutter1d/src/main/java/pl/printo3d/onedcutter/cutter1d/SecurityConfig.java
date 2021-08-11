@@ -50,6 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
       .deleteCookies("JSESSIONID");
 
     http.csrf().disable();
+    http.cors();
   }
 
 }

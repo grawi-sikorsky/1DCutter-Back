@@ -4,11 +4,13 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import pl.printo3d.onedcutter.cutter1d.models.UserModel;
 import pl.printo3d.onedcutter.cutter1d.repo.UserRepo;
 import java.util.stream.*;
 
+@CrossOrigin(origins = "*")
 @SpringBootApplication
 public class Cutter1dApplication {
 
