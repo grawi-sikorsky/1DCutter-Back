@@ -1,6 +1,7 @@
 ﻿package pl.printo3d.onedcutter.cutter1d.models;
 
 import java.util.Collection;
+import java.util.Collections;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -52,8 +54,8 @@ public class UserModel implements UserDetails {
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     // TODO Auto-generated method stub
-    //return Collections.singleton(new SimpleGrantedAuthority(role));
-    return null;
+    return Collections.singleton(new SimpleGrantedAuthority(role));
+    //return null;
   }
 
   @Override

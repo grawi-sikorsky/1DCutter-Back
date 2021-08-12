@@ -35,12 +35,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
   @Override
   protected void configure(AuthenticationManagerBuilder auth) throws Exception {
     //super.configure(auth);
-    //auth.userDetailsService(uService);
-
+    auth.userDetailsService(uService);
+/*
     auth.inMemoryAuthentication()
       .withUser("kloc")
       .password(new BCryptPasswordEncoder().encode("kloc"))
       .roles("USER");
+      */
   }
 
   @Override
@@ -53,9 +54,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     .antMatchers("/1dcut").permitAll()
     .antMatchers("/test").permitAll()
     .antMatchers("/").permitAll()
-    .anyRequest().hasAuthority("KIEP");
+    .anyRequest().authenticated();
 
-    //http.httpBasic();
+    http.httpBasic();
 
     http.formLogin().permitAll()
       .loginPage("/login").permitAll()

@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import pl.printo3d.onedcutter.cutter1d.models.UserModel;
 import pl.printo3d.onedcutter.cutter1d.repo.UserRepo;
 
 @Service
@@ -28,6 +29,14 @@ public class UserService implements UserDetailsService
 
   public UserService(UserRepo uRepo) {
     this.uRepo = uRepo;
+  }
+
+  public boolean addUser(UserModel um)
+  {
+    um.setPassword(pEncoder.encode(um.getPassword()));
+    uRepo.save(um);
+
+    return true;
   }
 
   @Override
