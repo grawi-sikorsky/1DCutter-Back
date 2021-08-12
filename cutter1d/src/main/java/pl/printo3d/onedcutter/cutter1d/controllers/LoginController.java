@@ -29,15 +29,15 @@ public class LoginController {
     return new UserModel("klocc","klocc","klocc");
   }
   */
-
+/*
   @GetMapping("/login")
   public UserModel user(Principal prince)
   {
     Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     System.out.println("GET Loginpage z angulara!");
-    return (UserModel)principal;
+    return new UserModel("kupa", "kupa", "kupa");
   }
-
+*/
 
 //  @CrossOrigin(origins = "http://localhost:4200")
   //@RequestMapping(value="/login", method=RequestMethod.POST)

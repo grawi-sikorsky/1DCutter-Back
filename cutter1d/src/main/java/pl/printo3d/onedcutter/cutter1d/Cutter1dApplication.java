@@ -21,10 +21,6 @@ public class Cutter1dApplication {
 	@Bean
 	CommandLineRunner init(UserRepo userRepo) {
 			return args -> {
-					Stream.of("John", "Julie", "Jennifer", "Helen", "Rachel").forEach(name -> {
-							UserModel user = new UserModel(name, name + " pass", name.toLowerCase() + "@klops.com", "www." + name.toLowerCase() + ".pl");
-							userRepo.save(user);
-					});
 					userRepo.findAll().forEach(System.out::println);
 			};
 	}
