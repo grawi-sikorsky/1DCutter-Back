@@ -38,13 +38,13 @@ public class LoginController {
   */
 
   @GetMapping("/login")
-  public String user()
+  public UserModel user()
   {
     Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     System.out.println("GET Loginpage z angulara!");
     //return new UserModel("kupa", "kupa", "kupa");
-    //UserModel um = (UserModel)uService.loadUserByUsername(((UserModel)principal).getUsername());
-    return "HRA GITARA!";
+    UserModel um = (UserModel)uService.loadUserByUsername(((UserModel)principal).getUsername());
+    return um;
   }
 
 
