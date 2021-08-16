@@ -34,16 +34,6 @@ public class LoginController {
     
     return um;
   }
-
-
-  @GetMapping("/login2")
-  public boolean login2()
-  {
-    //uService.isLoggedIn()
-    //System.out.println(uService.isLoggedIn());
-    return uService.isLoggedIn();
-  }
-
   
   @RequestMapping(value="/register", method = RequestMethod.POST)
   public boolean registerForm(@RequestBody UserModel uModel)
