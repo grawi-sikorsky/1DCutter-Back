@@ -9,4 +9,5 @@ import pl.printo3d.onedcutter.cutter1d.models.UserModel;
 public interface UserRepo extends CrudRepository<UserModel, Long>
 {
   UserModel findByUsername(String username);
+  boolean existsByUsername(String username);
 }

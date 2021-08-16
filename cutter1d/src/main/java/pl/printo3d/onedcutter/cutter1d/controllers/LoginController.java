@@ -1,16 +1,12 @@
 ﻿package pl.printo3d.onedcutter.cutter1d.controllers;
 
-import java.security.Principal;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import pl.printo3d.onedcutter.cutter1d.models.UserModel;
@@ -50,12 +46,17 @@ public class LoginController {
 
   
   @RequestMapping(value="/register", method = RequestMethod.POST)
-  public void registerForm(@RequestBody UserModel uModel)
+  public boolean registerForm(@RequestBody UserModel uModel)
   {
-    //uService.addUser(new UserModel("klops","klops"));
-    System.out.println(uModel.getUsername() + uModel.getPassword() + uModel.getEmail());
-    uService.addUser(uModel);
-    System.out.println("registerform..");
-    //return "register";
+    if(uService.addUser(uModel) == true)
+    {
+      System.out.println("Register done..");
+      return true;
+    }
+    else
+    {
+      System.out.println("Register error");
+      return false;
+    }
   }
 }

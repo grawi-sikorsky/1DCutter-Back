@@ -34,12 +34,33 @@ public class UserService implements UserDetailsService
     this.uRepo = uRepo;
   }
 
-  public boolean addUser(UserModel um)
+  public boolean addUser(UserModel userModel)
   {
-    um.setPassword(pEncoder.encode(um.getPassword()));
-    uRepo.save(um);
-    System.out.println("uService Add user..");
-    return true;
+    if( userModel.getUsername() != ""  &&  userModel.getPassword() != ""  &&  userModel.getEmail() != "" &&
+        userModel.getUsername() != null  &&  userModel.getPassword() != null  &&  userModel.getEmail() != null )
+    {
+      if( !uRepo.existsByUsername(userModel.getUsername()))
+      {
+        userModel.setRole("VIP"); // role dynamicznie pasuje ustawiac.
+        userModel.setPassword(pEncoder.encode(userModel.getPassword()));
+        uRepo.save(userModel);
+        System.out.println("uService Dodajemy Usera..");
+  
+        return true;
+      }
+      else
+      {
+        System.out.println("uService: User exists!");
+        return false;
+      }
+    }
+    else
+    {
+      System.out.println("uService: Bad kredenszals!");
+      return false;
+    }
+
+
   }
 
   public boolean isLoggedIn()
