@@ -7,6 +7,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,44 +26,36 @@ public class LoginController {
   private UserRepo userRepo;
   //UserModel uModel;
   
-  //@RequestMapping(value="/login", method=RequestMethod.GET)
-
-  /*
-  @GetMapping("/login")
-  public UserModel loginpage()
-  {
-    System.out.println("GET Loginpage z angulara!");
-    return public Principal principal;
-    return new UserModel("klocc","klocc","klocc");
-  }
-  */
 
   @GetMapping("/login")
   public UserModel user()
   {
     Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+     
     System.out.println("GET Loginpage z angulara!");
     //return new UserModel("kupa", "kupa", "kupa");
     UserModel um = (UserModel)uService.loadUserByUsername(((UserModel)principal).getUsername());
+    
     return um;
   }
 
 
-//  @CrossOrigin(origins = "http://localhost:4200")
-  //@RequestMapping(value="/login", method=RequestMethod.POST)
-  
-  @PostMapping("/login")
-  public String logujemy(@RequestParam UserModel u)
+  @GetMapping("/login2")
+  public boolean login2()
   {
-    System.out.println("POST logujo z angulara!");
-    //System.out.println(user);
-    return "home";
+    //uService.isLoggedIn()
+    //System.out.println(uService.isLoggedIn());
+    return uService.isLoggedIn();
   }
+
   
-  @RequestMapping(value="/register", method = RequestMethod.GET)
-  public String registerForm()
+  @RequestMapping(value="/register", method = RequestMethod.POST)
+  public void registerForm(@RequestBody UserModel uModel)
   {
-    uService.addUser(new UserModel("kloc","kloc"));
-    return "register";
+    //uService.addUser(new UserModel("klops","klops"));
+    System.out.println(uModel.getUsername() + uModel.getPassword() + uModel.getEmail());
+    uService.addUser(uModel);
+    System.out.println("registerform..");
+    //return "register";
   }
 }
