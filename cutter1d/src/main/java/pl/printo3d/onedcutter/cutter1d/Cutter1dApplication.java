@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
-import pl.printo3d.onedcutter.cutter1d.repo.UserRepo;
+import pl.printo3d.onedcutter.cutter1d.userlogin.repo.UserRepo;
 
 @CrossOrigin(origins = "*")
 @SpringBootApplication

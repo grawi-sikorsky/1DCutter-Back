@@ -8,7 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
-import pl.printo3d.onedcutter.cutter1d.services.UserService;
+import pl.printo3d.onedcutter.cutter1d.userlogin.services.UserService;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @Configuration
@@ -44,6 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     .antMatchers("/login","/img/**","/css/**").permitAll()
     .antMatchers("/register", "/img/**","/css/**").permitAll()
     .antMatchers("/1dcut").permitAll()
+    .antMatchers("/cut").permitAll()
     .antMatchers("/profile").permitAll()
     .antMatchers("/test").permitAll()
 

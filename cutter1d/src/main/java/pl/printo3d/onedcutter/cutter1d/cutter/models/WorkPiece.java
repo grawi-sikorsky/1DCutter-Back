@@ -1,16 +1,22 @@
-﻿package pl.printo3d.onedcutter.cutter1d.models;
+﻿package pl.printo3d.onedcutter.cutter1d.cutter.models;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class StockPiece {
+/**
+ * Model zawierajacy pojedynczy surowiec o okreslonej dlugosci
+ * oraz zaiwerajacy liste <double> cięć powstalych w wyniku optymalizacji<p>
+ * - freeSpace() - zwraca ilosc wolnego miejsca na surowcu<p>
+ * - cut() - odcina okreslony kawalek z surowca dodajac go do listy cięć<p>
+ * */
+public class WorkPiece {
 
   private Double stockLenght;
 
   public List<Double> cuts = new ArrayList<Double>();
 
-  public StockPiece(Double lenght)
+  public WorkPiece(Double lenght)
   {
     stockLenght = lenght;
   }

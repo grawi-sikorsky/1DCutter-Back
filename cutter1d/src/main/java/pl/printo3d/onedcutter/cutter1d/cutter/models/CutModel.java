@@ -1,8 +1,11 @@
-﻿package pl.printo3d.onedcutter.cutter1d.models;
+﻿package pl.printo3d.onedcutter.cutter1d.cutter.models;
 
 import javax.persistence.GeneratedValue;
 
-public class CutListModel {
+/**
+ * Model zawierajacy zadeklarowana przez usera dlugosc ciecia oraz ilosc takich samych odcinkow
+ * */
+public class CutModel {
 
   @GeneratedValue
   Long id;
@@ -11,12 +14,12 @@ public class CutListModel {
   String name;
 
 
-  public CutListModel(String cutLenght, String cutPcs) {
+  public CutModel(String cutLenght, String cutPcs) {
     this.cutLenght = cutLenght;
     this.cutPcs = cutPcs;
   }
 
-  public CutListModel(Long id, String cutLenght, String cutPcs, String name) {
+  public CutModel(Long id, String cutLenght, String cutPcs, String name) {
     this.id = id;
     this.cutLenght = cutLenght;
     this.cutPcs = cutPcs;
@@ -42,5 +45,4 @@ public class CutListModel {
   public void setCutPcs(String cutPcs) {
     this.cutPcs = cutPcs;
   }
-  
 }

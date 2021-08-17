@@ -1,8 +1,8 @@
-﻿package pl.printo3d.onedcutter.cutter1d.services;
+﻿package pl.printo3d.onedcutter.cutter1d.cutter.models;
 
 import javax.persistence.GeneratedValue;
 
-public class StockListModel {
+public class StockModel {
 
   @GeneratedValue
   Long id;
@@ -10,12 +10,12 @@ public class StockListModel {
   String stockPcs;
   String name;
 
-  public StockListModel(String stockLenght, String cutPcs) {
+  public StockModel(String stockLenght, String cutPcs) {
     this.stockLenght = stockLenght;
     this.stockPcs = cutPcs;
   }
 
-  public StockListModel(Long id, String stockLenght, String stockPcs, String name) {
+  public StockModel(Long id, String stockLenght, String stockPcs, String name) {
     this.id = id;
     this.stockLenght = stockLenght;
     this.stockPcs = stockPcs;
