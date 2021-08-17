@@ -15,6 +15,8 @@ public class OneDCutService {
 
   public OneDCutService() {
     cutList.add(new CutListModel("260", "5"));
+    cutList.add(new CutListModel("135", "8"));
+    cutList.add(new CutListModel("750", "2"));
     stockList.add(new StockListModel("1000", "5"));
   }
 
