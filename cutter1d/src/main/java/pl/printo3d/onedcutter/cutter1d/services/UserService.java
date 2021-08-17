@@ -62,9 +62,9 @@ public class UserService implements UserDetailsService
 
   public boolean updateUser(UserModel userModel)
   {
-    // System.out.println("Update User..");
+    System.out.println("Update User..");
 
-    // uRepo.save(userModel);
+    uRepo.save(userModel);
 
     return true;
   }

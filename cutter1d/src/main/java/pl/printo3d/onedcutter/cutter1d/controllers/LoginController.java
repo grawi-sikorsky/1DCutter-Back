@@ -27,11 +27,18 @@ public class LoginController {
   public UserModel user()
   {
     Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-     
-    System.out.println("GET Loginpage z angulara!");
-    //return new UserModel("kupa", "kupa", "kupa");
-    UserModel um = (UserModel)uService.loadUserByUsername(((UserModel)principal).getUsername());
-    
+    UserModel um;
+    if(principal == "anonymousUser")
+    {
+      System.out.println("nulex!");
+      um = new UserModel("AnonymousUser", "AnonymousUser");
+    }
+    else
+    {
+      System.out.println("GET Loginpage z angulara!");
+      //return new UserModel("kupa", "kupa", "kupa");
+      um = (UserModel)uService.loadUserByUsername(((UserModel)principal).getUsername());
+    }
     return um;
   }
   

@@ -1,11 +1,10 @@
 ﻿package pl.printo3d.onedcutter.cutter1d.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import pl.printo3d.onedcutter.cutter1d.models.UserModel;
@@ -19,20 +18,15 @@ public class UserProfileController {
   private UserService uService;
   
 
-//@RequestBody UserModel uModel
   @RequestMapping(value="/profile", method = RequestMethod.POST)
-  public boolean profileUpdate( ) {
-  //   @RequestParam(value = "phone", required = false) String phone,
-  //   @RequestParam(value = "website", required = false) String website )
-  // {
-  //   Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-  //   UserModel uModel = (UserModel)uService.loadUserByUsername(((UserModel)principal).getUsername());
+  public boolean profileUpdate( @RequestBody UserModel userModel )
+  {
+    UserModel uModel = (UserModel)uService.loadUserByUsername(userModel.getUsername());
 
-  //   uModel.setPhone(phone);
-  //   uModel.setWebsite(website);
-  //   uService.updateUser(uModel);
+    uModel.setPhone(userModel.getPhone());
+    uModel.setWebsite(userModel.getWebsite());
+    uService.updateUser(uModel);
 
     return true;
-  }
-  
+  }  
 }
