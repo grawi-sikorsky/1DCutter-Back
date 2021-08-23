@@ -1,20 +1,20 @@
 ﻿package pl.printo3d.onedcutter.cutter1d.cutter.models;
 
 public class ResultBarPieceModel {
-
-  private String barWithProc;
+  
+  private String barWidthProc;
   private String barText;
 
-  public ResultBarPieceModel(String barWithProc, String barText) {
-    this.barWithProc = barWithProc;
+  public ResultBarPieceModel(String barWidthProc, String barText) {
+    this.barWidthProc = barWidthProc;
     this.barText = barText;
   }
   
-  public String getBarWithProc() {
-    return barWithProc;
+  public String getBarWidthProc() {
+    return barWidthProc;
   }
-  public void setBarWithProc(String barWithProc) {
-    this.barWithProc = barWithProc;
+  public void setBarWidthProc(String barWidthProc) {
+    this.barWidthProc = barWidthProc;
   }
   public String getBarText() {
     return barText;

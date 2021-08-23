@@ -1,25 +1,41 @@
 ﻿package pl.printo3d.onedcutter.cutter1d.cutter.models;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ResultBar {
 
-  public ResultBarPieceModel[] resultBarPieceModel;
+  @JsonProperty("pieces")
+  public List<ResultBarPieceModel> resultBarPieces = new ArrayList<ResultBarPieceModel>();
 
+  public ResultBar() {
+  }
 
-  public ResultBar(ResultBarPieceModel[] resultBarPieceModel) {
-    this.resultBarPieceModel = resultBarPieceModel;
+  public ResultBar(List<ResultBarPieceModel> resultBarPieces) {
+    this.resultBarPieces = resultBarPieces;
   }
 
 
-  public ResultBarPieceModel[] getResultBarPieceModel() {
-    return resultBarPieceModel;
+  public void addPiece(ResultBarPieceModel pieceToAdd)
+  {
+    resultBarPieces.add(pieceToAdd);
+  }
+
+  public void clear()
+  {
+    resultBarPieces.clear();
   }
 
 
-  public void setResultBarPieceModel(ResultBarPieceModel[] resultBarPieceModel) {
-    this.resultBarPieceModel = resultBarPieceModel;
+  public List<ResultBarPieceModel> getResultBarPieces() {
+    return resultBarPieces;
   }
 
-  
-  
+
+  public void setResultBarPieces(List<ResultBarPieceModel> resultBarPieces) {
+    this.resultBarPieces = resultBarPieces;
+  }
+
   
 }

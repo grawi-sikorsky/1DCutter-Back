@@ -1,9 +1,11 @@
 ﻿package pl.printo3d.onedcutter.cutter1d.cutter.services;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import pl.printo3d.onedcutter.cutter1d.cutter.models.ResultBar;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.ResultBarPieceModel;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.WorkPiece;
 
@@ -15,7 +17,7 @@ public class ResultService {
   private Double resultWasteProcent;
 
   private List<String> result = new ArrayList<String>();
-  private List<ResultBarPieceModel> resultBar = new ArrayList<ResultBarPieceModel>();
+  private ResultBar resultBar = new ResultBar();
 
   public ResultService()
   {
@@ -44,10 +46,11 @@ public class ResultService {
 
     return result;
   }
+
 // TODO: uciac wyswietlanie powtarzajacych sie barow
-  public List<List<ResultBarPieceModel>> getResultsBars(List<WorkPiece> workPieces)
+  public List<ResultBar> getResultsBars(List<WorkPiece> workPieces)
   {
-    List<List<ResultBarPieceModel>> resultBars = new ArrayList<List<ResultBarPieceModel>>();
+    List<ResultBar> resultBars = new ArrayList<ResultBar>();
     //Map<String,String> resultBar = new HashMap<String,String>();
     resultBars.clear();
 
@@ -55,9 +58,9 @@ public class ResultService {
     {
       for(int i=0; i < wp.cuts.size(); ++i)
       {
-        resultBar.add(new ResultBarPieceModel((String.valueOf(  (wp.cuts.get(i) / wp.getStockLenght()) * 100)), String.valueOf(wp.cuts.get(i))));
+        resultBar.addPiece(new ResultBarPieceModel((String.valueOf(  (wp.cuts.get(i) / wp.getStockLenght()) * 100)), String.valueOf(wp.cuts.get(i))));
       }
-      resultBars.add(new ArrayList<ResultBarPieceModel>(resultBar));
+      resultBars.add(new ResultBar( new ArrayList<ResultBarPieceModel>(resultBar.resultBarPieces)  ));
       resultBar.clear();
     }
 
