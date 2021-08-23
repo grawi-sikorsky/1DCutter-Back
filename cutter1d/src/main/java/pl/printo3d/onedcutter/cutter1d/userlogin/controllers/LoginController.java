@@ -36,7 +36,6 @@ public class LoginController {
     else
     {
       System.out.println("GET Loginpage z angulara!");
-      //return new UserModel("kupa", "kupa", "kupa");
       um = (UserModel)uService.loadUserByUsername(((UserModel)principal).getUsername());
     }
     return um;

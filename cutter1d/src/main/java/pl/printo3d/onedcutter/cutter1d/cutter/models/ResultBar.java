@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ResultBar {
 
-  @JsonProperty("pieces")
   public List<ResultBarPieceModel> resultBarPieces = new ArrayList<ResultBarPieceModel>();
 
   public ResultBar() {

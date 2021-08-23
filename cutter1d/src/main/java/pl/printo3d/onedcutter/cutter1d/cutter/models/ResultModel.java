@@ -3,23 +3,52 @@
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.naming.spi.DirStateFactory.Result;
-
 public class ResultModel {
 
-  private Double resultWaste;
-  private Double resultUsed;
-  private Double resultWasteProcent;
-  private Double resultNeededStock;
+  public Double resultWaste=0.0;
+  private Double resultUsed=0.0;
+  private Double resultWasteProcent=0.0;
+  private Double resultNeededStock=0.0;
 
-  //private List<ResultBar> resultBars = new ArrayList<ResultBar>();
+  private List<ResultBar> resultBars = new ArrayList<ResultBar>();
 
   private List<String> result = new ArrayList<String>();
   private List<ResultBarPieceModel> resultBar = new ArrayList<ResultBarPieceModel>();
 
-  public ResultModel()
-  {
+  public ResultModel(){ }
 
+
+
+
+  
+  public Double getResultUsed() {
+    return resultUsed;
   }
-
+  public void setResultUsed(Double resultUsed) {
+    this.resultUsed = resultUsed;
+  }
+  public Double getResultWasteProcent() {
+    return resultWasteProcent;
+  }
+  public void setResultWasteProcent(Double resultWasteProcent) {
+    this.resultWasteProcent = resultWasteProcent;
+  }
+  public Double getResultNeededStock() {
+    return resultNeededStock;
+  }
+  public void setResultNeededStock(Double resultNeededStock) {
+    this.resultNeededStock = resultNeededStock;
+  }
+  public Double getResultWaste() {
+    return resultWaste;
+  }
+  public void setResultWaste(Double resultWaste) {
+    this.resultWaste = resultWaste;
+  }
+  public List<ResultBar> getResultBars() {
+    return resultBars;
+  }
+  public void setResultBars(List<ResultBar> resultBars) {
+    this.resultBars = resultBars;
+  }
 }

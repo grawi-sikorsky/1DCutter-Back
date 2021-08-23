@@ -3,18 +3,21 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pl.printo3d.onedcutter.cutter1d.cutter.models.ResultBar;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.ResultBarPieceModel;
+import pl.printo3d.onedcutter.cutter1d.cutter.models.ResultModel;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.WorkPiece;
 
 @Service
 public class ResultService {
 
-  private Double resultWaste;
-  private Double resultUsed;
-  private Double resultWasteProcent;
+  @Autowired
+  private OneDCutService cutService;
+
+  ResultModel fullResults = new ResultModel();
 
   private List<String> result = new ArrayList<String>();
   private ResultBar resultBar = new ResultBar();
@@ -51,7 +54,6 @@ public class ResultService {
   public List<ResultBar> getResultsBars(List<WorkPiece> workPieces)
   {
     List<ResultBar> resultBars = new ArrayList<ResultBar>();
-    //Map<String,String> resultBar = new HashMap<String,String>();
     resultBars.clear();
 
     for (WorkPiece wp : workPieces)
@@ -69,14 +71,29 @@ public class ResultService {
 
   public Double calculateWaste(List<WorkPiece> workPieces)
   {
+    Double resultWaste=0.0;
+    Double resultUsed=0.0;
+    Double resultWasteProcent=0.0;
+
     for (var workpc : workPieces) 
     {
       resultUsed += workpc.getStockLenght();
       resultWaste += workpc.freeSpace();
     }
     resultWasteProcent = (resultWaste / resultUsed) * 100.0;
+    fullResults.setResultUsed(resultUsed);
+    fullResults.setResultWasteProcent(resultWasteProcent);
 
     return resultWasteProcent;
+  }
+
+  public ResultModel makeFullResults()
+  {
+    fullResults.setResultBars(this.getResultsBars(this.cutService.workPiecesList));
+    fullResults.setResultWaste(this.calculateWaste(this.cutService.workPiecesList));
+
+
+    return fullResults;
   }
 
   

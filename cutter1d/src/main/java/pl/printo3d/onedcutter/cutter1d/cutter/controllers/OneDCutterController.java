@@ -5,11 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import pl.printo3d.onedcutter.cutter1d.cutter.models.ResultBar;
-import pl.printo3d.onedcutter.cutter1d.cutter.models.ResultBarPieceModel;
+import pl.printo3d.onedcutter.cutter1d.cutter.models.ResultModel;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.WorkPiece;
 import pl.printo3d.onedcutter.cutter1d.cutter.services.OneDCutService;
 import pl.printo3d.onedcutter.cutter1d.cutter.services.ResultService;
@@ -41,5 +40,11 @@ public class OneDCutterController {
   public List<ResultBar> cut()
   {
     return resultService.getResultsBars(cutService.workPiecesList);
+  }
+
+  @GetMapping("/result")
+  public ResultModel result()
+  {
+    return resultService.makeFullResults();
   }
 }
