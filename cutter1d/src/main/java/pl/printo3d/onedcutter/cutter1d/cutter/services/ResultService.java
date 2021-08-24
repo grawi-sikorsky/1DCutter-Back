@@ -97,29 +97,4 @@ public class ResultService {
     return fullResults;
   }
 
-  
-
-  public Double getResultWaste() {
-    return resultWaste;
-  }
-
-  public void setResultWaste(Double resultWaste) {
-    this.resultWaste = resultWaste;
-  }
-
-  public Double getResultUsed() {
-    return resultUsed;
-  }
-
-  public void setResultUsed(Double resultUsed) {
-    this.resultUsed = resultUsed;
-  }
-
-  public Double getResultWasteProcent() {
-    return resultWasteProcent;
-  }
-
-  public void setResultWasteProcent(Double resultWasteProcent) {
-    this.resultWasteProcent = resultWasteProcent;
-  }
 }

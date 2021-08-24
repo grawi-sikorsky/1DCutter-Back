@@ -43,7 +43,7 @@ public class OneDCutService {
     {
       for(int i=0; i < Integer.parseInt(c.getCutPcs()); ++i)
       {
-        partsList.add(Double.parseDouble(c.getCutLenght()));
+        partsList.add(Double.parseDouble(c.getCutLength()));
       }
     }
     return partsList;
@@ -73,8 +73,8 @@ public class OneDCutService {
       System.out.println("Next part is: " + part);
       if(!workPiecesList.stream().anyMatch(work->work.freeSpace() >= part))
       {
-        workPiecesList.add(new WorkPiece(Double.valueOf(stockList.get(0).getStockLenght())));
-        System.out.println("No free left, adding new stock piece: " + stockList.get(0).getStockLenght());
+        workPiecesList.add(new WorkPiece(Double.valueOf(stockList.get(0).getStockLength())));
+        System.out.println("No free left, adding new stock piece: " + stockList.get(0).getStockLength());
       }
 
       for(var work : workPiecesList)
