@@ -83,6 +83,7 @@ public class ResultService {
     resultWasteProcent = (resultWaste / resultUsed) * 100.0;
     fullResults.setResultUsed(resultUsed);
     fullResults.setResultWasteProcent(resultWasteProcent);
+    fullResults.setResultUsedProcent(100 - resultWasteProcent);
 
     return resultWasteProcent;
   }

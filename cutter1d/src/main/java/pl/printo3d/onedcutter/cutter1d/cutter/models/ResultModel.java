@@ -8,6 +8,7 @@ public class ResultModel {
   public Double resultWaste=0.0;
   private Double resultUsed=0.0;
   private Double resultWasteProcent=0.0;
+  private Double resultUsedProcent=0.0;
   private Double resultNeededStock=0.0;
 
   private List<ResultBar> resultBars = new ArrayList<ResultBar>();
@@ -21,6 +22,12 @@ public class ResultModel {
 
 
   
+  public Double getResultUsedProcent() {
+    return resultUsedProcent;
+  }
+  public void setResultUsedProcent(Double resultUsedProcent) {
+    this.resultUsedProcent = resultUsedProcent;
+  }
   public Double getResultUsed() {
     return resultUsed;
   }
