@@ -37,9 +37,10 @@ public class OneDCutterController {
   }
 
   @PostMapping("/cut")
-  public ResultModel ProcessOrder(@RequestBody OrderModel orderModel)
+  public OrderModel ProcessOrder(@RequestBody OrderModel orderModel)
   {
-    return orderService.makeOrder(orderModel);
+    orderService.makeOrder(orderModel);
+    return orderService.returnOrder(orderModel);
   }
 
   @GetMapping("/cut")

@@ -64,11 +64,11 @@ public class OrderService {
     orderModel.stockList.forEach(e->System.out.println(e.getStockLength() + " " + e.getStockPcs()));
     orderModel.cutList.forEach(e->System.out.println(e.getCutLength() + " " + e.getCutPcs()));
 
-    UserModel um = new UserModel();
-    um.setCutModel(orderModel.cutList);
-    um.setStockModel(orderModel.stockList);
+    //UserModel um = new UserModel();
+    // um.setCutModel(orderModel.cutList);
+    // um.setStockModel(orderModel.stockList);
     // walic - tu trzeba zrobic osobna baze dla stock i cut i polaczyc je z ID usera..
-    userService.updateUser(um);
+    //userService.updateUser(um);
 
     orderList.clearOrder();
 
