@@ -2,22 +2,16 @@
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import pl.printo3d.onedcutter.cutter1d.cutter.models.CutModel;
-import pl.printo3d.onedcutter.cutter1d.cutter.models.OrderModel;
-import pl.printo3d.onedcutter.cutter1d.cutter.models.StockModel;
 
 @Entity
 public class UserModel implements UserDetails {
@@ -33,13 +27,6 @@ public class UserModel implements UserDetails {
   String email;
   String phone;
   String website;
-
-  @OneToMany
-  List<CutModel> cutModel;
-
-  @OneToMany
-  List<StockModel> stockModel;
-
 
 
   public UserModel(){}
@@ -151,26 +138,5 @@ public class UserModel implements UserDetails {
 
   public void setWebsite(String website) {
     this.website = website;
-  }
-
-  public List<CutModel> getCutModel() {
-    return cutModel;
-  }
-
-  public void setCutModel(List<CutModel> cutModel) {
-    this.cutModel = cutModel;
-  }
-
-  public List<StockModel> getStockModel() {
-    return stockModel;
-  }
-
-  public void setStockModel(List<StockModel> stockModel) {
-    this.stockModel = stockModel;
-  }
-
-
-
-
-  
+  } 
 }
