@@ -1,8 +1,5 @@
 ﻿package pl.printo3d.onedcutter.cutter1d.cutter.controllers;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,11 +7,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import pl.printo3d.onedcutter.cutter1d.cutter.models.CutModel;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.OrderModel;
-import pl.printo3d.onedcutter.cutter1d.cutter.models.ResultBar;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.ResultModel;
-import pl.printo3d.onedcutter.cutter1d.cutter.models.WorkPiece;
 import pl.printo3d.onedcutter.cutter1d.cutter.services.OneDCutService;
 import pl.printo3d.onedcutter.cutter1d.cutter.services.OrderService;
 import pl.printo3d.onedcutter.cutter1d.cutter.services.ResultService;
@@ -29,12 +23,17 @@ public class OneDCutterController {
   @Autowired 
   private ResultService resultService;
 
-  @Autowired OrderService orderService;
+  @Autowired 
+  private OrderService orderService;
 
+  /**
+   * Showing home page of One D Cutter, does nothing but return order details (cutlist, stocklist) - default or saved in user database.
+   * @return OrderModel
+   */
   @GetMapping("/1dcut")
-  public List<WorkPiece> showCuts()
+  public OrderModel showCuts()
   {
-    return cutService.firstFit();
+    return orderService.returnOrder();
   }
 
   @PostMapping("/cut")

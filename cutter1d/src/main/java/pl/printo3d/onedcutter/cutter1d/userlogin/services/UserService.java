@@ -38,6 +38,7 @@ public class UserService implements UserDetailsService
     {
       if( !uRepo.existsByUsername(userModel.getUsername()))
       {
+        //1 domyslne formatki
         userModel.setRole("VIP"); // role dynamicznie pasuje ustawiac.
         userModel.setPassword(pEncoder.encode(userModel.getPassword()));
         uRepo.save(userModel);
