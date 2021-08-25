@@ -47,10 +47,12 @@ public class OrderService {
 
 
 
-  public boolean makeOrder(@RequestBody OrderModel orderModel) 
+  public boolean makeOrder(OrderModel orderModel) 
   {
     System.out.println("Make Order in Java");
-    System.out.println(orderModel);
+
+    orderModel.cutList.forEach(e->System.out.println(e.getCutLength() + " " + e.getCutPcs()));
+
     return true;
   }
 

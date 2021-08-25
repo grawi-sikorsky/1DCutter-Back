@@ -6,6 +6,11 @@ public class StockModel {
   String stockPcs;
   String name;
 
+
+  
+  public StockModel() {
+  }
+
   public StockModel(String stockLength, String stockPcs) {
     this.stockLength = stockLength;
     this.stockPcs = stockPcs;

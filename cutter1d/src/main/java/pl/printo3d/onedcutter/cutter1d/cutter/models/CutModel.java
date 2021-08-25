@@ -10,6 +10,9 @@ public class CutModel {
   String name;
 
 
+  public CutModel() {
+  }
+
   public CutModel(String cutLength, String cutPcs) {
     this.cutLength = cutLength;
     this.cutPcs = cutPcs;

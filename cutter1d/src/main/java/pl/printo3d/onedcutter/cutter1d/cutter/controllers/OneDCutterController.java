@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import pl.printo3d.onedcutter.cutter1d.cutter.models.OrderModel;
@@ -35,9 +36,9 @@ public class OneDCutterController {
   }
 
   @PostMapping("/cut")
-  public OrderModel ProcessOrder()
+  public boolean ProcessOrder(@RequestBody OrderModel orderModel)
   {
-    return orderService.makeOrder();
+    return orderService.makeOrder(orderModel);
   }
 
   @GetMapping("/cut")
