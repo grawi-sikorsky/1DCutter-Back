@@ -8,5 +8,11 @@ public class OrderModel {
 
   public List<CutModel> cutList = new ArrayList<CutModel>();
   public List<StockModel> stockList = new ArrayList<StockModel>();
+
+  public void clearOrder()
+  {
+    cutList.clear();
+    stockList.clear();
+  }
   
 }

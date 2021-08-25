@@ -1,5 +1,6 @@
 ﻿package pl.printo3d.onedcutter.cutter1d.cutter.controllers;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import pl.printo3d.onedcutter.cutter1d.cutter.models.CutModel;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.OrderModel;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.ResultBar;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.ResultModel;
@@ -36,7 +38,7 @@ public class OneDCutterController {
   }
 
   @PostMapping("/cut")
-  public boolean ProcessOrder(@RequestBody OrderModel orderModel)
+  public ResultModel ProcessOrder(@RequestBody OrderModel orderModel)
   {
     return orderService.makeOrder(orderModel);
   }

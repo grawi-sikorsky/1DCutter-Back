@@ -1,10 +1,19 @@
 ﻿package pl.printo3d.onedcutter.cutter1d.cutter.models;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 /**
  * Model zawierajacy zadeklarowana przez usera dlugosc ciecia oraz ilosc takich samych odcinkow
  * */
+@Entity
 public class CutModel {
-
+  
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  Long id;
   String cutLength;
   String cutPcs;
   String name;
@@ -36,4 +45,11 @@ public class CutModel {
   public void setCutPcs(String cutPcs) {
     this.cutPcs = cutPcs;
   }
+  public Long getId() {
+    return id;
+  }
+  public void setId(Long id) {
+    this.id = id;
+  }
+  
 }

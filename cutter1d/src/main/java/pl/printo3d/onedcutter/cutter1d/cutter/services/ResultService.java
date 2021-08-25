@@ -93,7 +93,6 @@ public class ResultService {
     fullResults.setResultBars(this.getResultsBars(this.cutService.workPiecesList));
     fullResults.setResultWaste(this.calculateWaste(this.cutService.workPiecesList));
 
-
     return fullResults;
   }
 
