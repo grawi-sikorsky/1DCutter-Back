@@ -5,6 +5,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import javax.naming.spi.DirStateFactory.Result;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pl.printo3d.onedcutter.cutter1d.cutter.models.CutModel;
@@ -20,6 +23,9 @@ public class OneDCutService {
     cutList.add(new CutModel("750", "2"));
     stockList.add(new StockModel("2000", "5"));
   }
+
+  @Autowired
+  ResultService resultService;
 
   // lista roboczych kawalkow - kazdy zawiera info o cieciach oraz o ilosci wolnego miejsca na nim
   public List<WorkPiece> workPiecesList = new ArrayList<WorkPiece>();
@@ -67,9 +73,10 @@ public class OneDCutService {
 
     // flush workpieces:
     workPiecesList.clear();
+
     Integer tempStockCounter=0,tempStockIterator=0;
     List<Double> partsDone = new ArrayList<Double>();
-    List<Double> partsRemaining = partsList;
+    List<Double> partsRemaining = new ArrayList<Double>(partsList);
     
     for (Double part : partsList)
     {
@@ -98,13 +105,15 @@ public class OneDCutService {
           else
           {
             System.out.println("NOT ENOF STOCK AT ALL!");
-            partsRemaining.removeAll(partsDone);
+            partsDone.forEach(e->partsRemaining.remove(e));
+            System.out.println("POZOSTALE CZESCI:");
             partsRemaining.forEach(e->System.out.println(e));
+            System.out.println("--------------------------------");
+            resultService.getRemainBars(partsRemaining);
+            //resultService.setResultRemainingPieces(partsRemaining);
             break;
           }
-          
         }
-
       }
 
       for(var work : workPiecesList)

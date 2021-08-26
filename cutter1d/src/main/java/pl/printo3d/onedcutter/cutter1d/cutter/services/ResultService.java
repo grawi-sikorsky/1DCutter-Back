@@ -68,6 +68,22 @@ public class ResultService {
     return resultBars;
   }
 
+  public List<ResultBar> getRemainBars(List<Double> remainPcs)
+  {
+    List<ResultBar> remainBars = new ArrayList<ResultBar>();
+    remainBars.clear();
+
+    for(Double rp : remainPcs)
+    {
+      resultBar.addPiece(new ResultBarPieceModel((String.valueOf(  (rp / 1000) * 100)), String.valueOf(rp)));
+
+      remainBars.add(new ResultBar( new ArrayList<ResultBarPieceModel>(resultBar.resultBarPieces)  ));
+      resultBar.clear();
+    }
+
+    return remainBars;
+  }
+
   public Double calculateWaste(List<WorkPiece> workPieces)
   {
     Double resultWaste=0.0;
@@ -85,6 +101,10 @@ public class ResultService {
     fullResults.setResultUsedProcent(100 - resultWasteProcent);
 
     return resultWasteProcent;
+  }
+  public void setResultRemainingPieces(List<ResultBar> remain)
+  {
+    fullResults.setResultRemainingPieces(remain);
   }
 
   public ResultModel makeFullResults()
