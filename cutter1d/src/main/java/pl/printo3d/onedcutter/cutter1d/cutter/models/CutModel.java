@@ -6,6 +6,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 /**
  * Model zawierajacy zadeklarowana przez usera dlugosc ciecia oraz ilosc takich samych odcinkow
  * */
@@ -14,7 +16,7 @@ public class CutModel {
   
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(nullable = false, updatable = false)
+  @Column(nullable = false, updatable = true)
   Long id;
   
   String cutLength;
@@ -39,7 +41,11 @@ public class CutModel {
     return cutLength;
   }
   public void setCutLength(String cutLength) {
-    this.cutLength = cutLength;
+    if(this.cutLength != cutLength)
+    {
+      this.cutLength = cutLength;
+    }
+    
   }
   public String getCutPcs() {
     return cutPcs;

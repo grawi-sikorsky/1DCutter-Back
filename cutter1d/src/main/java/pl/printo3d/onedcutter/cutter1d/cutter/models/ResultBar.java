@@ -2,8 +2,6 @@
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public class ResultBar {
 
   public List<ResultBarPieceModel> resultBarPieces = new ArrayList<ResultBarPieceModel>();

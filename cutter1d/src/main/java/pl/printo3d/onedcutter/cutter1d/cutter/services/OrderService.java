@@ -77,6 +77,23 @@ public class OrderService {
     //cutService.cutList = orderList.cutList;
     //cutService.firstFit();
     cutService.cutList = orderModel.cutList;
+    cutService.stockList = orderModel.stockList;
+    cutService.firstFit();
+    this.returnOrder(orderModel);
+
+    return resultService.makeFullResults();
+  }
+
+  public ResultModel makeOrderFree(OrderModel orderModel) 
+  {
+    System.out.println("Make FREE Order in Java");
+
+    orderModel.stockList.forEach(e->System.out.println(e.getStockLength() + " " + e.getStockPcs()));
+    orderModel.cutList.forEach(e->System.out.println(e.getCutLength() + " " + e.getCutPcs()));
+
+    orderList.clearOrder();
+    cutService.cutList = orderModel.cutList;
+    cutService.stockList = orderModel.stockList;
     cutService.firstFit();
     this.returnOrder(orderModel);
 

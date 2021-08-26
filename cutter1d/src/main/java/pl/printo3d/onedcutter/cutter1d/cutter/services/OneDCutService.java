@@ -18,7 +18,7 @@ public class OneDCutService {
     cutList.add(new CutModel("260", "5"));
     cutList.add(new CutModel("135", "8"));
     cutList.add(new CutModel("750", "2"));
-    stockList.add(new StockModel("1000", "5"));
+    stockList.add(new StockModel("2000", "5"));
   }
 
   // lista roboczych kawalkow - kazdy zawiera info o cieciach oraz o ilosci wolnego miejsca na nim
@@ -67,14 +67,44 @@ public class OneDCutService {
 
     // flush workpieces:
     workPiecesList.clear();
+    Integer tempStockCounter=0,tempStockIterator=0;
+    List<Double> partsDone = new ArrayList<Double>();
+    List<Double> partsRemaining = partsList;
     
     for (Double part : partsList)
     {
       System.out.println("Next part is: " + part);
       if(!workPiecesList.stream().anyMatch(work->work.freeSpace() >= part))
       {
-        workPiecesList.add(new WorkPiece(Double.valueOf(stockList.get(0).getStockLength())));
-        System.out.println("No free left, adding new stock piece: " + stockList.get(0).getStockLength());
+        System.out.println("avail stocks: "+stockList.size());
+        System.out.println("stock type pcs: "+stockList.get(tempStockIterator).getStockPcs());
+        System.out.println("stock type counter: "+tempStockCounter);
+        System.out.println("stock iterator: "+tempStockIterator);
+
+        if( tempStockCounter < Integer.parseInt(stockList.get(tempStockIterator).getStockPcs()) )
+        {
+          workPiecesList.add(new WorkPiece(Double.valueOf(stockList.get(tempStockIterator).getStockLength())));
+          System.out.println("No free space left, adding new stock piece: " + stockList.get(tempStockIterator).getStockLength());
+          tempStockCounter++;
+        }
+        else
+        {
+          System.out.println("NOT ENOF STOK TYPE! CHECKING ODER..");
+          if(tempStockIterator < stockList.size()-1)
+          {
+            tempStockIterator++;
+            tempStockCounter=0;
+          }
+          else
+          {
+            System.out.println("NOT ENOF STOCK AT ALL!");
+            partsRemaining.removeAll(partsDone);
+            partsRemaining.forEach(e->System.out.println(e));
+            break;
+          }
+          
+        }
+
       }
 
       for(var work : workPiecesList)
@@ -83,9 +113,11 @@ public class OneDCutService {
         {
           work.cut(part);
           System.out.println("Cutting nju pis: " + part);
+          partsDone.add(part);
           break; // koniecznie wyskoczyc z loopa!
         }
       }
+
     }
     return workPiecesList;
   }

@@ -11,16 +11,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import pl.printo3d.onedcutter.cutter1d.cutter.models.CutModel;
-import pl.printo3d.onedcutter.cutter1d.cutter.models.OrderModel;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.StockModel;
 
 @Entity
@@ -40,10 +37,10 @@ public class UserModel implements UserDetails {
 
 
   @OneToMany(cascade = CascadeType.ALL)
-  public List<CutModel> cutList = new ArrayList<CutModel>();
+  public List<CutModel> cutList = null; //new ArrayList<CutModel>();
 
   @OneToMany(cascade = CascadeType.ALL)
-  public List<StockModel> stockList = new ArrayList<StockModel>();
+  public List<StockModel> stockList = null; //new ArrayList<StockModel>();
 
   public UserModel(){}
 
@@ -161,7 +158,21 @@ public class UserModel implements UserDetails {
   }
 
   public void setCutList(List<CutModel> cutList) {
-    this.cutList = cutList;
+    //this.cutList = cutList;
+
+    if (this.cutList == null) 
+    {
+      this.cutList = cutList;
+    } 
+    else if(this.cutList != cutList) 
+    {
+      //cutList.forEach(action);
+      this.cutList.clear();
+      if(cutList != null)
+      {
+        this.cutList.addAll(cutList);
+      }
+    }
   }
 
   public List<StockModel> getStockList() {
