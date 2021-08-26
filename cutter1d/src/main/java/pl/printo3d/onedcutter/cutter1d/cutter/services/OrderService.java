@@ -64,12 +64,13 @@ public class OrderService {
     orderModel.stockList.forEach(e->System.out.println(e.getStockLength() + " " + e.getStockPcs()));
     orderModel.cutList.forEach(e->System.out.println(e.getCutLength() + " " + e.getCutPcs()));
 
-    UserModel um = new UserModel();
+    UserModel um;
+    um = (UserModel)userService.loadUserByUsername(orderModel.usernameOrder);
     um.setCutList(orderModel.cutList);
     um.setStockList(orderModel.stockList);
-    // um.setStockModel(orderModel.stockList);
 
-    //userService.updateUser(um);
+    // TODO w bazie trzeba ogarnac automatyczne id!!
+    userService.updateUser(um);
 
     orderList.clearOrder();
 

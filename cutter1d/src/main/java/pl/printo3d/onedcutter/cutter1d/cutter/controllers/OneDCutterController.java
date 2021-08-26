@@ -40,9 +40,8 @@ public class OneDCutterController {
   }
 
   @PostMapping("/cut")
-  public OrderModel ProcessOrder(@RequestBody OrderModel orderModel, @RequestHeader(required=false) HttpHeaders head)
+  public OrderModel ProcessOrder(@RequestBody OrderModel orderModel)
   {
-    System.out.println("header " + head);
     orderService.makeOrder(orderModel);
     return orderService.returnOrder(orderModel);
   }
