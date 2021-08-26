@@ -1,5 +1,7 @@
 ﻿package pl.printo3d.onedcutter.cutter1d.userlogin.services;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,6 +11,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import pl.printo3d.onedcutter.cutter1d.cutter.models.CutModel;
+import pl.printo3d.onedcutter.cutter1d.cutter.models.StockModel;
 import pl.printo3d.onedcutter.cutter1d.userlogin.models.UserModel;
 import pl.printo3d.onedcutter.cutter1d.userlogin.repo.UserRepo;
 
@@ -39,6 +43,9 @@ public class UserService implements UserDetailsService
       if( !uRepo.existsByUsername(userModel.getUsername()))
       {
         //1 domyslne formatki
+        userModel.setCutList(Arrays.asList(new CutModel("220", "5"), new CutModel("260", "5") ) );
+        userModel.setStockList(Arrays.asList(new StockModel("1000", "6"), new StockModel("1000", "5") ) );
+
         userModel.setRole("VIP"); // role dynamicznie pasuje ustawiac.
         userModel.setPassword(pEncoder.encode(userModel.getPassword()));
         uRepo.save(userModel);
@@ -65,6 +72,7 @@ public class UserService implements UserDetailsService
   {
     System.out.println("Update User..");
 
+    // TODO Check user
     uRepo.save(userModel);
 
     return true;

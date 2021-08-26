@@ -68,7 +68,7 @@ public class OrderService {
     um.setCutList(orderModel.cutList);
     um.setStockList(orderModel.stockList);
     // um.setStockModel(orderModel.stockList);
-    // walic - tu trzeba zrobic osobna baze dla stock i cut i polaczyc je z ID usera..
+
     //userService.updateUser(um);
 
     orderList.clearOrder();
