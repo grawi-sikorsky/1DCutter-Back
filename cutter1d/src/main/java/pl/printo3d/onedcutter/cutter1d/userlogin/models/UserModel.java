@@ -1,17 +1,27 @@
 ﻿package pl.printo3d.onedcutter.cutter1d.userlogin.models;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import pl.printo3d.onedcutter.cutter1d.cutter.models.CutModel;
+import pl.printo3d.onedcutter.cutter1d.cutter.models.OrderModel;
+import pl.printo3d.onedcutter.cutter1d.cutter.models.StockModel;
 
 @Entity
 public class UserModel implements UserDetails {
@@ -28,6 +38,12 @@ public class UserModel implements UserDetails {
   String phone;
   String website;
 
+
+  @OneToMany(cascade = CascadeType.ALL)
+  public List<CutModel> cutList = new ArrayList<CutModel>();
+
+  @OneToMany(cascade = CascadeType.ALL)
+  public List<StockModel> stockList = new ArrayList<StockModel>();
 
   public UserModel(){}
 
@@ -138,5 +154,23 @@ public class UserModel implements UserDetails {
 
   public void setWebsite(String website) {
     this.website = website;
-  } 
+  }
+
+  public List<CutModel> getCutList() {
+    return cutList;
+  }
+
+  public void setCutList(List<CutModel> cutList) {
+    this.cutList = cutList;
+  }
+
+  public List<StockModel> getStockList() {
+    return stockList;
+  }
+
+  public void setStockList(List<StockModel> stockList) {
+    this.stockList = stockList;
+  }
+  
+  
 }

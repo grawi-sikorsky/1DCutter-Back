@@ -1,5 +1,6 @@
 ﻿package pl.printo3d.onedcutter.cutter1d.cutter.models;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,14 +14,15 @@ public class CutModel {
   
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(nullable = false, updatable = false)
   Long id;
+  
   String cutLength;
   String cutPcs;
   String name;
 
 
-  public CutModel() {
-  }
+  public CutModel() {}
 
   public CutModel(String cutLength, String cutPcs) {
     this.cutLength = cutLength;
@@ -44,12 +46,6 @@ public class CutModel {
   }
   public void setCutPcs(String cutPcs) {
     this.cutPcs = cutPcs;
-  }
-  public Long getId() {
-    return id;
-  }
-  public void setId(Long id) {
-    this.id = id;
   }
   
 }
