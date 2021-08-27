@@ -57,7 +57,7 @@ public class OrderService {
 
 
 
-  public ResultModel makeOrder(OrderModel orderModel) 
+  public ResultModel makeOrder(OrderModel orderModel)
   {
     System.out.println("Make Order in Java");
 
@@ -79,12 +79,12 @@ public class OrderService {
     cutService.cutList = orderModel.cutList;
     cutService.stockList = orderModel.stockList;
     cutService.firstFit();
-    this.returnOrder(orderModel);
+    //this.returnOrder(orderModel);??
 
     return resultService.makeFullResults();
   }
 
-  public ResultModel makeOrderFree(OrderModel orderModel) 
+  public ResultModel makeOrderFree(OrderModel orderModel)
   {
     System.out.println("Make FREE Order in Java");
 
@@ -95,7 +95,7 @@ public class OrderService {
     cutService.cutList = orderModel.cutList;
     cutService.stockList = orderModel.stockList;
     cutService.firstFit();
-    this.returnOrder(orderModel);
+    //this.returnOrder(orderModel); //?
 
     return resultService.makeFullResults();
   }

@@ -12,8 +12,8 @@ public class ResultModel {
   private Double resultNeededStock=0.0;
 
   private List<ResultBar> resultBars = new ArrayList<ResultBar>();
-  private List<ResultBar> remainBars = new ArrayList<ResultBar>();
-  private List<ResultBar>    resultRemainingPieces = new ArrayList<ResultBar>();
+  private List<ResultBar> remainBars = new ArrayList<ResultBar>();          // TODO wtf? 2x to samo
+  private List<ResultBar> resultRemainingPieces = new ArrayList<ResultBar>();
 
   private List<String> result = new ArrayList<String>();
   private List<ResultBarPieceModel> resultBar = new ArrayList<ResultBarPieceModel>();

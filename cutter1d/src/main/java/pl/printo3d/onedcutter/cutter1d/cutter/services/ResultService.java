@@ -18,7 +18,6 @@ public class ResultService {
 
   ResultModel fullResults = new ResultModel();
 
-  private List<String> result = new ArrayList<String>();
   private ResultBar resultBar = new ResultBar();
 
   public ResultService()
@@ -26,28 +25,6 @@ public class ResultService {
 
   }
   
-  public List<String> getResults(List<WorkPiece> workPieces)
-  {
-    // chwilowo...
-    result.clear();
-
-    for (var work : workPieces) 
-    {
-      StringBuilder temp = new StringBuilder();
-      temp.append("Dlugość 1000: |  ");
-
-      for(int i=0; i<work.cuts.size(); ++i)
-      {
-        temp.append(work.cuts.get(i).toString() + "  |  ");
-      }
-
-      temp.append(" - odpad: " + work.freeSpace());
-      
-      result.add(temp.toString());
-    }
-
-    return result;
-  }
 
 // TODO: uciac wyswietlanie powtarzajacych sie barow
   public List<ResultBar> getResultsBars(List<WorkPiece> workPieces)

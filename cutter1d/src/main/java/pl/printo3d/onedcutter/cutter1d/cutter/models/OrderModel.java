@@ -11,6 +11,11 @@ public class OrderModel {
 
   public String usernameOrder;
 
+  public boolean optionStackResult;
+
+  public Double optionSzrank;
+
+
   public void clearOrder()
   {
     cutList.clear();
