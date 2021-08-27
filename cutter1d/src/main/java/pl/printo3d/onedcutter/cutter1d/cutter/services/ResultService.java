@@ -80,6 +80,7 @@ public class ResultService {
       remainBars.add(new ResultBar( new ArrayList<ResultBarPieceModel>(resultBar.resultBarPieces)  ));
       resultBar.clear();
     }
+    setResultRemainingPieces(remainBars);
 
     return remainBars;
   }

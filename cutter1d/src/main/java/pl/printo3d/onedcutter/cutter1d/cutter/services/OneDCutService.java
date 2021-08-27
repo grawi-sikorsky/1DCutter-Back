@@ -80,54 +80,58 @@ public class OneDCutService {
     
     for (Double part : partsList)
     {
+      // 1. CHWYC NOWA CZESC
       System.out.println("Next part is: " + part);
+
+      // 2. JESLI NA OBECNYM SUROWCU NIE MA WOLNEGO MIEJSCA NA TE CZESC?
       if(!workPiecesList.stream().anyMatch(work->work.freeSpace() >= part))
       {
-        System.out.println("avail stocks: "+stockList.size());
-        System.out.println("stock type pcs: "+stockList.get(tempStockIterator).getStockPcs());
-        System.out.println("stock type counter: "+tempStockCounter);
-        System.out.println("stock iterator: "+tempStockIterator);
-
+        // 3. JESLI DOSTEPNA JEST JESZCZE JEDNA SZTUKA SUROWCA DANEGO TYPU/DLUGOSCI
         if( tempStockCounter < Integer.parseInt(stockList.get(tempStockIterator).getStockPcs()) )
         {
+          // 4. DODAJ SUROWIEC DANEGO TYPU
           workPiecesList.add(new WorkPiece(Double.valueOf(stockList.get(tempStockIterator).getStockLength())));
           System.out.println("No free space left, adding new stock piece: " + stockList.get(tempStockIterator).getStockLength());
           tempStockCounter++;
         }
-        else
+        else // 5. JESLI BRAKUJE SUROWCA DANEGO TYPU:
         {
-          System.out.println("NOT ENOF STOK TYPE! CHECKING ODER..");
+          // 6. JESTLI SA DOSTEPNE INNE TYPY/DLUGOSCI SUROWCA:
           if(tempStockIterator < stockList.size()-1)
           {
             tempStockIterator++;
             tempStockCounter=0;
+            // 7. DODAJ SUROWIEC NOWEGO TYPU / ZERUJ LICZNIKI
+            workPiecesList.add(new WorkPiece(Double.valueOf(stockList.get(tempStockIterator).getStockLength())));
+            System.out.println("No free space left, adding new stock piece: " + stockList.get(tempStockIterator).getStockLength());
+            tempStockCounter++;
           }
           else
           {
+            // BRAK SUROWCA
             System.out.println("NOT ENOF STOCK AT ALL!");
-            partsDone.forEach(e->partsRemaining.remove(e));
-            System.out.println("POZOSTALE CZESCI:");
-            partsRemaining.forEach(e->System.out.println(e));
-            System.out.println("--------------------------------");
-            resultService.getRemainBars(partsRemaining);
-            //resultService.setResultRemainingPieces(partsRemaining);
-            break;
           }
         }
       }
 
+      // 8. PRZESZUKAJ LISTE UZYWANYCH SUROWCOW W POSZUKIWANIU MIEJSCA NA NOWA CZESC
       for(var work : workPiecesList)
       {
         if(work.freeSpace() >= part)
         {
           work.cut(part);
-          System.out.println("Cutting nju pis: " + part);
+          //System.out.println("Cutting nju pis: " + part);
           partsDone.add(part);
           break; // koniecznie wyskoczyc z loopa!
         }
       }
-
     }
+    // 9. STWORZ LISTE CZESCI KTORE NIE ZMIESCILY SIE NA ZADNYM SUROWCU:
+    partsDone.forEach(e->partsRemaining.remove(e));
+
+    // 10. PRZEKAZUJEMY LISTE<DOUBLE> do uslugi ktora tworzy, zapisuje i zwraca bary
+    resultService.getRemainBars(partsRemaining);
+
     return workPiecesList;
   }
   
