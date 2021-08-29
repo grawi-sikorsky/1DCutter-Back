@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import pl.printo3d.onedcutter.cutter1d.cutter.models.OrderModel;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.ResultModel;
+import pl.printo3d.onedcutter.cutter1d.cutter.models.CutOptions;
 import pl.printo3d.onedcutter.cutter1d.cutter.services.OneDCutService;
 import pl.printo3d.onedcutter.cutter1d.cutter.services.OrderService;
 import pl.printo3d.onedcutter.cutter1d.cutter.services.ResultService;
@@ -48,6 +49,13 @@ public class OneDCutterController {
   {
     orderService.makeOrderFree(orderModel);
     return orderService.returnOrder(orderModel);
+  }
+  @PostMapping("/setoptions")
+  public CutOptions setOptions(@RequestBody CutOptions cutOptions)
+  {
+    System.out.println(cutOptions.optionStackResult);
+    System.out.println(cutOptions.optionSzrank);
+    return cutOptions;
   }
 
   @GetMapping("/cut") // not used?

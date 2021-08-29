@@ -46,6 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     .antMatchers("/1dcut").permitAll()
     .antMatchers("/cut").permitAll()
     .antMatchers("/cutfree").permitAll()
+    .antMatchers("/setoptions").permitAll()
     .antMatchers("/result").permitAll()
     .antMatchers("/profile").permitAll()
     .antMatchers("/test").permitAll()
