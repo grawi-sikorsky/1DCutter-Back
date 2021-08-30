@@ -48,7 +48,7 @@ public class ResultService {
     // 3 ZROZUMIEC ZE TO WSZYSTKO NIE MA SENSU...
 
     workPieces.stream()
-        .filter(i -> Collections.frequency(workPieces.gety, i) > 1)
+        .filter(i -> Collections.frequency(workPieces, i) > 1)
         //Collect elements to a Set and print out the values 
         .collect(Collectors.toSet())
         .forEach(System.out::println);
