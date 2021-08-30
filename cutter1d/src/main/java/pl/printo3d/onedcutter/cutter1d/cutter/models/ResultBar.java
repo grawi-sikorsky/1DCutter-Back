@@ -5,6 +5,7 @@ import java.util.List;
 public class ResultBar {
 
   public List<ResultBarPieceModel> resultBarPieces = new ArrayList<ResultBarPieceModel>();
+  public Integer stackCount = 0;
 
   public ResultBar() {
   }
@@ -18,7 +19,6 @@ public class ResultBar {
   {
     resultBarPieces.add(pieceToAdd);
   }
-
   public void clear()
   {
     resultBarPieces.clear();
@@ -28,11 +28,14 @@ public class ResultBar {
   public List<ResultBarPieceModel> getResultBarPieces() {
     return resultBarPieces;
   }
-
-
   public void setResultBarPieces(List<ResultBarPieceModel> resultBarPieces) {
     this.resultBarPieces = resultBarPieces;
   }
 
-  
+  public Integer getStackCount() {
+    return stackCount;
+  }
+  public void setStackCount(Integer stackCount) {
+    this.stackCount = stackCount;
+  }  
 }

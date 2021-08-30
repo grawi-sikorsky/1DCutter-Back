@@ -1,6 +1,11 @@
 ﻿package pl.printo3d.onedcutter.cutter1d.cutter.services;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,8 +34,26 @@ public class ResultService {
 // TODO: uciac wyswietlanie powtarzajacych sie barow
   public List<ResultBar> getResultsBars(List<WorkPiece> workPieces)
   {
+    List<ResultBar> arej2 = new ArrayList<ResultBar>();
+    List<Double> compArray = new ArrayList<Double>();
+    Integer count=0;
+
     List<ResultBar> resultBars = new ArrayList<ResultBar>();
     resultBars.clear();
+    //compArray.clear();
+
+    // POMYSL:
+    // 1 STREAM JAKOSC ZROBIC I USUNAC WSZYSTKIE DUPLIKATY
+    // 2 POTEM ITEROWAC NOWO POWSTALA TABLICA I SPRAWDZIC CZY W PIERWODNEJ WYSTEPUJA TAKIE ELEMENTY I W JAKIEJ ILOSCI.
+    // 3 ZROZUMIEC ZE TO WSZYSTKO NIE MA SENSU...
+
+    workPieces.stream()
+        .filter(i -> Collections.frequency(workPieces.gety, i) > 1)
+        //Collect elements to a Set and print out the values 
+        .collect(Collectors.toSet())
+        .forEach(System.out::println);
+
+  
 
     for (WorkPiece wp : workPieces)
     {
@@ -39,10 +62,19 @@ public class ResultService {
         resultBar.addPiece(new ResultBarPieceModel((String.valueOf(  (wp.cuts.get(i) / wp.getStockLenght()) * 100)), String.valueOf(wp.cuts.get(i))));
       }
       resultBars.add(new ResultBar( new ArrayList<ResultBarPieceModel>(resultBar.resultBarPieces)  ));
+      arej2.add( new ResultBar( new ArrayList<ResultBarPieceModel>(resultBar.resultBarPieces) ));
       resultBar.clear();
     }
-
+    
+    // liczymy duplikaty:
+    System.out.println("DUPLIKATY: ");
+    System.out.println(count);
     return resultBars;
+  }
+  public boolean compare()
+  {
+    
+    return true;
   }
 
   public List<ResultBar> getRemainBars(List<Double> remainPcs)
