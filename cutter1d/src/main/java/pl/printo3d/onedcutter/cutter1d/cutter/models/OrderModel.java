@@ -20,15 +20,14 @@ public class OrderModel {
   Long id;
 
   @OneToMany(cascade = CascadeType.ALL)
-  @JoinColumn(name = "cutList", referencedColumnName = "id" )
+  @JoinColumn(name = "order_id", referencedColumnName = "id", insertable = true, updatable = true)
   public List<CutModel> cutList = new ArrayList<CutModel>();
 
-  @OneToMany(cascade = CascadeType.ALL)
-  //@JoinColumn(name = "stockList", referencedColumnName = "id" )
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "orderModel")
   public List<StockModel> stockList = new ArrayList<StockModel>();
   
   @OneToOne(cascade = {CascadeType.ALL})
-  @JoinColumn(name = "cutOptions", referencedColumnName = "id", unique = true, insertable = true, updatable = true)
+  @JoinColumn(name = "cutOptions_id", referencedColumnName = "id", unique = true, insertable = true, updatable = true)
   public CutOptions cutOptions;
   
   public String usernameOrder;
