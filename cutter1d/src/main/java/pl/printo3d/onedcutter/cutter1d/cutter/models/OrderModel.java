@@ -20,7 +20,7 @@ public class OrderModel {
   Long id;
 
   @OneToMany(cascade = CascadeType.ALL)
-  //@JoinColumn(name = "cutList", referencedColumnName = "id" )
+  @JoinColumn(name = "cutList", referencedColumnName = "id" )
   public List<CutModel> cutList = new ArrayList<CutModel>();
 
   @OneToMany(cascade = CascadeType.ALL)
