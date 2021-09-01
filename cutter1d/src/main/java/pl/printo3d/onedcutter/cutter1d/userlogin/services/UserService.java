@@ -12,6 +12,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import pl.printo3d.onedcutter.cutter1d.cutter.models.CutModel;
+import pl.printo3d.onedcutter.cutter1d.cutter.models.CutOptions;
+import pl.printo3d.onedcutter.cutter1d.cutter.models.OrderModel;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.StockModel;
 import pl.printo3d.onedcutter.cutter1d.userlogin.models.UserModel;
 import pl.printo3d.onedcutter.cutter1d.userlogin.repo.UserRepo;
@@ -43,8 +45,11 @@ public class UserService implements UserDetailsService
       if( !uRepo.existsByUsername(userModel.getUsername()))
       {
         //1 domyslne formatki
-        userModel.setCutList(Arrays.asList(new CutModel("220", "5"), new CutModel("260", "5") ) );
-        userModel.setStockList(Arrays.asList(new StockModel("1000", "6"), new StockModel("1000", "5") ) );
+        OrderModel ord = new OrderModel();
+        ord.setCutList(Arrays.asList(new CutModel("220", "5"), new CutModel("260", "5") ) );
+        ord.setStockList(Arrays.asList(new StockModel("1000", "6"), new StockModel("1000", "5") ) );
+        ord.setCutOptions(new CutOptions(false, 0d));
+        userModel.setOrderModel(ord);
 
         userModel.setRole("VIP"); // role dynamicznie pasuje ustawiac.
         userModel.setPassword(pEncoder.encode(userModel.getPassword()));

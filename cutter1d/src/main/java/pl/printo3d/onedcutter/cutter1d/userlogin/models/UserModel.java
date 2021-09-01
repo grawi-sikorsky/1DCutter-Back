@@ -1,9 +1,7 @@
 ﻿package pl.printo3d.onedcutter.cutter1d.userlogin.models;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,14 +9,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import pl.printo3d.onedcutter.cutter1d.cutter.models.CutModel;
-import pl.printo3d.onedcutter.cutter1d.cutter.models.StockModel;
+import pl.printo3d.onedcutter.cutter1d.cutter.models.OrderModel;
 
 @Entity
 public class UserModel implements UserDetails {
@@ -36,12 +34,21 @@ public class UserModel implements UserDetails {
   String website;
 
 
-  @OneToMany(cascade = CascadeType.ALL)
-  public List<CutModel> cutList = null; //new ArrayList<CutModel>();
+  // @OneToMany(cascade = CascadeType.ALL)
+  // public List<CutModel> cutList = null; //new ArrayList<CutModel>();
 
-  @OneToMany(cascade = CascadeType.ALL)
-  public List<StockModel> stockList = null; //new ArrayList<StockModel>();
+  // @OneToMany(cascade = CascadeType.ALL)
+  // public List<StockModel> stockList = null; //new ArrayList<StockModel>();
 
+  // @OneToOne(cascade = {CascadeType.ALL})
+  // @JoinColumn(name = "cutOptions", referencedColumnName = "id", unique = true, insertable = true, updatable = true)
+  // public CutOptions cutOptions = null;
+
+  @OneToOne(cascade = {CascadeType.ALL})
+  @JoinColumn(name = "orderModel", referencedColumnName = "id" )
+  OrderModel orderModel;
+
+  
   public UserModel(){}
 
   public UserModel(String username, String password, String email) {
@@ -153,34 +160,12 @@ public class UserModel implements UserDetails {
     this.website = website;
   }
 
-  public List<CutModel> getCutList() {
-    return cutList;
+  public OrderModel getOrderModel() {
+    return orderModel;
   }
 
-  public void setCutList(List<CutModel> cutList) {
-    //this.cutList = cutList;
-
-    if (this.cutList == null) 
-    {
-      this.cutList = cutList;
-    } 
-    else if(this.cutList != cutList) 
-    {
-      //cutList.forEach(action);
-      this.cutList.clear();
-      if(cutList != null)
-      {
-        this.cutList.addAll(cutList);
-      }
-    }
-  }
-
-  public List<StockModel> getStockList() {
-    return stockList;
-  }
-
-  public void setStockList(List<StockModel> stockList) {
-    this.stockList = stockList;
+  public void setOrderModel(OrderModel orderModel) {
+    this.orderModel = orderModel;
   }
   
   

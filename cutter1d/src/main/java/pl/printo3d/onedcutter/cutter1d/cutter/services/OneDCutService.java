@@ -5,12 +5,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import javax.naming.spi.DirStateFactory.Result;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pl.printo3d.onedcutter.cutter1d.cutter.models.CutModel;
+import pl.printo3d.onedcutter.cutter1d.cutter.models.OrderModel;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.StockModel;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.WorkPiece;
 
@@ -66,7 +65,7 @@ public class OneDCutService {
   }
   
   // 1. Pierwsza metoda rozwiazania problemu 
-  public List<WorkPiece> firstFit(/* List<String> parts, List<String> stockPcs, List<String> stockLen */)
+  public List<WorkPiece> firstFit(OrderModel order)
   {
     // rewers..
     sortReverse();

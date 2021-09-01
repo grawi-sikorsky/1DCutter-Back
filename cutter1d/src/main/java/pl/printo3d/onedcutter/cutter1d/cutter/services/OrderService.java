@@ -66,8 +66,12 @@ public class OrderService {
 
     UserModel um;
     um = (UserModel)userService.loadUserByUsername(orderModel.usernameOrder);
-    um.setCutList(orderModel.cutList);
-    um.setStockList(orderModel.stockList);
+
+    um.getOrderModel().setCutList(orderModel.cutList);
+    um.getOrderModel().setStockList(orderModel.stockList);
+
+    orderModel.cutOptions.setId(um.getOrderModel().getCutOptions().getId());// ID odczytaj i przypisz, bo w orderModel jeszcze nie ma..
+    um.getOrderModel().setCutOptions(orderModel.cutOptions);
 
     // TODO w bazie trzeba ogarnac automatyczne id!!
     userService.updateUser(um);
@@ -78,7 +82,7 @@ public class OrderService {
     //cutService.firstFit();
     cutService.cutList = orderModel.cutList;
     cutService.stockList = orderModel.stockList;
-    cutService.firstFit();
+    cutService.firstFit(orderModel);
     //this.returnOrder(orderModel);??
 
     return resultService.makeFullResults();
@@ -94,7 +98,7 @@ public class OrderService {
     orderList.clearOrder();
     cutService.cutList = orderModel.cutList;
     cutService.stockList = orderModel.stockList;
-    cutService.firstFit();
+    cutService.firstFit(orderModel);
     //this.returnOrder(orderModel); //?
 
     return resultService.makeFullResults();
