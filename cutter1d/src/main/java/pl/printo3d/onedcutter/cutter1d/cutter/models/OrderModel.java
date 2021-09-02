@@ -19,11 +19,12 @@ public class OrderModel {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   Long id;
 
-  @OneToMany(cascade = CascadeType.ALL)
+  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
   @JoinColumn(name = "order_id", referencedColumnName = "id", insertable = true, updatable = true)
   public List<CutModel> cutList = new ArrayList<CutModel>();
 
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "orderModel")
+  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+  @JoinColumn(name = "order_id", referencedColumnName = "id", insertable = true, updatable = true)
   public List<StockModel> stockList = new ArrayList<StockModel>();
   
   @OneToOne(cascade = {CascadeType.ALL})
@@ -31,10 +32,6 @@ public class OrderModel {
   public CutOptions cutOptions;
   
   public String usernameOrder;
-
-  public boolean optionStackResult;
-  public Double optionSzrank;
-
 
   public void clearOrder()
   {

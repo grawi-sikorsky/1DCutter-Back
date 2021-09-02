@@ -16,12 +16,7 @@ import pl.printo3d.onedcutter.cutter1d.cutter.models.WorkPiece;
 @Service
 public class OneDCutService {
 
-  public OneDCutService() {
-    cutList.add(new CutModel("260", "5"));
-    cutList.add(new CutModel("135", "8"));
-    cutList.add(new CutModel("750", "2"));
-    stockList.add(new StockModel("2000", "5"));
-  }
+  public OneDCutService() {  }
 
   @Autowired
   ResultService resultService;
@@ -35,9 +30,7 @@ public class OneDCutService {
   // Lista zawierajace klucze (dlugosci) i wartosci (ilosc) formatek do ciecia
   public List<CutModel> cutList = new ArrayList<CutModel>();
 
-  public List<Double> partsList = new ArrayList<Double>(Arrays.asList(
-    320.0,350.0,370.0,320.0,350.0,370.0,320.0,350.0,370.0,320.0,350.0,370.0,
-    320.0,350.0,370.0,320.0,350.0,370.0,260.0, 310.0));
+  public List<Double> partsList = new ArrayList<Double>();
 
 
   // Tworzy liste elementow do ciecia na podstawie wpisanych danych

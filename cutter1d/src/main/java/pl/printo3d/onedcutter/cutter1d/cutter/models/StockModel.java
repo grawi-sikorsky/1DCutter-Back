@@ -4,7 +4,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 /**
@@ -22,7 +21,7 @@ public class StockModel {
   String name;
 
   @ManyToOne
-  @JoinColumn(name = "orderModel", referencedColumnName = "id" )
+  //@JoinColumn(name = "orderModel", referencedColumnName = "id" )
   OrderModel orderModel;
 
   public StockModel() {}

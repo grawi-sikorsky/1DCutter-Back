@@ -64,26 +64,32 @@ public class OrderService {
     orderModel.stockList.forEach(e->System.out.println(e.getStockLength() + " " + e.getStockPcs()));
     orderModel.cutList.forEach(e->System.out.println(e.getCutLength() + " " + e.getCutPcs()));
 
+    /** ZAPIS DO BAZY */
     UserModel um;
     um = (UserModel)userService.loadUserByUsername(orderModel.usernameOrder);
 
-    um.getOrderModel().setCutList(orderModel.cutList);
-    um.getOrderModel().setStockList(orderModel.stockList);
+    //um.getOrderModel().setCutList(orderModel.cutList);
+    // najpierw czyscimy liste, aby w DB pozbyc sie osieroconych wpisow
+    // dlatego getcutlist.addAdd! zamiast setCutlist.add!
+    um.getOrderModel().getCutList().clear();
+    um.getOrderModel().getCutList().addAll(orderModel.cutList);
+
+    //um.getOrderModel().setStockList(orderModel.stockList);
+    um.getOrderModel().getStockList().clear();
+    um.getOrderModel().getStockList().addAll(orderModel.stockList);
 
     orderModel.cutOptions.setId(um.getOrderModel().getCutOptions().getId());// ID odczytaj i przypisz, bo w orderModel jeszcze nie ma..
     um.getOrderModel().setCutOptions(orderModel.cutOptions);
 
-    // TODO w bazie trzeba ogarnac automatyczne id!!
     userService.updateUser(um);
+    /** END ZAPIS DO BAZY */
 
     orderList.clearOrder();
 
-    //cutService.cutList = orderList.cutList;
-    //cutService.firstFit();
     cutService.cutList = orderModel.cutList;
     cutService.stockList = orderModel.stockList;
     cutService.firstFit(orderModel);
-    //this.returnOrder(orderModel);??
+
 
     return resultService.makeFullResults();
   }
