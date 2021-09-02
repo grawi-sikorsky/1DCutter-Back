@@ -84,7 +84,7 @@ public class ResultService {
     Double resultUsed=0.0;
     Double resultWasteProcent=0.0;
 
-    for (var workpc : workPieces) 
+    for (WorkPiece workpc : workPieces) 
     {
       resultUsed += workpc.getStockLenght();
       resultWaste += workpc.freeSpace();

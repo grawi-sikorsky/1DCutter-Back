@@ -107,7 +107,7 @@ public class OneDCutService {
       }
 
       // 8. PRZESZUKAJ LISTE UZYWANYCH SUROWCOW W POSZUKIWANIU MIEJSCA NA NOWA CZESC
-      for(var work : workPiecesList)
+      for(WorkPiece work : workPiecesList)
       {
         if(work.freeSpace() >= part)
         {
