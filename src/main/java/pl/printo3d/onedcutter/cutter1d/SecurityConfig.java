@@ -1,4 +1,4 @@
-﻿package pl.printo3d.onedcutter.cutter1d;
+package pl.printo3d.onedcutter.cutter1d;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-﻿package pl.printo3d.onedcutter.cutter1d.cutter.models;
+package pl.printo3d.onedcutter.cutter1d.cutter.models;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

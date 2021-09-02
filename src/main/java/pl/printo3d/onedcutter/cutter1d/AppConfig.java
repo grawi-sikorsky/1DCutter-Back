@@ -1,4 +1,4 @@
-﻿
+
 package pl.printo3d.onedcutter.cutter1d;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;

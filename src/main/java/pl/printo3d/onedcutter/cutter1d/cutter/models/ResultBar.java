@@ -1,4 +1,4 @@
-﻿package pl.printo3d.onedcutter.cutter1d.cutter.models;
+package pl.printo3d.onedcutter.cutter1d.cutter.models;
 import java.util.ArrayList;
 import java.util.List;
 
