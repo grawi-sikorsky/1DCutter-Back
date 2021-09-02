@@ -10,11 +10,11 @@
 	</parent>
 	<groupId>pl.printo3d.onedcutter</groupId>
 	<artifactId>cutter1d</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<name>cutter1d</name>
-	<description>Demo project for Spring Boot</description>
+	<description>One dimmension cutting optimizer</description>
 	<properties>
-		<java.version>11.0.12</java.version>
+		<java.version>11</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
