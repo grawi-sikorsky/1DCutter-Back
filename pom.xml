@@ -14,7 +14,7 @@
 	<name>cutter1d</name>
 	<description>One dimmension cutting optimizer</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.runtime.version>11</java.runtime.version>
 	</properties>
 	<dependencies>
 		<dependency>
