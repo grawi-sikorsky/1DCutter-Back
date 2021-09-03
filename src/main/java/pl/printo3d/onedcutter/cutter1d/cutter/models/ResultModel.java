@@ -11,6 +11,7 @@ public class ResultModel {
   private Double resultUsed=0.0;
   private Double resultWasteProcent=0.0;
   private Double resultUsedProcent=0.0;
+  private Integer resultCutCount=0;
   private Map<Double,Integer> resultNeededStock = new HashMap<Double,Integer>();
 
   private List<ResultBar> resultBars = new ArrayList<ResultBar>();
@@ -71,6 +72,12 @@ public class ResultModel {
   }
   public void setRemainBars(List<ResultBar> remainBars) {
     this.remainBars = remainBars;
+  }
+  public Integer getResultCutCount() {
+    return resultCutCount;
+  }
+  public void setResultCutCount(Integer resultCutCount) {
+    this.resultCutCount = resultCutCount;
   }
   
 }

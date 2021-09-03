@@ -1,13 +1,8 @@
-package pl.printo3d.onedcutter.cutter1d.cutter.services;
+﻿package pl.printo3d.onedcutter.cutter1d.cutter.services;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,7 +55,6 @@ public class ResultService {
   
   public boolean compare()
   {
-    
     return true;
   }
 
@@ -112,6 +106,9 @@ public class ResultService {
     }
     return resultNeededStock;
   }
+  
+
+
   public void setResultRemainingPieces(List<ResultBar> remain)
   {
     fullResults.setResultRemainingPieces(remain);
@@ -119,6 +116,7 @@ public class ResultService {
 
   public ResultModel makeFullResults()
   {
+    fullResults.setResultCutCount(this.cutService.workPiecesList.size());
     fullResults.setResultNeededStock(this.calculateNeededStock(this.cutService.workPiecesList));
     fullResults.setResultBars(this.getResultsBars(this.cutService.workPiecesList));
     fullResults.setResultWaste(this.calculateWaste(this.cutService.workPiecesList));
