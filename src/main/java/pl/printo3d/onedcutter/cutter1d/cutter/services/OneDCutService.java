@@ -84,7 +84,7 @@ public class OneDCutService {
           // 4. DODAJ SUROWIEC DANEGO TYPU
           workPiecesList.add(new WorkPiece(Double.valueOf(stockList.get(tempStockIterator).getStockLength())));
           System.out.println("No free space left, adding new stock piece: " + stockList.get(tempStockIterator).getStockLength());
-          tempStockCounter++;
+          tempStockCounter++;          
         }
         else // 5. JESLI BRAKUJE SUROWCA DANEGO TYPU:
         {

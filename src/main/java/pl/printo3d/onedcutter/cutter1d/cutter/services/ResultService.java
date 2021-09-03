@@ -2,8 +2,10 @@ package pl.printo3d.onedcutter.cutter1d.cutter.services;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -48,7 +50,8 @@ public class ResultService {
       {
         resultBar.addPiece(new ResultBarPieceModel((String.valueOf(  (wp.cuts.get(i) / wp.getStockLenght()) * 100)), String.valueOf(wp.cuts.get(i))));
       }
-      resultBars.add(new ResultBar( new ArrayList<ResultBarPieceModel>(resultBar.resultBarPieces)  ));
+      //resultBar.onStockLength = wp.getStockLenght();
+      resultBars.add(new ResultBar( new ArrayList<ResultBarPieceModel>(resultBar.resultBarPieces), wp.getStockLenght()  ));
       resultBar.clear();
     }
 
@@ -96,6 +99,19 @@ public class ResultService {
 
     return resultWasteProcent;
   }
+  public Map<Double,Integer> calculateNeededStock(List<WorkPiece> workPieces)
+  {
+    Map<Double,Integer> resultNeededStock = new HashMap<Double,Integer>();
+    resultNeededStock.clear();
+    for (WorkPiece workpc : workPieces) 
+    {
+      if (resultNeededStock.get(workpc.getStockLenght()) == null)
+      {
+        resultNeededStock.put(workpc.getStockLenght(), 1); // initial
+      }else resultNeededStock.put(workpc.getStockLenght(), resultNeededStock.get(workpc.getStockLenght())+1);
+    }
+    return resultNeededStock;
+  }
   public void setResultRemainingPieces(List<ResultBar> remain)
   {
     fullResults.setResultRemainingPieces(remain);
@@ -103,6 +119,7 @@ public class ResultService {
 
   public ResultModel makeFullResults()
   {
+    fullResults.setResultNeededStock(this.calculateNeededStock(this.cutService.workPiecesList));
     fullResults.setResultBars(this.getResultsBars(this.cutService.workPiecesList));
     fullResults.setResultWaste(this.calculateWaste(this.cutService.workPiecesList));
 
