@@ -76,7 +76,7 @@ public class OneDCutService {
       System.out.println("Next part is: " + part);
 
       // 2. JESLI NA OBECNYM SUROWCU NIE MA WOLNEGO MIEJSCA NA TE CZESC?
-      if(!workPiecesList.stream().anyMatch(work->work.freeSpace() >= part))
+      if(!workPiecesList.stream().anyMatch(work->work.freeSpace(order.cutOptions.optionSzrank) >= part))
       {
         // 3. JESLI DOSTEPNA JEST JESZCZE JEDNA SZTUKA SUROWCA DANEGO TYPU/DLUGOSCI
         if( tempStockCounter < Integer.parseInt(stockList.get(tempStockIterator).getStockPcs()) )
@@ -109,7 +109,7 @@ public class OneDCutService {
       // 8. PRZESZUKAJ LISTE UZYWANYCH SUROWCOW W POSZUKIWANIU MIEJSCA NA NOWA CZESC
       for(WorkPiece work : workPiecesList)
       {
-        if(work.freeSpace() >= part)
+        if(work.freeSpace(order.cutOptions.optionSzrank) >= part)
         {
           work.cut(part);
           //System.out.println("Cutting nju pis: " + part);

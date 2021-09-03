@@ -87,7 +87,7 @@ public class ResultService {
     for (WorkPiece workpc : workPieces) 
     {
       resultUsed += workpc.getStockLenght();
-      resultWaste += workpc.freeSpace();
+      resultWaste += workpc.freeSpace(0.0);
     }
     resultWasteProcent = (resultWaste / resultUsed) * 100.0;
     fullResults.setResultUsed(resultUsed);
