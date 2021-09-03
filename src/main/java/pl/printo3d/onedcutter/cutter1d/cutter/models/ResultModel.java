@@ -1,7 +1,9 @@
-﻿package pl.printo3d.onedcutter.cutter1d.cutter.models;
+package pl.printo3d.onedcutter.cutter1d.cutter.models;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ResultModel {
 
@@ -9,7 +11,7 @@ public class ResultModel {
   private Double resultUsed=0.0;
   private Double resultWasteProcent=0.0;
   private Double resultUsedProcent=0.0;
-  private Double resultNeededStock=0.0;
+  private Map<Double,Integer> resultNeededStock = new HashMap<Double,Integer>();
 
   private List<ResultBar> resultBars = new ArrayList<ResultBar>();
   private List<ResultBar> remainBars = new ArrayList<ResultBar>();          // TODO wtf? 2x to samo
@@ -40,10 +42,10 @@ public class ResultModel {
   public void setResultWasteProcent(Double resultWasteProcent) {
     this.resultWasteProcent = resultWasteProcent;
   }
-  public Double getResultNeededStock() {
+  public Map<Double, Integer> getResultNeededStock() {
     return resultNeededStock;
   }
-  public void setResultNeededStock(Double resultNeededStock) {
+  public void setResultNeededStock(Map<Double, Integer> resultNeededStock) {
     this.resultNeededStock = resultNeededStock;
   }
   public Double getResultWaste() {

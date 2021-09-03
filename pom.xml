@@ -10,13 +10,18 @@
 	</parent>
 	<groupId>pl.printo3d.onedcutter</groupId>
 	<artifactId>cutter1d</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<name>cutter1d</name>
-	<description>Demo project for Spring Boot</description>
+	<description>One dimmension cutting optimizer</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.runtime.version>11</java.runtime.version>
 	</properties>
 	<dependencies>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.2.16</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>

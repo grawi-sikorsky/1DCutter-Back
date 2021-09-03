@@ -1,4 +1,4 @@
-﻿package pl.printo3d.onedcutter.cutter1d.userlogin.models;
+package pl.printo3d.onedcutter.cutter1d.userlogin.models;
 
 import java.util.Collection;
 import java.util.Collections;

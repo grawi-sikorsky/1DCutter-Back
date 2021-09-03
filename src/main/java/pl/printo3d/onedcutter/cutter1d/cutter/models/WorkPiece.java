@@ -1,4 +1,4 @@
-﻿package pl.printo3d.onedcutter.cutter1d.cutter.models;
+package pl.printo3d.onedcutter.cutter1d.cutter.models;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,14 +21,16 @@ public class WorkPiece {
     stockLenght = lenght;
   }
 
-  public Double freeSpace()
+  public Double freeSpace(Double saw_thick)
   {
-    Double cutsum=0.0;
+    Double cut_sum=0.0;
+    Double saw_sum=0.0;
     for (int i=0; i<cuts.size(); ++i)
     {
-      cutsum += cuts.get(i);
+      cut_sum += cuts.get(i);
+      saw_sum += saw_thick;
     }
-    return stockLenght - cutsum;
+    return stockLenght - cut_sum - saw_sum;
   }
 
   public void cut(Double cutLenght)
