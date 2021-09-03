@@ -44,8 +44,8 @@ public class OrderService {
     orderList.cutList.add(new CutModel("175", "4"));
     orderList.cutList.add(new CutModel("420", "5"));
     orderList.cutList.add(new CutModel("220", "3"));
-    orderList.stockList.add(new StockModel("1000", "4"));
-    orderList.stockList.add(new StockModel("1001", "6"));
+    orderList.stockList.add(new StockModel("1000", "4", "0"));
+    orderList.stockList.add(new StockModel("1001", "6", "0"));
     
     return orderList;
   }
@@ -61,7 +61,7 @@ public class OrderService {
   {
     System.out.println("Make Order in Java");
 
-    orderModel.stockList.forEach(e->System.out.println(e.getStockLength() + " " + e.getStockPcs()));
+    orderModel.stockList.forEach(e->System.out.println(e.getStockLength() + " " + e.getStockPcs() + " " + e.getStockPrice() + " $" ));
     orderModel.cutList.forEach(e->System.out.println(e.getCutLength() + " " + e.getCutPcs()));
 
     /** ZAPIS DO BAZY */
@@ -98,7 +98,7 @@ public class OrderService {
   {
     System.out.println("Make FREE Order in Java");
 
-    orderModel.stockList.forEach(e->System.out.println(e.getStockLength() + " " + e.getStockPcs()));
+    orderModel.stockList.forEach(e->System.out.println(e.getStockLength() + " " + e.getStockPcs() + " " + e.getStockPrice() + " $" ));
     orderModel.cutList.forEach(e->System.out.println(e.getCutLength() + " " + e.getCutPcs()));
 
     orderList.clearOrder();

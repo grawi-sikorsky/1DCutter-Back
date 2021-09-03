@@ -18,17 +18,16 @@ public class ResultService {
   @Autowired
   private OneDCutService cutService;
 
-  ResultModel fullResults = new ResultModel();
+  private ResultModel fullResults = new ResultModel();
 
   private ResultBar resultBar = new ResultBar();
 
-  public ResultService()
-  {
-
-  }
+  public ResultService(){}
   
 
-// TODO: uciac wyswietlanie powtarzajacych sie barow
+  // TODO !!! CALA USLUGA DO PRZEROBIENIA ! 4/5 metod iteruje po "List<WorkPiece>"!
+  // TODO DO ZEBRANIA W JEDNA METODE!
+
   public List<ResultBar> getResultsBars(List<WorkPiece> workPieces)
   {
     List<ResultBar> resultBars = new ArrayList<ResultBar>();
@@ -45,17 +44,10 @@ public class ResultService {
       {
         resultBar.addPiece(new ResultBarPieceModel((String.valueOf(  (wp.cuts.get(i) / wp.getStockLenght()) * 100)), String.valueOf(wp.cuts.get(i))));
       }
-      //resultBar.onStockLength = wp.getStockLenght();
       resultBars.add(new ResultBar( new ArrayList<ResultBarPieceModel>(resultBar.resultBarPieces), wp.getStockLenght()  ));
       resultBar.clear();
     }
-
     return resultBars;
-  }
-  
-  public boolean compare()
-  {
-    return true;
   }
 
   public List<ResultBar> getRemainBars(List<Double> remainPcs)
@@ -93,6 +85,7 @@ public class ResultService {
 
     return resultWasteProcent;
   }
+
   public Map<Double,Integer> calculateNeededStock(List<WorkPiece> workPieces)
   {
     Map<Double,Integer> resultNeededStock = new HashMap<Double,Integer>();
@@ -106,13 +99,17 @@ public class ResultService {
     }
     return resultNeededStock;
   }
+
+  public void calculatePrice(List<WorkPiece> workPieces)
+  {
+    for (WorkPiece workpc : workPieces)
+    {
+      
+    }
+    
+  }
   
 
-
-  public void setResultRemainingPieces(List<ResultBar> remain)
-  {
-    fullResults.setResultRemainingPieces(remain);
-  }
 
   public ResultModel makeFullResults()
   {
@@ -124,4 +121,8 @@ public class ResultService {
     return fullResults;
   }
 
+  public void setResultRemainingPieces(List<ResultBar> remain)
+  {
+    fullResults.setResultRemainingPieces(remain);
+  }
 }

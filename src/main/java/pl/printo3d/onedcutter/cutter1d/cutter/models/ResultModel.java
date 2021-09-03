@@ -12,16 +12,16 @@ public class ResultModel {
   private Double resultWasteProcent=0.0;
   private Double resultUsedProcent=0.0;
   private Integer resultCutCount=0;
+  private Double resultCostOveral=0.0;
+  private Double resultCostPrecise=0.0;
   private Map<Double,Integer> resultNeededStock = new HashMap<Double,Integer>();
 
   private List<ResultBar> resultBars = new ArrayList<ResultBar>();
   private List<ResultBar> remainBars = new ArrayList<ResultBar>();          // TODO wtf? 2x to samo
   private List<ResultBar> resultRemainingPieces = new ArrayList<ResultBar>();
 
-  private List<String> result = new ArrayList<String>();
-  private List<ResultBarPieceModel> resultBar = new ArrayList<ResultBarPieceModel>();
-
   public ResultModel(){ }
+
 
 
   
@@ -79,5 +79,18 @@ public class ResultModel {
   public void setResultCutCount(Integer resultCutCount) {
     this.resultCutCount = resultCutCount;
   }
+  public Double getResultCostOveral() {
+    return resultCostOveral;
+  }
+  public void setResultCostOveral(Double resultCostOveral) {
+    this.resultCostOveral = resultCostOveral;
+  }
+  public Double getResultCostPrecise() {
+    return resultCostPrecise;
+  }
+  public void setResultCostPrecise(Double resultCostPrecise) {
+    this.resultCostPrecise = resultCostPrecise;
+  }
+
   
 }

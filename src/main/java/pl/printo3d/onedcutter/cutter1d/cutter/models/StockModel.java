@@ -18,6 +18,7 @@ public class StockModel {
 
   String stockLength;
   String stockPcs;
+  String stockPrice;
   String name;
 
   @ManyToOne
@@ -27,14 +28,16 @@ public class StockModel {
   public StockModel() {}
 
   
-  public StockModel(String stockLength, String stockPcs) {
+  public StockModel(String stockLength, String stockPcs, String stockPrice) {
     this.stockLength = stockLength;
     this.stockPcs = stockPcs;
+    this.stockPrice = stockPrice;
   }
 
-  public StockModel(String stockLength, String stockPcs, String name) {
+  public StockModel(String stockLength, String stockPcs, String stockPrice, String name) {
     this.stockLength = stockLength;
     this.stockPcs = stockPcs;
+    this.stockPrice = stockPrice;
     this.name = name;
   }
 
@@ -62,5 +65,12 @@ public class StockModel {
   public void setOrderModel(OrderModel orderModel) {
     this.orderModel = orderModel;
   }
+  public String getStockPrice() {
+    return stockPrice;
+  }
+  public void setStockPrice(String stockPrice) {
+    this.stockPrice = stockPrice;
+  }
+  
 
 }
