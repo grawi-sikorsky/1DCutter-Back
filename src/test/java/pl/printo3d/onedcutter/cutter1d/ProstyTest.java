@@ -16,18 +16,13 @@ class ProstyTest {
   public void testujemycostam()
   {
     //given
-    OrderService os = new OrderService();
+
     
     //when
-    OrderModel om = os.returnOrder();
+
 
     //then
-    OrderModel tstorder = new OrderModel();
-    tstorder.cutList.add(new CutModel("260", "5"));
-    tstorder.stockList.add(new StockModel("1000", "4", "0"));
-    
 
-    assertEquals(om, tstorder);
   }
 
 }
