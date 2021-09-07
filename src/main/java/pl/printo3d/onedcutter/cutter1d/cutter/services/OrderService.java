@@ -39,13 +39,7 @@ public class OrderService {
     orderList.stockList.clear();
 
     orderList.cutList.add(new CutModel("260", "5"));
-    orderList.cutList.add(new CutModel("135", "8"));
-    orderList.cutList.add(new CutModel("780", "2"));
-    orderList.cutList.add(new CutModel("175", "4"));
-    orderList.cutList.add(new CutModel("420", "5"));
-    orderList.cutList.add(new CutModel("220", "3"));
     orderList.stockList.add(new StockModel("1000", "4", "0"));
-    orderList.stockList.add(new StockModel("1001", "6", "0"));
     
     return orderList;
   }
