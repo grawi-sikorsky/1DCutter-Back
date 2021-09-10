@@ -1,4 +1,4 @@
-package pl.printo3d.onedcutter.cutter1d.cutter.services;
+﻿package pl.printo3d.onedcutter.cutter1d.cutter.services;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -112,7 +112,6 @@ public class OneDCutService {
         if(work.freeSpace(order.cutOptions.optionSzrank) >= part)
         {
           work.cut(part);
-          //System.out.println("Cutting nju pis: " + part);
           partsDone.add(part);
           break; // koniecznie wyskoczyc z loopa!
         }
