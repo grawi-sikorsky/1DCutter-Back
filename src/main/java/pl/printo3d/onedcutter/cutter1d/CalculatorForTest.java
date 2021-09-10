@@ -7,4 +7,14 @@ public class CalculatorForTest {
     return i+j;
   }
 
+  public double podziel(int a, int b)
+  {
+    if(b == 0)
+    {
+      throw new ArithmeticException("nie dzielim przez 0!");
+    }
+    else
+      return a/b;
+  }
+
 }

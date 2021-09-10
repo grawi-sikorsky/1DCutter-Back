@@ -2,8 +2,8 @@ package pl.printo3d.onedcutter.cutter1d;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.assertj.core.api.Assert;
 import org.junit.jupiter.api.Test;
 
 public class CalcTest {
@@ -34,5 +34,25 @@ public class CalcTest {
     assertNotEquals(calc.dodaj(-2,2), 1);
 
   }
+
+  @Test
+  void should_divide_ok() 
+  {
+    //given
+    CalculatorForTest calc = new CalculatorForTest();
+
+    //then
+    assertEquals(calc.podziel(2,2), 1);
+    assertEquals(calc.podziel(100,10), 10);
+  }
   
+  @Test
+  void should_not_divide_by_0() 
+  {
+    //given
+    CalculatorForTest calc = new CalculatorForTest();
+
+    //then
+    assertThrows(ArithmeticException.class, () -> calc.podziel(100,0) );
+  }
 }
