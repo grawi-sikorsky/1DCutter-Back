@@ -95,7 +95,8 @@ public class ResultService {
       if (resultNeededStock.get(workpc.getStockLenght()) == null)
       {
         resultNeededStock.put(workpc.getStockLenght(), 1); // initial
-      }else resultNeededStock.put(workpc.getStockLenght(), resultNeededStock.get(workpc.getStockLenght())+1);
+      }
+      else resultNeededStock.put(workpc.getStockLenght(), resultNeededStock.get(workpc.getStockLenght())+1);
     }
     return resultNeededStock;
   }
