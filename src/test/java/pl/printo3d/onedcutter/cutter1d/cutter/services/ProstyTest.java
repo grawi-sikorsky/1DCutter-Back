@@ -30,11 +30,11 @@ class ProstyTest {
   {
     List<WorkPiece> workPieces = new ArrayList<WorkPiece>();
     // 2 x 1000
-    workPieces.add(new WorkPiece(1000.0));
-    workPieces.add(new WorkPiece(1000.0));
+    workPieces.add(new WorkPiece(1L, 1000.0));
+    workPieces.add(new WorkPiece(1L, 1000.0));
     // 2 x 2000
-    workPieces.add(new WorkPiece(2000.0));
-    workPieces.add(new WorkPiece(2000.0));
+    workPieces.add(new WorkPiece(1L, 2000.0));
+    workPieces.add(new WorkPiece(1L, 2000.0));
 
     return workPieces;
   }
@@ -56,11 +56,11 @@ class ProstyTest {
     List<WorkPiece> workPieces = new ArrayList<WorkPiece>();
 
     // 2 x 1000
-    workPieces.add(new WorkPiece(1000.0));
-    workPieces.add(new WorkPiece(1000.0));
+    workPieces.add(new WorkPiece(1L, 1000.0));
+    workPieces.add(new WorkPiece(1L, 1000.0));
     // 2 x 2000
-    workPieces.add(new WorkPiece(2000.0));
-    workPieces.add(new WorkPiece(2000.0));
+    workPieces.add(new WorkPiece(1L, 2000.0));
+    workPieces.add(new WorkPiece(1L, 2000.0));
 
 //
     return workPieces;

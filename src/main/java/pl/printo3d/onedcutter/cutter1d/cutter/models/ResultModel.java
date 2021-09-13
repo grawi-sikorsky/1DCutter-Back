@@ -15,6 +15,7 @@ public class ResultModel {
   private Double resultCostOveral=0.0;
   private Double resultCostPrecise=0.0;
   private Map<Double,Integer> resultNeededStock = new HashMap<Double,Integer>();
+  private ResultAdditionalInformations resultAdditionalInformations = new ResultAdditionalInformations();
 
   private List<ResultBar> resultBars = new ArrayList<ResultBar>();
   private List<ResultBar> remainBars = new ArrayList<ResultBar>();          // TODO wtf? 2x to samo

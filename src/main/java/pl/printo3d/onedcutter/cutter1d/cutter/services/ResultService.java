@@ -103,7 +103,7 @@ public class ResultService {
   {
     for (WorkPiece workpc : workPieces)
     {
-      
+      workpc.getStockLenght();
     }
     
   }

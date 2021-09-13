@@ -39,7 +39,7 @@ public class OrderService {
     orderList.stockList.clear();
 
     orderList.cutList.add(new CutModel("260", "5"));
-    orderList.stockList.add(new StockModel("1000", "4", "0"));
+    orderList.stockList.add(new StockModel( "1000", "4", "0"));
     
     return orderList;
   }
@@ -55,7 +55,7 @@ public class OrderService {
   {
     System.out.println("Make Order in Java");
 
-    orderModel.stockList.forEach(e->System.out.println(e.getStockLength() + " " + e.getStockPcs() + " " + e.getStockPrice() + " $" ));
+    orderModel.stockList.forEach(e->System.out.println(e.getId() + " " + e.getStockLength() + " " + e.getStockPcs() + " " + e.getStockPrice() + " $" ));
     orderModel.cutList.forEach(e->System.out.println(e.getCutLength() + " " + e.getCutPcs()));
 
     /** ZAPIS DO BAZY */

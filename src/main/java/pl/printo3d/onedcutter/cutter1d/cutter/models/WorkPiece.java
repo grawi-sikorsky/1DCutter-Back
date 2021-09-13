@@ -12,13 +12,16 @@ import java.util.List;
  * */
 public class WorkPiece {
 
+  private Long stockID;
+
   private Double stockLenght;
 
   public List<Double> cuts = new ArrayList<Double>();
 
-  public WorkPiece(Double lenght)
+  public WorkPiece(Long stockID, Double lenght)
   {
-    stockLenght = lenght;
+    this.stockLenght = lenght;
+    this.stockID = stockID;
   }
 
   public Double freeSpace(Double saw_thick)
