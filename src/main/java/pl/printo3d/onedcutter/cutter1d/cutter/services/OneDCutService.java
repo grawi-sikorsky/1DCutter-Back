@@ -86,7 +86,7 @@ public class OneDCutService {
           System.out.println("No free space left, adding new stock piece: " + stockList.get(tempStockIterator).getStockLength());
           tempStockCounter++;          
         }
-        else // 5. JESLI BRAKUJE SUROWCA DANEGO TYPU:
+        else // 5. BRAKUJE JUZ SUROWCA DANEGO TYPU:
         {
           // 6. JESTLI SA DOSTEPNE INNE TYPY/DLUGOSCI SUROWCA:
           if(tempStockIterator < stockList.size()-1)

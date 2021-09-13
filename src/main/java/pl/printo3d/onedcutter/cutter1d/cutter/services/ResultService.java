@@ -1,4 +1,4 @@
-package pl.printo3d.onedcutter.cutter1d.cutter.services;
+﻿package pl.printo3d.onedcutter.cutter1d.cutter.services;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -90,13 +90,11 @@ public class ResultService {
   {
     Map<Double,Integer> resultNeededStock = new HashMap<Double,Integer>();
     resultNeededStock.clear();
-    for (WorkPiece workpc : workPieces) 
+
+    for (WorkPiece workpc : workPieces)
     {
-      if (resultNeededStock.get(workpc.getStockLenght()) == null)
-      {
-        resultNeededStock.put(workpc.getStockLenght(), 1); // initial
-      }
-      else resultNeededStock.put(workpc.getStockLenght(), resultNeededStock.get(workpc.getStockLenght())+1);
+      if (resultNeededStock.get(workpc.getStockLenght()) == null) { resultNeededStock.put(workpc.getStockLenght(), 1); } // initial zeby nie lecialo NPE
+      else resultNeededStock.put( workpc.getStockLenght(), resultNeededStock.get(workpc.getStockLenght())+1 );
     }
     return resultNeededStock;
   }
