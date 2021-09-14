@@ -1,10 +1,13 @@
 package pl.printo3d.onedcutter.cutter1d.userlogin.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.AuthenticatedPrincipal;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -62,10 +65,19 @@ public class LoginController {
     }
   }
 
-  @RequestMapping(value="/auth", method=RequestMethod.POST)
+
+  @RequestMapping(value="/auth/login", method=RequestMethod.POST)
   public AuthResponse authenticateRequest(@RequestBody AuthRequest aRequest) {
     UserDetails ud = uService.loadUserByUsername(aRequest.getUsername());
     return new AuthResponse(jwtUtil.generateToken(ud));
+  }
+
+  @GetMapping("/getuserdata")
+  public UserModel getuserdata()
+  {
+    UserModel ud = (UserModel)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    
+    return ud;
   }
 
   @GetMapping("/")
