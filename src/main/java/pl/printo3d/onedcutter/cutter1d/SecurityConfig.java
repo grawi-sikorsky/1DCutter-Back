@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 import pl.printo3d.onedcutter.cutter1d.userlogin.services.UserService;
 
-@CrossOrigin(origins = "http://localhost:4200")
+//@CrossOrigin(origins = "http://localhost:4200")
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
@@ -26,14 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
   @Override
   protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-    //super.configure(auth);
     auth.userDetailsService(uService);
-/*
-    auth.inMemoryAuthentication()
-      .withUser("kloc")
-      .password(new BCryptPasswordEncoder().encode("kloc"))
-      .roles("USER");
-      */
   }
 
   @Override
@@ -50,6 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     .antMatchers("/result").permitAll()
     .antMatchers("/profile").permitAll()
     .antMatchers("/test").permitAll()
+    .antMatchers("/auth").permitAll()
 
     .antMatchers("/").permitAll()
     .anyRequest().authenticated();

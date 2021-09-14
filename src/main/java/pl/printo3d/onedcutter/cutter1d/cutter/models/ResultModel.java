@@ -24,7 +24,6 @@ public class ResultModel {
   public ResultModel(){ }
 
 
-
   
   public Double getResultUsedProcent() {
     return resultUsedProcent;

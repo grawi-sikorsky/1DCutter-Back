@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +27,8 @@ public class UserService implements UserDetailsService
   @Bean
   public PasswordEncoder passwordEncoder() 
   {
-      return new BCryptPasswordEncoder();
+      //return new BCryptPasswordEncoder();
+      return NoOpPasswordEncoder.getInstance();
   }
 
   @Autowired
@@ -37,6 +39,11 @@ public class UserService implements UserDetailsService
     this.uRepo = uRepo;
   }
 
+  @Override
+  public UserDetails loadUserByUsername(String arg0) throws UsernameNotFoundException {
+    return uRepo.findByUsername(arg0);
+  }
+  
   public boolean addUser(UserModel userModel)
   {
     if( userModel.getUsername() != ""  &&  userModel.getPassword() != ""  &&  userModel.getEmail() != "" &&
@@ -83,8 +90,5 @@ public class UserService implements UserDetailsService
     return true;
   }
 
-  @Override
-  public UserDetails loadUserByUsername(String arg0) throws UsernameNotFoundException {
-    return uRepo.findByUsername(arg0);
-  }
+
 }
