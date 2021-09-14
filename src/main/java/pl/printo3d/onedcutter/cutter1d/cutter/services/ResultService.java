@@ -107,13 +107,14 @@ public class ResultService {
 
     for (WorkPiece workpc : workPieces)
     {
-      if( this.cutService.stockList.iterator().next().getIdFront().equals(workpc.getFrontID()))
+      for (int index=0; index < this.cutService.stockList.size(); index++)
       {
-        System.out.println("macz!");
-        costs += 10;
+        if( this.cutService.stockList.get(index).getIdFront().equals(workpc.getFrontID()))
+        {
+          costs += Double.valueOf(this.cutService.stockList.get(index).getStockPrice());
+        }
       }
     }
-
     return costs;
   }
   

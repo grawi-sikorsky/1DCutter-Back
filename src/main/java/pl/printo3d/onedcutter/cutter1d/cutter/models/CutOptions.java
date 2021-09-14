@@ -14,13 +14,15 @@ public class CutOptions {
 
   public boolean optionStackResult;
   public Double optionSzrank;
+  public boolean optionPrice;
 
 
   public CutOptions() {}
 
-  public CutOptions(boolean optionStackResult, Double optionSzrank) {
+  public CutOptions(boolean optionStackResult, Double optionSzrank, boolean optionPrice) {
     this.optionStackResult = optionStackResult;
     this.optionSzrank = optionSzrank;
+    this.optionPrice = optionPrice;
   }
 
 
@@ -36,12 +38,17 @@ public class CutOptions {
   public void setOptionSzrank(Double optionSzrank) {
     this.optionSzrank = optionSzrank;
   }
-
   public Long getId() {
     return id;
   }
   public void setId(Long id) {
     this.id = id;
+  }
+  public boolean isOptionPrice() {
+    return optionPrice;
+  }
+  public void setOptionPrice(boolean optionPrice) {
+    this.optionPrice = optionPrice;
   }
   
 }

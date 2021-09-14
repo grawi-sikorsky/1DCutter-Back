@@ -48,7 +48,7 @@ public class UserService implements UserDetailsService
         OrderModel ord = new OrderModel();
         ord.setCutList(Arrays.asList(new CutModel("220", "5"), new CutModel("260", "5") ) );
         ord.setStockList(Arrays.asList(new StockModel("1000", "6", "0"), new StockModel("1000", "5", "0") ) );
-        ord.setCutOptions(new CutOptions(false, 0d));
+        ord.setCutOptions(new CutOptions(false, 0d, false));
         userModel.setOrderModel(ord);
 
         userModel.setRole("VIP"); // role dynamicznie pasuje ustawiac.
