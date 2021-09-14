@@ -67,5 +67,11 @@ public class LoginController {
     UserDetails ud = uService.loadUserByUsername(aRequest.getUsername());
     return new AuthResponse(jwtUtil.generateToken(ud));
   }
+
+  @GetMapping("/")
+  public String hometest()
+  {
+    return "jest gitarka!";
+  }
   
 }

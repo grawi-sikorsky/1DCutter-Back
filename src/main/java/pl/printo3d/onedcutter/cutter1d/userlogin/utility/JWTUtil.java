@@ -18,7 +18,7 @@ public class JWTUtil implements Serializable {
 
   private String secret = "secret";
   private static final long serialVersionUID = -2540185145626017488L;
-  public static final long JWT_TOKEN_TIME = 2*60; // 2 min?
+  public static final long JWT_TOKEN_TIME = 2*60*5; // 2 sec?
 
   public String generateToken(UserDetails uDetails)
   {
@@ -38,7 +38,7 @@ public class JWTUtil implements Serializable {
     .compact();
   }
 
-  private String usernameFromToken(String token)
+  public String getUsernameFromToken(String token)
   {
     return getClaimFromToken(token, Claims::getSubject);
   }
@@ -49,11 +49,11 @@ public class JWTUtil implements Serializable {
     return expirationDate.before(new Date());
   }
 
-  private Date getExpirationDateFromToken(String token) {
+  public Date getExpirationDateFromToken(String token) {
     return getClaimFromToken(token, Claims::getExpiration);
   }
 
-  private <T> T getClaimFromToken(String token, Function<Claims,T> claimsResolva) {
+  public <T> T getClaimFromToken(String token, Function<Claims,T> claimsResolva) {
     final Claims claims = getAllClaimsFromToken(token);
     return claimsResolva.apply(claims);
   }
@@ -65,7 +65,7 @@ public class JWTUtil implements Serializable {
   // validate
   public boolean validateToken(String token, UserDetails uDetails)
   {
-    return ( uDetails.getUsername().equals(usernameFromToken(token)) && !czyTokenJestStaryJakParowaZZabki(token) );
+    return ( uDetails.getUsername().equals(getUsernameFromToken(token)) && !czyTokenJestStaryJakParowaZZabki(token) );
   }
 
 

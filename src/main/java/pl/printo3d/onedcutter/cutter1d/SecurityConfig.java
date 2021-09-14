@@ -6,9 +6,14 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.session.SessionManagementFilter;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import pl.printo3d.onedcutter.cutter1d.userlogin.services.UserService;
+import pl.printo3d.onedcutter.cutter1d.userlogin.utility.JWTFilter;
+import pl.printo3d.onedcutter.cutter1d.userlogin.utility.JWTUtil;
 
 //@CrossOrigin(origins = "http://localhost:4200")
 @Configuration
@@ -16,6 +21,9 @@ import pl.printo3d.onedcutter.cutter1d.userlogin.services.UserService;
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
   
   private UserService uService;
+
+  @Autowired
+  JWTFilter jwtFilter;
 
   @Autowired
   public SecurityConfig(UserService uService) {
@@ -45,10 +53,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     .antMatchers("/test").permitAll()
     .antMatchers("/auth").permitAll()
 
-    .antMatchers("/").permitAll()
+    //.antMatchers("/").permitAll()
     .anyRequest().authenticated();
 
-    http.httpBasic();
+    http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+    http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
+    //http.httpBasic();
 
     http.formLogin().permitAll()
       .loginPage("/login").permitAll()
