@@ -16,6 +16,7 @@ public class StockModel {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   Long id;
 
+  String idFront;
   String stockLength;
   String stockPcs;
   String stockPrice;
@@ -70,6 +71,12 @@ public class StockModel {
   }
   public void setStockPrice(String stockPrice) {
     this.stockPrice = stockPrice;
+  }
+  public String getIdFront() {
+    return idFront;
+  }
+  public void setIdFront(String idFront) {
+    this.idFront = idFront;
   }
   
 

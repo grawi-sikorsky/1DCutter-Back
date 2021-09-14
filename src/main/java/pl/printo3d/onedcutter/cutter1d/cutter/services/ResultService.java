@@ -7,9 +7,11 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import pl.printo3d.onedcutter.cutter1d.cutter.models.OrderModel;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.ResultBar;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.ResultBarPieceModel;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.ResultModel;
+import pl.printo3d.onedcutter.cutter1d.cutter.models.StockModel;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.WorkPiece;
 
 @Service
@@ -99,13 +101,20 @@ public class ResultService {
     return resultNeededStock;
   }
 
-  public void calculatePrice(List<WorkPiece> workPieces)
+  public Double calculatePrice(List<WorkPiece> workPieces)
   {
+    Double costs=0D;
+
     for (WorkPiece workpc : workPieces)
     {
-      workpc.getStockLenght();
+      if( this.cutService.stockList.iterator().next().getIdFront().equals(workpc.getFrontID()))
+      {
+        System.out.println("macz!");
+        costs += 10;
+      }
     }
-    
+
+    return costs;
   }
   
 
@@ -116,6 +125,7 @@ public class ResultService {
     fullResults.setResultNeededStock(this.calculateNeededStock(this.cutService.workPiecesList));
     fullResults.setResultBars(this.getResultsBars(this.cutService.workPiecesList));
     fullResults.setResultWaste(this.calculateWaste(this.cutService.workPiecesList));
+    fullResults.setResultCostOveral(this.calculatePrice(this.cutService.workPiecesList));
 
     return fullResults;
   }

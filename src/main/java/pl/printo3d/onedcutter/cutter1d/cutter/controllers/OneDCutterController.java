@@ -33,6 +33,7 @@ public class OneDCutterController {
     return orderService.returnOrder();
   }
 
+  // OBLICZ LOGGED
   @PostMapping("/cut")
   public OrderModel ProcessOrder(@RequestBody OrderModel orderModel)
   {

@@ -55,20 +55,18 @@ public class OrderService {
   {
     System.out.println("Make Order in Java");
 
-    orderModel.stockList.forEach(e->System.out.println(e.getId() + " " + e.getStockLength() + " " + e.getStockPcs() + " " + e.getStockPrice() + " $" ));
+    orderModel.stockList.forEach(e->System.out.println("ID: " + e.getId() + ", frontID: " + e.getIdFront() + ", Len: " + e.getStockLength() + ", Pcs: " + e.getStockPcs() + ", price: " + e.getStockPrice() + " $" ));
     orderModel.cutList.forEach(e->System.out.println(e.getCutLength() + " " + e.getCutPcs()));
 
     /** ZAPIS DO BAZY */
     UserModel um;
     um = (UserModel)userService.loadUserByUsername(orderModel.usernameOrder);
 
-    //um.getOrderModel().setCutList(orderModel.cutList);
     // najpierw czyscimy liste, aby w DB pozbyc sie osieroconych wpisow
-    // dlatego getcutlist.addAdd! zamiast setCutlist.add!
+    // dlatego getcutlist.addAll! zamiast setCutlist.add!
     um.getOrderModel().getCutList().clear();
     um.getOrderModel().getCutList().addAll(orderModel.cutList);
 
-    //um.getOrderModel().setStockList(orderModel.stockList);
     um.getOrderModel().getStockList().clear();
     um.getOrderModel().getStockList().addAll(orderModel.stockList);
 

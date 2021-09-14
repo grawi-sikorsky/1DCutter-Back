@@ -82,9 +82,9 @@ public class OneDCutService {
         if( tempStockCounter < Integer.parseInt(stockList.get(tempStockIterator).getStockPcs()) )
         {
           // 4. DODAJ SUROWIEC DANEGO TYPU
-          workPiecesList.add(new WorkPiece( stockList.get(tempStockIterator).getId(),  Double.valueOf(stockList.get(tempStockIterator).getStockLength())));
+          workPiecesList.add(new WorkPiece( stockList.get(tempStockIterator).getIdFront(),  Double.valueOf(stockList.get(tempStockIterator).getStockLength())));
           System.out.println("No free space left, adding new stock piece: " + stockList.get(tempStockIterator).getStockLength());
-          tempStockCounter++;          
+          tempStockCounter++;
         }
         else // 5. BRAKUJE JUZ SUROWCA DANEGO TYPU:
         {
@@ -94,7 +94,7 @@ public class OneDCutService {
             tempStockIterator++;
             tempStockCounter=0;
             // 7. DODAJ SUROWIEC NOWEGO TYPU / ZERUJ LICZNIKI
-            workPiecesList.add(new WorkPiece( stockList.get(tempStockIterator).getId(), Double.valueOf(stockList.get(tempStockIterator).getStockLength())));
+            workPiecesList.add(new WorkPiece( stockList.get(tempStockIterator).getIdFront(), Double.valueOf(stockList.get(tempStockIterator).getStockLength())));
             System.out.println("No free space left, adding new stock piece: " + stockList.get(tempStockIterator).getStockLength());
             tempStockCounter++;
           }
