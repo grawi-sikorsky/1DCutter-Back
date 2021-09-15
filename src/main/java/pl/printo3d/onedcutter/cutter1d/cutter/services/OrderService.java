@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import pl.printo3d.onedcutter.cutter1d.cutter.models.CutModel;
@@ -59,8 +61,10 @@ public class OrderService {
     orderModel.cutList.forEach(e->System.out.println(e.getCutLength() + " " + e.getCutPcs()));
 
     /** ZAPIS DO BAZY */
+    UserDetails ud = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     UserModel um;
-    um = (UserModel)userService.loadUserByUsername(orderModel.usernameOrder);
+    um = (UserModel)userService.loadUserByUsername( ud.getUsername() );
+
 
     // najpierw czyscimy liste, aby w DB pozbyc sie osieroconych wpisow
     // dlatego getcutlist.addAll! zamiast setCutlist.add!

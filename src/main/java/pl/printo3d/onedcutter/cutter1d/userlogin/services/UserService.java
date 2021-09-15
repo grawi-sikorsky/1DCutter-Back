@@ -16,6 +16,7 @@ import pl.printo3d.onedcutter.cutter1d.cutter.models.CutModel;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.CutOptions;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.OrderModel;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.StockModel;
+import pl.printo3d.onedcutter.cutter1d.userlogin.models.AuthRequest;
 import pl.printo3d.onedcutter.cutter1d.userlogin.models.UserModel;
 import pl.printo3d.onedcutter.cutter1d.userlogin.repo.UserRepo;
 
@@ -42,6 +43,21 @@ public class UserService implements UserDetailsService
   @Override
   public UserDetails loadUserByUsername(String arg0) throws UsernameNotFoundException {
     return uRepo.findByUsername(arg0);
+  }
+
+  public boolean doLogin(AuthRequest aRequest)
+  {
+    UserModel um = uRepo.findByUsername(aRequest.getUsername());
+
+    if( um != null )
+    {
+      if( passwordEncoder().matches(aRequest.getPassword(), um.getPassword()) )
+      {
+        return true;
+      }
+      else return false;
+    }
+    else return false;
   }
   
   public boolean addUser(UserModel userModel)
@@ -89,6 +105,5 @@ public class UserService implements UserDetailsService
 
     return true;
   }
-
 
 }

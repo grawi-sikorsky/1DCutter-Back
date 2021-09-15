@@ -18,7 +18,7 @@ public class JWTUtil implements Serializable {
 
   private String secret = "secret";
   private static final long serialVersionUID = -2540185145626017488L;
-  public static final long JWT_TOKEN_TIME = 2*60*60; // 2 h?
+  public static final long JWT_TOKEN_TIME = 12*60*60; // 12 h?
 
   public String generateToken(UserDetails uDetails)
   {
@@ -28,7 +28,6 @@ public class JWTUtil implements Serializable {
   }
 
   private String makeToken(Map<String, Object> claim, String username) {
-
     return Jwts.builder()
     .setClaims(claim)
     .setSubject(username)

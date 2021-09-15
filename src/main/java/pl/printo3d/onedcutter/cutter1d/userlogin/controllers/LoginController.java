@@ -1,6 +1,7 @@
 package pl.printo3d.onedcutter.cutter1d.userlogin.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.AuthenticatedPrincipal;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -9,11 +10,16 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.jsonwebtoken.Jwt;
+import io.jsonwebtoken.JwtBuilder;
+import io.jsonwebtoken.Jwts;
+import javassist.bytecode.stackmap.BasicBlock.Catch;
 import pl.printo3d.onedcutter.cutter1d.userlogin.models.AuthRequest;
 import pl.printo3d.onedcutter.cutter1d.userlogin.models.AuthResponse;
 import pl.printo3d.onedcutter.cutter1d.userlogin.models.UserModel;
@@ -68,18 +74,33 @@ public class LoginController {
 
   @RequestMapping(value="/auth/login", method=RequestMethod.POST)
   public AuthResponse authenticateRequest(@RequestBody AuthRequest aRequest) {
-    UserDetails ud = uService.loadUserByUsername(aRequest.getUsername());
-    return new AuthResponse(jwtUtil.generateToken(ud));
+    
+    if ( uService.doLogin(aRequest) )
+    {
+      UserDetails ud = uService.loadUserByUsername(aRequest.getUsername());
+      return new AuthResponse(jwtUtil.generateToken(ud));
+    }
+    else
+    {
+      return new AuthResponse();
+    }
   }
 
+  // jwt testing
   @GetMapping("/getuserdata")
-  public UserModel getuserdata()
+  public UserModel getuserdata(@RequestHeader HttpHeaders headers)
   {
-    //jwtUtil.getUsernameFromToken(token)
-    UserModel ud = (UserModel)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    System.out.println(ud.getUsername());
+    UserDetails ud = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    UserModel um;
+    um = (UserModel)uService.loadUserByUsername( ud.getUsername() );
+
+    System.out.println(headers);
+
+    System.out.println(um.getUsername());
+    System.out.println(um.getOrderModel().getCutList()); //
+    System.out.println(um.getOrderModel().getStockList()); //
     
-    return ud;
+    return um;
   }
 
   @GetMapping("/")
