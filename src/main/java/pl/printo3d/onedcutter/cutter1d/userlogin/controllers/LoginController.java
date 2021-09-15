@@ -75,7 +75,9 @@ public class LoginController {
   @GetMapping("/getuserdata")
   public UserModel getuserdata()
   {
+    //jwtUtil.getUsernameFromToken(token)
     UserModel ud = (UserModel)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    System.out.println(ud.getUsername());
     
     return ud;
   }
