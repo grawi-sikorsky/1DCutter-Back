@@ -88,17 +88,11 @@ public class LoginController {
 
   // jwt testing
   @GetMapping("/getuserdata")
-  public UserModel getuserdata(@RequestHeader HttpHeaders headers)
+  public UserModel getuserdata()
   {
     UserDetails ud = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     UserModel um;
     um = (UserModel)uService.loadUserByUsername( ud.getUsername() );
-
-    System.out.println(headers);
-
-    System.out.println(um.getUsername());
-    System.out.println(um.getOrderModel().getCutList()); //
-    System.out.println(um.getOrderModel().getStockList()); //
     
     return um;
   }
