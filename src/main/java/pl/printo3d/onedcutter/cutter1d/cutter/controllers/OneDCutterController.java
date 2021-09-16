@@ -1,4 +1,4 @@
-﻿package pl.printo3d.onedcutter.cutter1d.cutter.controllers;
+package pl.printo3d.onedcutter.cutter1d.cutter.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;

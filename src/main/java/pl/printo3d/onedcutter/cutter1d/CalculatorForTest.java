@@ -1,4 +1,4 @@
-﻿package pl.printo3d.onedcutter.cutter1d;
+package pl.printo3d.onedcutter.cutter1d;
 
 public class CalculatorForTest {
 

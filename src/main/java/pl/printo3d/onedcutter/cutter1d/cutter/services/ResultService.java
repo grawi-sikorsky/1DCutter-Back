@@ -1,4 +1,4 @@
-﻿package pl.printo3d.onedcutter.cutter1d.cutter.services;
+package pl.printo3d.onedcutter.cutter1d.cutter.services;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
