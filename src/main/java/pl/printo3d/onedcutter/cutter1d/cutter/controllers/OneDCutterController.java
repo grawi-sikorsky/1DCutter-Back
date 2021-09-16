@@ -17,53 +17,49 @@ import pl.printo3d.onedcutter.cutter1d.cutter.services.ResultService;
 @RestController
 public class OneDCutterController {
 
-  @Autowired 
-  private ResultService resultService;
+    @Autowired
+    private ResultService resultService;
 
-  @Autowired 
-  private OrderService orderService;
+    @Autowired
+    private OrderService orderService;
 
-  /**
-   * Showing home page of One D Cutter, does nothing but return order details (cutlist, stocklist) - default or saved in user database.
-   * @return OrderModel
-   */
-  @GetMapping("/1dcut") // not used?
-  public OrderModel showCuts()
-  {
-    return orderService.returnOrder();
-  }
+    /**
+     * Showing home page of One D Cutter, does nothing but return order details (cutlist, stocklist) - default or saved in user database.
+     *
+     * @return OrderModel
+     */
+    @GetMapping("/1dcut") // not used?
+    public OrderModel showCuts() {
+        return orderService.returnOrder();
+    }
 
-  // OBLICZ LOGGED
-  @PostMapping("/cut")
-  public OrderModel ProcessOrder(@RequestBody OrderModel orderModel)
-  {
-    orderService.makeOrder(orderModel);
-    return orderService.returnOrder(orderModel);
-  }
+    // OBLICZ LOGGED
+    @PostMapping("/cut")
+    public OrderModel ProcessOrder(@RequestBody OrderModel orderModel) {
+        orderService.makeOrder(orderModel);
+        return orderService.returnOrder(orderModel);
+    }
 
-  @PostMapping("/cutfree")
-  public OrderModel ProcessOrderFree(@RequestBody OrderModel orderModel)
-  {
-    orderService.makeOrderFree(orderModel);
-    return orderService.returnOrder(orderModel);
-  }
-  @PostMapping("/setoptions")
-  public CutOptions setOptions(@RequestBody CutOptions cutOptions)
-  {
-    System.out.println(cutOptions.optionStackResult);
-    System.out.println(cutOptions.optionSzrank);
-    return cutOptions;
-  }
+    @PostMapping("/cutfree")
+    public OrderModel ProcessOrderFree(@RequestBody OrderModel orderModel) {
+        orderService.makeOrderFree(orderModel);
+        return orderService.returnOrder(orderModel);
+    }
 
-  @GetMapping("/cut") // not used?
-  public OrderModel cut()
-  {
-    return orderService.returnOrder();
-  }
+    @PostMapping("/setoptions")
+    public CutOptions setOptions(@RequestBody CutOptions cutOptions) {
+        System.out.println(cutOptions.optionStackResult);
+        System.out.println(cutOptions.optionSzrank);
+        return cutOptions;
+    }
 
-  @GetMapping("/result")
-  public ResultModel result()
-  {
-    return resultService.makeFullResults();
-  }
+    @GetMapping("/cut") // not used?
+    public OrderModel cut() {
+        return orderService.returnOrder();
+    }
+
+    @GetMapping("/result")
+    public ResultModel result() {
+        return resultService.makeFullResults();
+    }
 }
