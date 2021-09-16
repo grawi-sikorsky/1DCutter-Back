@@ -1,4 +1,4 @@
-package pl.printo3d.onedcutter.cutter1d.cutter.controllers;
+﻿package pl.printo3d.onedcutter.cutter1d.cutter.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -49,12 +49,12 @@ public class OneDCutterController {
     orderService.makeOrderFree(orderModel);
     return orderService.returnOrder(orderModel);
   }
-  @PostMapping("/setoptions")
-  public CutOptions setOptions(@RequestBody CutOptions cutOptions)
+  @PostMapping("/setorder")
+  public OrderModel setOptions(@RequestBody OrderModel orderModel)
   {
-    System.out.println(cutOptions.optionStackResult);
-    System.out.println(cutOptions.optionSzrank);
-    return cutOptions;
+    orderService.setOrder(orderModel);
+
+    return orderModel;
   }
 
   @GetMapping("/cut") // not used?

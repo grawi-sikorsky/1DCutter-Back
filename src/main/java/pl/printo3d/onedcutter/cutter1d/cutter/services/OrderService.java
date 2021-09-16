@@ -61,23 +61,7 @@ public class OrderService {
     orderModel.cutList.forEach(e->System.out.println(e.getCutLength() + " " + e.getCutPcs()));
 
     /** ZAPIS DO BAZY */
-    UserDetails ud = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    UserModel um;
-    um = (UserModel)userService.loadUserByUsername( ud.getUsername() );
-
-
-    // najpierw czyscimy liste, aby w DB pozbyc sie osieroconych wpisow
-    // dlatego getcutlist.addAll! zamiast setCutlist.add!
-    um.getOrderModel().getCutList().clear();
-    um.getOrderModel().getCutList().addAll(orderModel.cutList);
-
-    um.getOrderModel().getStockList().clear();
-    um.getOrderModel().getStockList().addAll(orderModel.stockList);
-
-    orderModel.cutOptions.setId(um.getOrderModel().getCutOptions().getId());// ID odczytaj i przypisz, bo w orderModel jeszcze nie ma..
-    um.getOrderModel().setCutOptions(orderModel.cutOptions);
-
-    userService.updateUser(um);
+    this.setOrder(orderModel);
     /** END ZAPIS DO BAZY */
 
     orderList.clearOrder();
@@ -94,16 +78,40 @@ public class OrderService {
   {
     System.out.println("Make FREE Order in Java");
 
-    orderModel.stockList.forEach(e->System.out.println(e.getStockLength() + " " + e.getStockPcs() + " " + e.getStockPrice() + " $" ));
+    orderModel.stockList.forEach(e->System.out.println("ID: " + e.getId() + ", frontID: " + e.getIdFront() + ", Len: " + e.getStockLength() + ", Pcs: " + e.getStockPcs() + ", price: " + e.getStockPrice() + " $" ));
     orderModel.cutList.forEach(e->System.out.println(e.getCutLength() + " " + e.getCutPcs()));
 
     orderList.clearOrder();
     cutService.cutList = orderModel.cutList;
     cutService.stockList = orderModel.stockList;
+    
     cutService.firstFit(orderModel);
     //this.returnOrder(orderModel); //?
 
     return resultService.makeFullResults();
+  }
+
+  public void setOrder(OrderModel orderModel) 
+  {
+        /** ZAPIS DO BAZY */
+        UserDetails ud = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserModel um;
+        um = (UserModel)userService.loadUserByUsername( ud.getUsername() );
+    
+    
+        // najpierw czyscimy liste, aby w DB pozbyc sie osieroconych wpisow
+        // dlatego getcutlist.addAll! zamiast setCutlist.add!
+        um.getOrderModel().getCutList().clear();
+        um.getOrderModel().getCutList().addAll(orderModel.cutList);
+    
+        um.getOrderModel().getStockList().clear();
+        um.getOrderModel().getStockList().addAll(orderModel.stockList);
+    
+        orderModel.cutOptions.setId(um.getOrderModel().getCutOptions().getId());// ID odczytaj i przypisz, bo w orderModel jeszcze nie ma..
+        um.getOrderModel().setCutOptions(orderModel.cutOptions);
+    
+        userService.updateUser(um);
+        /** END ZAPIS DO BAZY */
   }
 
 }

@@ -86,14 +86,14 @@ public class LoginController {
     }
   }
 
-  // jwt testing
+  // endpoint przez ktory przechodzi user po zalogowaniu w celu pobrania danych
   @GetMapping("/getuserdata")
   public UserModel getuserdata()
   {
     UserDetails ud = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     UserModel um;
     um = (UserModel)uService.loadUserByUsername( ud.getUsername() );
-    
+    System.out.println(um.getUsername());
     return um;
   }
 
