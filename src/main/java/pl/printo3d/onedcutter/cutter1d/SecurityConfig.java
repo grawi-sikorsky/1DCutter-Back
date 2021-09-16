@@ -8,18 +8,15 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.session.SessionManagementFilter;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 import pl.printo3d.onedcutter.cutter1d.userlogin.services.UserService;
 import pl.printo3d.onedcutter.cutter1d.userlogin.utility.JWTFilter;
-import pl.printo3d.onedcutter.cutter1d.userlogin.utility.JWTUtil;
 
 //@CrossOrigin(origins = "http://localhost:4200")
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter{
-  
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
   private UserService uService;
 
   @Autowired
@@ -30,7 +27,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     this.uService = uService;
   }
 
-  public SecurityConfig(){}
+  public SecurityConfig() {
+  }
 
   @Override
   protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -39,33 +37,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    //super.configure(http);
+    // super.configure(http);
 
-    http.authorizeRequests()
-    .antMatchers("/login","/img/**","/css/**").permitAll()
-    .antMatchers("/register", "/img/**","/css/**").permitAll()
-    .antMatchers("/1dcut").permitAll()
-    .antMatchers("/cut").permitAll()
-    .antMatchers("/cutfree").permitAll()
-    .antMatchers("/setorder").permitAll()
-    .antMatchers("/result").permitAll()
-    .antMatchers("/profile").permitAll()
-    .antMatchers("/test").permitAll()
-    .antMatchers("/auth/login").permitAll()
+    http.authorizeRequests().antMatchers("/login", "/img/**", "/css/**").permitAll()
+        .antMatchers("/register", "/img/**", "/css/**").permitAll().antMatchers("/1dcut").permitAll()
+        .antMatchers("/cut").permitAll().antMatchers("/cutfree").permitAll().antMatchers("/setorder").permitAll()
+        .antMatchers("/result").permitAll().antMatchers("/profile").permitAll().antMatchers("/test").permitAll()
+        .antMatchers("/auth/login").permitAll()
 
-    //.antMatchers("/").permitAll()
-    .anyRequest().authenticated();
+        // .antMatchers("/").permitAll()
+        .anyRequest().authenticated();
 
     http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
-    //http.httpBasic();
+    // http.httpBasic();
 
-    http.formLogin().permitAll()
-      .loginPage("/login").permitAll()
-      .and()
-      .logout().permitAll()
-      .deleteCookies("JSESSIONID");
+    http.formLogin().permitAll().loginPage("/login").permitAll().and().logout().permitAll().deleteCookies("JSESSIONID");
 
     http.csrf().disable();
     http.cors();
