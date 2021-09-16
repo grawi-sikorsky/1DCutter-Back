@@ -1,4 +1,4 @@
-package pl.printo3d.onedcutter.cutter1d.cutter.controllers;
+﻿package pl.printo3d.onedcutter.cutter1d.cutter.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -15,7 +15,7 @@ import pl.printo3d.onedcutter.cutter1d.cutter.models.ResultModel;
 import pl.printo3d.onedcutter.cutter1d.cutter.services.OrderService;
 import pl.printo3d.onedcutter.cutter1d.cutter.services.ResultService;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "https://onedcutterfront.herokuapp.com:4200")
 @RestController
 public class OneDCutterController {
 

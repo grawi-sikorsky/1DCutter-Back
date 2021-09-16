@@ -19,6 +19,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   private UserService uService;
 
+  String URL_DEPLOY = "https://onedcutterfront.herokuapp.com:4200";
+
   @Autowired
   JWTFilter jwtFilter;
 

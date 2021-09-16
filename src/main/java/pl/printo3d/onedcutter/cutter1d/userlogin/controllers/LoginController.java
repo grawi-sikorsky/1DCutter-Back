@@ -16,7 +16,7 @@ import pl.printo3d.onedcutter.cutter1d.userlogin.models.UserModel;
 import pl.printo3d.onedcutter.cutter1d.userlogin.services.UserService;
 import pl.printo3d.onedcutter.cutter1d.userlogin.utility.JWTUtil;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "https://onedcutterfront.herokuapp.com:4200")
 @RestController
 public class LoginController {
 
