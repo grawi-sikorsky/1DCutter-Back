@@ -41,7 +41,7 @@ public class OrderService {
     orderList.stockList.clear();
 
     orderList.cutList.add(new CutModel("260", "5"));
-    orderList.stockList.add(new StockModel( "1000", "4", "0"));
+    orderList.stockList.add(new StockModel("0", "1000", "4", "0"));
     
     return orderList;
   }

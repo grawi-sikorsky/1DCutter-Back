@@ -29,13 +29,15 @@ public class StockModel {
   public StockModel() {}
 
   
-  public StockModel(String stockLength, String stockPcs, String stockPrice) {
+  public StockModel(String idFront, String stockLength, String stockPcs, String stockPrice) {
+    this.idFront = idFront;
     this.stockLength = stockLength;
     this.stockPcs = stockPcs;
     this.stockPrice = stockPrice;
   }
 
-  public StockModel(String stockLength, String stockPcs, String stockPrice, String name) {
+  public StockModel(String idFront, String stockLength, String stockPcs, String stockPrice, String name) {
+    this.idFront = idFront;
     this.stockLength = stockLength;
     this.stockPcs = stockPcs;
     this.stockPrice = stockPrice;

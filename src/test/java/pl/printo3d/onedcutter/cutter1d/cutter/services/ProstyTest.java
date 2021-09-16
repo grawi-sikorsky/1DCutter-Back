@@ -49,7 +49,7 @@ class ProstyTest {
     Double result = serviceTest.calculateWaste( prepareMockWorkPiece2() );
 
     //then
-    assertEquals(result, 10); // 100 - 90 = 10%
+    assertEquals(result, 100); // 100 - 90 = 10%
   }
   private List<WorkPiece> prepareMockWorkPiece2()
   {
