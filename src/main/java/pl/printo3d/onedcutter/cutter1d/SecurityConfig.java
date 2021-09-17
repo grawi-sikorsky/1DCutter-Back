@@ -39,7 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    // super.configure(http);
+    http.cors().and().csrf().disable();
 
     http.authorizeRequests().antMatchers("/login", "/img/**", "/css/**").permitAll()
         .antMatchers("/register", "/img/**", "/css/**").permitAll().antMatchers("/1dcut").permitAll()
@@ -57,7 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     http.formLogin().permitAll().loginPage("/login").permitAll().and().logout().permitAll().deleteCookies("JSESSIONID");
 
-    http.cors().and().csrf().disable();
+
     //http.cors();
   }
 }
