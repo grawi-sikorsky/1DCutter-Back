@@ -43,7 +43,8 @@ public class OneDCutterController {
     }
 
     @PostMapping("/cutfree")
-    public OrderModel ProcessOrderFree(@RequestBody OrderModel orderModel) {
+    public OrderModel ProcessOrderFree(@RequestBody OrderModel orderModel,@RequestHeader HttpHeaders head) {
+        System.out.println(head);
         orderService.makeOrderFree(orderModel);
         return orderService.returnOrder(orderModel);
     }
