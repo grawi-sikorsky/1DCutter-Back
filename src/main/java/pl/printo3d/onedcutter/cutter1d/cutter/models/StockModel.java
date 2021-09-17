@@ -23,7 +23,6 @@ public class StockModel {
   String name;
 
   @ManyToOne
-  //@JoinColumn(name = "orderModel", referencedColumnName = "id" )
   OrderModel orderModel;
 
   public StockModel() {}

@@ -1,7 +1,6 @@
 package pl.printo3d.onedcutter.cutter1d;
 
 import java.util.Arrays;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -59,14 +58,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers("/result").permitAll()
         .antMatchers("/profile").permitAll()
         .antMatchers("/test").permitAll()
-
-        // .antMatchers("/").permitAll()
         .anyRequest().authenticated();
 
     http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-
-    // http.httpBasic();
 
     http.formLogin().permitAll().loginPage("/login").permitAll().and().logout().permitAll().deleteCookies("JSESSIONID");
 

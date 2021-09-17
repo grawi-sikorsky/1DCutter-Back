@@ -1,4 +1,4 @@
-package pl.printo3d.onedcutter.cutter1d.cutter.services;
+﻿package pl.printo3d.onedcutter.cutter1d.cutter.services;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,11 +7,9 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import pl.printo3d.onedcutter.cutter1d.cutter.models.OrderModel;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.ResultBar;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.ResultBarPieceModel;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.ResultModel;
-import pl.printo3d.onedcutter.cutter1d.cutter.models.StockModel;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.WorkPiece;
 
 @Service
