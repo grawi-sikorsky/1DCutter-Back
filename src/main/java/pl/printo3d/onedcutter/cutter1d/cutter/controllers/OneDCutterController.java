@@ -12,7 +12,7 @@ import pl.printo3d.onedcutter.cutter1d.cutter.models.ResultModel;
 import pl.printo3d.onedcutter.cutter1d.cutter.services.OrderService;
 import pl.printo3d.onedcutter.cutter1d.cutter.services.ResultService;
 
-@CrossOrigin(origins = "https://onedcutterfront.herokuapp.com:4200")
+@CrossOrigin(origins = "https://onedcutterfront.herokuapp.com")
 @RestController
 public class OneDCutterController {
 
