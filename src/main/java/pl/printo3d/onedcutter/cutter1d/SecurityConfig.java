@@ -12,14 +12,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import pl.printo3d.onedcutter.cutter1d.userlogin.services.UserService;
 import pl.printo3d.onedcutter.cutter1d.userlogin.utility.JWTFilter;
 
-//@CrossOrigin(origins = "http://localhost:4200")
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   private UserService uService;
-
-  String URL_DEPLOY = "https://onedcutterfront.herokuapp.com:4200";
 
   @Autowired
   JWTFilter jwtFilter;
