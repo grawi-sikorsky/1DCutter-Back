@@ -8,7 +8,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +28,6 @@ public class UserService implements UserDetailsService
   public PasswordEncoder passwordEncoder() 
   {
       return new BCryptPasswordEncoder();
-      //return NoOpPasswordEncoder.getInstance();
   }
 
   @Autowired
@@ -92,8 +90,6 @@ public class UserService implements UserDetailsService
       System.out.println("uService: Bad kredenszals!");
       return false;
     }
-
-
   }
 
   public boolean updateUser(UserModel userModel)

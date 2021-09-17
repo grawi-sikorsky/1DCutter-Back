@@ -33,17 +33,6 @@ public class UserModel implements UserDetails {
   String phone;
   String website;
 
-
-  // @OneToMany(cascade = CascadeType.ALL)
-  // public List<CutModel> cutList = null; //new ArrayList<CutModel>();
-
-  // @OneToMany(cascade = CascadeType.ALL)
-  // public List<StockModel> stockList = null; //new ArrayList<StockModel>();
-
-  // @OneToOne(cascade = {CascadeType.ALL})
-  // @JoinColumn(name = "cutOptions", referencedColumnName = "id", unique = true, insertable = true, updatable = true)
-  // public CutOptions cutOptions = null;
-
   @OneToOne(cascade = {CascadeType.ALL})
   @JoinColumn(name = "orderModel", referencedColumnName = "id" )
   OrderModel orderModel;
