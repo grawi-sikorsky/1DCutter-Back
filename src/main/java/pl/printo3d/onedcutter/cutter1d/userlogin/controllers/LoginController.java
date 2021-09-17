@@ -1,11 +1,14 @@
 package pl.printo3d.onedcutter.cutter1d.userlogin.controllers;
 
+import java.net.http.HttpHeaders;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -67,7 +70,8 @@ public class LoginController {
 
   // endpoint przez ktory przechodzi user po zalogowaniu w celu pobrania danych
   @GetMapping("/getuserdata")
-  public UserModel getuserdata() {
+  public UserModel getuserdata(@RequestHeader HttpHeaders head) {
+    System.out.println(head);
     UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     UserModel um;
     um = (UserModel) uService.loadUserByUsername(ud.getUsername());
