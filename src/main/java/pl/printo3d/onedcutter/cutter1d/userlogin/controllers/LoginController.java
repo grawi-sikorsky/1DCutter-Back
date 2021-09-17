@@ -56,8 +56,10 @@ public class LoginController {
 
     if (uService.doLogin(aRequest)) {
       UserDetails ud = uService.loadUserByUsername(aRequest.getUsername());
+      
       return new AuthResponse(jwtUtil.generateToken(ud));
-    } else {
+    } 
+    else {
       return new AuthResponse();
     }
   }

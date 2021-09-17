@@ -40,10 +40,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     // super.configure(http);
 
     http.authorizeRequests().antMatchers("/login", "/img/**", "/css/**").permitAll()
-        .antMatchers("/register", "/img/**", "/css/**").permitAll().antMatchers("/1dcut").permitAll()
-        .antMatchers("/cut").permitAll().antMatchers("/cutfree").permitAll().antMatchers("/setorder").permitAll()
-        .antMatchers("/result").permitAll().antMatchers("/profile").permitAll().antMatchers("/test").permitAll()
         .antMatchers("/auth/login").permitAll()
+        .antMatchers("/register", "/img/**", "/css/**").permitAll()
+        .antMatchers("/1dcut").permitAll()
+        .antMatchers("/cut").permitAll()
+        .antMatchers("/cutfree").permitAll()
+        .antMatchers("/setorder").permitAll()
+        .antMatchers("/result").permitAll()
+        .antMatchers("/profile").permitAll()
+        .antMatchers("/test").permitAll()
 
         // .antMatchers("/").permitAll()
         .anyRequest().authenticated();
