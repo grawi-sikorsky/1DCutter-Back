@@ -1,5 +1,7 @@
 package pl.printo3d.onedcutter.cutter1d;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -8,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 
 import pl.printo3d.onedcutter.cutter1d.userlogin.services.UserService;
 import pl.printo3d.onedcutter.cutter1d.userlogin.utility.JWTFilter;
@@ -37,7 +40,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    // super.configure(http);
+
+    CorsConfiguration corsConfiguration = new CorsConfiguration();
+    corsConfiguration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
+    corsConfiguration.setAllowedOrigins(List.of("http://localhost:4200"));
+    corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PUT","OPTIONS","PATCH", "DELETE"));
+    corsConfiguration.setAllowCredentials(true);
+    corsConfiguration.setExposedHeaders(List.of("Authorization"));
+
 
     http.authorizeRequests().antMatchers("/login", "/img/**", "/css/**").permitAll()
         .antMatchers("/auth/login").permitAll()
@@ -61,6 +71,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     http.formLogin().permitAll().loginPage("/login").permitAll().and().logout().permitAll().deleteCookies("JSESSIONID");
 
     http.csrf().disable();
-    http.cors();
+    http.cors().configurationSource(request -> corsConfiguration);
+
   }
 }
