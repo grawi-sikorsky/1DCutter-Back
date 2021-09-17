@@ -39,9 +39,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     http.cors().and().csrf().disable();
 
     http.authorizeRequests().antMatchers("/login", "/img/**", "/css/**").permitAll()
-        .antMatchers("/register", "/img/**", "/css/**").permitAll().antMatchers("/1dcut").permitAll()
-        .antMatchers("/cut").permitAll().antMatchers("/cutfree").permitAll().antMatchers("/setorder").permitAll()
-        .antMatchers("/result").permitAll().antMatchers("/profile").permitAll().antMatchers("/test").permitAll()
+        .antMatchers("/register", "/img/**", "/css/**").permitAll()
+        .antMatchers("/1dcut").permitAll()
+        .antMatchers("/cut").permitAll()
+        .antMatchers("/cutfree").permitAll()
+        .antMatchers("/setorder").permitAll()
+        .antMatchers("/result").permitAll()
+        .antMatchers("/profile").permitAll()
+        .antMatchers("/test").permitAll()
         .antMatchers("/auth/login").permitAll()
 
         // .antMatchers("/").permitAll()
@@ -50,9 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
-    // http.httpBasic();
-
-    http.formLogin().permitAll().loginPage("/login").permitAll().and().logout().permitAll().deleteCookies("JSESSIONID");
+    //http.formLogin().permitAll().loginPage("/login").permitAll().and().logout().permitAll().deleteCookies("JSESSIONID");
 
 
     //http.cors();
