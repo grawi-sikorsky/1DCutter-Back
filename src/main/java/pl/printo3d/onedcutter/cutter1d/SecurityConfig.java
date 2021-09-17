@@ -57,7 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     http.formLogin().permitAll().loginPage("/login").permitAll().and().logout().permitAll().deleteCookies("JSESSIONID");
 
-    http.csrf().disable();
-    http.cors();
+    http.cors().and().csrf().disable();
+    //http.cors();
   }
 }
