@@ -1,8 +1,8 @@
 package pl.printo3d.onedcutter.cutter1d.userlogin.controllers;
 
-import java.net.http.HttpHeaders;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
