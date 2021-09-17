@@ -39,6 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     http.cors().and().csrf().disable();
 
     http.authorizeRequests().antMatchers("/login", "/img/**", "/css/**").permitAll()
+        .antMatchers("/auth/login").permitAll()
         .antMatchers("/register", "/img/**", "/css/**").permitAll()
         .antMatchers("/1dcut").permitAll()
         .antMatchers("/cut").permitAll()
@@ -47,7 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers("/result").permitAll()
         .antMatchers("/profile").permitAll()
         .antMatchers("/test").permitAll()
-        .antMatchers("/auth/login").permitAll()
+        
 
         // .antMatchers("/").permitAll()
         .anyRequest().authenticated();
