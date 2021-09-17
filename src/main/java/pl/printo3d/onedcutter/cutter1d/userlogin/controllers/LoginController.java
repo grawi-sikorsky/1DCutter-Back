@@ -56,8 +56,11 @@ public class LoginController {
 
     if (uService.doLogin(aRequest)) {
       UserDetails ud = uService.loadUserByUsername(aRequest.getUsername());
+      System.out.println("LOGIN OK!");
       return new AuthResponse(jwtUtil.generateToken(ud));
-    } else {
+    } 
+    else {
+      System.out.println("LOGIN LIPA");
       return new AuthResponse();
     }
   }
