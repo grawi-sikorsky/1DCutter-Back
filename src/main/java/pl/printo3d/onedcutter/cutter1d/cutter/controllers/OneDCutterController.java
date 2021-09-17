@@ -1,10 +1,12 @@
 package pl.printo3d.onedcutter.cutter1d.cutter.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import pl.printo3d.onedcutter.cutter1d.cutter.models.OrderModel;
@@ -34,7 +36,8 @@ public class OneDCutterController {
 
     // OBLICZ LOGGED
     @PostMapping("/cut")
-    public OrderModel ProcessOrder(@RequestBody OrderModel orderModel) {
+    public OrderModel ProcessOrder(@RequestBody OrderModel orderModel, @RequestHeader HttpHeaders head) {
+        System.out.println(head);
         orderService.makeOrder(orderModel);
         return orderService.returnOrder(orderModel);
     }
