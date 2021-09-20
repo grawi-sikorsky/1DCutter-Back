@@ -12,7 +12,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import pl.printo3d.onedcutter.cutter1d.cutter.models.ResultBar;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.WorkPiece;
