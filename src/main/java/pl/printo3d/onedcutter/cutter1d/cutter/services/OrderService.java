@@ -39,7 +39,7 @@ public class OrderService {
   {
     orderList.getCutList().clear();
     orderList.getStockList().clear();
-
+    
     orderList.getCutList().add(new CutModel("260", "5"));
     orderList.getStockList().add(new StockModel("0", "1000", "4", "0"));
     
