@@ -1,8 +1,5 @@
 package pl.printo3d.onedcutter.cutter1d.cutter.models;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,56 +8,62 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
 public class OrderModel {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-  @JoinColumn(name = "order_id", referencedColumnName = "id", insertable = true, updatable = true)
-  public List<CutModel> cutList = new ArrayList<CutModel>();
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "order_id", referencedColumnName = "id", insertable = true, updatable = true)
+    private List<CutModel> cutList = new ArrayList<CutModel>();
 
-  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-  @JoinColumn(name = "order_id", referencedColumnName = "id", insertable = true, updatable = true)
-  public List<StockModel> stockList = new ArrayList<StockModel>();
-  
-  @OneToOne(cascade = {CascadeType.ALL})
-  @JoinColumn(name = "cutOptions_id", referencedColumnName = "id", unique = true, insertable = true, updatable = true)
-  public CutOptions cutOptions;
-  
-  public String usernameOrder;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "order_id", referencedColumnName = "id", insertable = true, updatable = true)
+    private List<StockModel> stockList = new ArrayList<StockModel>();
 
-  public void clearOrder()
-  {
-    cutList.clear();
-    stockList.clear();
-  }
+    @OneToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "cutOptions_id", referencedColumnName = "id", unique = true, insertable = true, updatable = true)
+    private CutOptions cutOptions;
 
-  
-  public OrderModel() {}
+    private String usernameOrder;
 
-  public List<CutModel> getCutList() {
-    return cutList;
-  }
-  public void setCutList(List<CutModel> cutList) {
-    this.cutList = cutList;
-  }
-  public List<StockModel> getStockList() {
-    return stockList;
-  }
-  public void setStockList(List<StockModel> stockList) {
-    this.stockList = stockList;
-  }
+    public void clearOrder() {
+        cutList.clear();
+        stockList.clear();
+    }
 
-  public CutOptions getCutOptions() {
-    return cutOptions;
-  }
-  public void setCutOptions(CutOptions cutOptions) {
-    this.cutOptions = cutOptions;
-  }
 
-  
+    public OrderModel() {
+    }
+
+    public List<CutModel> getCutList() {
+        return cutList;
+    }
+
+    public void setCutList(List<CutModel> cutList) {
+        this.cutList = cutList;
+    }
+
+    public List<StockModel> getStockList() {
+        return stockList;
+    }
+
+    public void setStockList(List<StockModel> stockList) {
+        this.stockList = stockList;
+    }
+
+    public CutOptions getCutOptions() {
+        return cutOptions;
+    }
+
+    public void setCutOptions(CutOptions cutOptions) {
+        this.cutOptions = cutOptions;
+    }
+
+
 }

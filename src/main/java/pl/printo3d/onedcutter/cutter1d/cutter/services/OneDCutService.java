@@ -1,16 +1,15 @@
-﻿package pl.printo3d.onedcutter.cutter1d.cutter.services;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+package pl.printo3d.onedcutter.cutter1d.cutter.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import pl.printo3d.onedcutter.cutter1d.cutter.models.CutModel;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.OrderModel;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.StockModel;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.WorkPiece;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 public class OneDCutService {
@@ -37,7 +36,7 @@ public class OneDCutService {
     public List<Double> makePartList(List<CutModel> CL) {
         partsList.clear();
         for (CutModel c : CL) {
-            for (int i = 0; i < Integer.parseInt(c.getCutPcs()); ++i) {
+            for (int i = 0; i < Integer.parseInt(c.getCutPcs()); ++ i) {
                 partsList.add(Double.parseDouble(c.getCutLength()));
             }
         }
@@ -70,7 +69,7 @@ public class OneDCutService {
             System.out.println("Next part is: " + part);
 
             // 2. JESLI NA OBECNYM SUROWCU NIE MA WOLNEGO MIEJSCA NA TE CZESC?
-            if (!workPiecesList.stream().anyMatch(work -> work.freeSpace(order.cutOptions.optionSzrank) >= part)) {
+            if (! workPiecesList.stream().anyMatch(work -> work.freeSpace(order.getCutOptions().getOptionSzrank()) >= part)) {
                 // 3. JESLI DOSTEPNA JEST JESZCZE JEDNA SZTUKA SUROWCA DANEGO TYPU/DLUGOSCI
                 if (tempStockCounter < Integer.parseInt(stockList.get(tempStockIterator).getStockPcs())) {
                     // 4. DODAJ SUROWIEC DANEGO TYPU
@@ -100,7 +99,7 @@ public class OneDCutService {
 
             // 8. PRZESZUKAJ LISTE UZYWANYCH SUROWCOW W POSZUKIWANIU MIEJSCA NA NOWA CZESC
             for (WorkPiece work : workPiecesList) {
-                if (work.freeSpace(order.cutOptions.optionSzrank) >= part) {
+                if (work.freeSpace(order.getCutOptions().getOptionSzrank()) >= part) {
                     work.cut(part);
                     partsDone.add(part);
                     break; // koniecznie wyskoczyc z loopa!
