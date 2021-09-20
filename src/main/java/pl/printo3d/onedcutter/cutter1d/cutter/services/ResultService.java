@@ -115,12 +115,22 @@ public class ResultService {
     }
     return costs;
   }
+
+  public Integer calculateCutCount(List<WorkPiece> workPieces)
+  {
+    Integer temp=0;
+    for(WorkPiece workpc : workPieces)
+    {
+      temp += workpc.cuts.size();
+    }
+    return temp;
+  }
   
 
 
   public ResultModel makeFullResults()
   {
-    fullResults.setResultCutCount(this.cutService.workPiecesList.size());
+    fullResults.setResultCutCount(this.calculateCutCount(this.cutService.workPiecesList));
     fullResults.setResultNeededStock(this.calculateNeededStock(this.cutService.workPiecesList));
     fullResults.setResultBars(this.getResultsBars(this.cutService.workPiecesList));
     fullResults.setResultWaste(this.calculateWaste(this.cutService.workPiecesList));
