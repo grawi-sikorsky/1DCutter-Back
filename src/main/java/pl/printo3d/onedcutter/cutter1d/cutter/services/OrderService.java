@@ -37,11 +37,11 @@ public class OrderService {
 
   public OrderModel returnOrder()
   {
-    orderList.cutList.clear();
-    orderList.stockList.clear();
-
-    orderList.cutList.add(new CutModel("260", "5"));
-    orderList.stockList.add(new StockModel("0", "1000", "4", "0"));
+    orderList.getCutList().clear();
+    orderList.getStockList().clear();
+    
+    orderList.getCutList().add(new CutModel("260", "5"));
+    orderList.getStockList().add(new StockModel("0", "1000", "4", "0"));
     
     return orderList;
   }
@@ -57,8 +57,8 @@ public class OrderService {
   {
     System.out.println("Make Order in Java");
 
-    orderModel.stockList.forEach(e->System.out.println("ID: " + e.getId() + ", frontID: " + e.getIdFront() + ", Len: " + e.getStockLength() + ", Pcs: " + e.getStockPcs() + ", price: " + e.getStockPrice() + " $" ));
-    orderModel.cutList.forEach(e->System.out.println(e.getCutLength() + " " + e.getCutPcs()));
+    orderModel.getStockList().forEach(e->System.out.println("ID: " + e.getId() + ", frontID: " + e.getIdFront() + ", Len: " + e.getStockLength() + ", Pcs: " + e.getStockPcs() + ", price: " + e.getStockPrice() + " $" ));
+    orderModel.getCutList().forEach(e->System.out.println(e.getCutLength() + " " + e.getCutPcs()));
 
     /** ZAPIS DO BAZY */
     this.setOrder(orderModel);
@@ -66,8 +66,8 @@ public class OrderService {
 
     orderList.clearOrder();
 
-    cutService.cutList = orderModel.cutList;
-    cutService.stockList = orderModel.stockList;
+    cutService.cutList = orderModel.getCutList();
+    cutService.stockList = orderModel.getStockList();
     cutService.firstFit(orderModel);
 
 
@@ -78,12 +78,12 @@ public class OrderService {
   {
     System.out.println("Make FREE Order in Java");
 
-    orderModel.stockList.forEach(e->System.out.println("ID: " + e.getId() + ", frontID: " + e.getIdFront() + ", Len: " + e.getStockLength() + ", Pcs: " + e.getStockPcs() + ", price: " + e.getStockPrice() + " $" ));
-    orderModel.cutList.forEach(e->System.out.println(e.getCutLength() + " " + e.getCutPcs()));
+    orderModel.getStockList().forEach(e->System.out.println("ID: " + e.getId() + ", frontID: " + e.getIdFront() + ", Len: " + e.getStockLength() + ", Pcs: " + e.getStockPcs() + ", price: " + e.getStockPrice() + " $" ));
+    orderModel.getCutList().forEach(e->System.out.println(e.getCutLength() + " " + e.getCutPcs()));
 
     orderList.clearOrder();
-    cutService.cutList = orderModel.cutList;
-    cutService.stockList = orderModel.stockList;
+    cutService.cutList = orderModel.getCutList();
+    cutService.stockList = orderModel.getStockList();
     
     cutService.firstFit(orderModel);
     //this.returnOrder(orderModel); //?
@@ -102,13 +102,13 @@ public class OrderService {
         // najpierw czyscimy liste, aby w DB pozbyc sie osieroconych wpisow
         // dlatego getcutlist.addAll! zamiast setCutlist.add!
         um.getOrderModel().getCutList().clear();
-        um.getOrderModel().getCutList().addAll(orderModel.cutList);
+        um.getOrderModel().getCutList().addAll(orderModel.getCutList());
     
         um.getOrderModel().getStockList().clear();
-        um.getOrderModel().getStockList().addAll(orderModel.stockList);
+        um.getOrderModel().getStockList().addAll(orderModel.getStockList());
     
-        orderModel.cutOptions.setId(um.getOrderModel().getCutOptions().getId());// ID odczytaj i przypisz, bo w orderModel jeszcze nie ma..
-        um.getOrderModel().setCutOptions(orderModel.cutOptions);
+        orderModel.getCutOptions().setId(um.getOrderModel().getCutOptions().getId());// ID odczytaj i przypisz, bo w orderModel jeszcze nie ma..
+        um.getOrderModel().setCutOptions(orderModel.getCutOptions());
     
         userService.updateUser(um);
         /** END ZAPIS DO BAZY */
