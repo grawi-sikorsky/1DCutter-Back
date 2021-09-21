@@ -2,7 +2,6 @@ package pl.printo3d.onedcutter.cutter1d.userlogin.models;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,7 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -34,14 +32,13 @@ public class UserModel implements UserDetails {
   String email;
   String phone;
   String website;
-  Integer ordersSaved;
 
-  @OneToMany(cascade = { CascadeType.ALL })
-  @JoinColumn(name = "orderModel", referencedColumnName = "id")
-  List<OrderModel> orderModel;
+  @OneToOne(cascade = {CascadeType.ALL})
+  @JoinColumn(name = "orderModel", referencedColumnName = "id" )
+  OrderModel orderModel;
 
-  public UserModel() {
-  }
+  
+  public UserModel(){}
 
   public UserModel(String username, String password, String email) {
     this.username = username;
@@ -65,7 +62,7 @@ public class UserModel implements UserDetails {
   public Collection<? extends GrantedAuthority> getAuthorities() {
     // TODO Auto-generated method stub
     return Collections.singleton(new SimpleGrantedAuthority(role));
-    // return null;
+    //return null;
   }
 
   @Override
@@ -152,28 +149,13 @@ public class UserModel implements UserDetails {
     this.website = website;
   }
 
-  // public OrderModel getOrderModel() {
-  //   return orderModel;
-  // }
-
-  // public void setOrderModel(OrderModel orderModel) {
-  //   this.orderModel = orderModel;
-  // }
-
-  public List<OrderModel> getOrderModel() {
+  public OrderModel getOrderModel() {
     return orderModel;
   }
 
-  public void setOrderModel(List<OrderModel> orderModel) {
+  public void setOrderModel(OrderModel orderModel) {
     this.orderModel = orderModel;
   }
-
-  public Integer getOrdersSaved() {
-    return ordersSaved;
-  }
-
-  public void setOrdersSaved(Integer ordersSaved) {
-    this.ordersSaved = ordersSaved;
-  }
-
+  
+  
 }

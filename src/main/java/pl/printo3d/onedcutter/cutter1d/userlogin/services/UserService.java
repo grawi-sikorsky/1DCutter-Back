@@ -70,8 +70,7 @@ public class UserService implements UserDetailsService
         ord.setCutList(Arrays.asList(new CutModel("220", "5"), new CutModel("260", "5") ) );
         ord.setStockList(Arrays.asList(new StockModel("0", "1000", "6", "0"), new StockModel("1", "1000", "5", "0") ) );
         ord.setCutOptions(new CutOptions(false, 0d, false));
-        userModel.getOrderModel().add(ord);
-        userModel.setOrdersSaved(1);
+        userModel.setOrderModel(ord);
 
         userModel.setRole("VIP"); // role dynamicznie pasuje ustawiac.
         userModel.setPassword(pEncoder.encode(userModel.getPassword()));
