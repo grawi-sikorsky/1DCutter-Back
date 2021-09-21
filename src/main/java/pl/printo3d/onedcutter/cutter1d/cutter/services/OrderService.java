@@ -91,24 +91,24 @@ public class OrderService {
     return resultService.makeFullResults();
   }
 
-  public void setOrder(OrderModel orderModel) 
+  public void setOrder(OrderModel incomingOrderModel) 
   {
         /** ZAPIS DO BAZY */
         UserDetails ud = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UserModel um;
         um = (UserModel)userService.loadUserByUsername( ud.getUsername() );
     
-    
+        
         // najpierw czyscimy liste, aby w DB pozbyc sie osieroconych wpisow
         // dlatego getcutlist.addAll! zamiast setCutlist.add!
-        um.getUserSlots().getOrderModel().getCutList().clear();
-        um.getUserSlots().getOrderModel().getCutList().addAll(orderModel.getCutList());
+        um.getSavedOrderModels().get( um.getActiveOrderId() ).getCutList().clear();
+        um.getSavedOrderModels().get( um.getActiveOrderId() ).getCutList().addAll(incomingOrderModel.getCutList());
     
-        um.getUserSlots().getOrderModel().getStockList().clear();
-        um.getUserSlots().getOrderModel().getStockList().addAll(orderModel.getStockList());
+        um.getSavedOrderModels().get( um.getActiveOrderId() ).getStockList().clear();
+        um.getSavedOrderModels().get( um.getActiveOrderId() ).getStockList().addAll(incomingOrderModel.getStockList());
     
-        orderModel.getCutOptions().setId(um.getUserSlots().getOrderModel().getCutOptions().getId());// ID odczytaj i przypisz, bo w orderModel jeszcze nie ma..
-        um.getUserSlots().getOrderModel().setCutOptions(orderModel.getCutOptions());
+        incomingOrderModel.getCutOptions().setId(um.getSavedOrderModels().get( um.getActiveOrderId() ).getCutOptions().getId());// ID odczytaj i przypisz, bo w orderModel jeszcze nie ma..
+        um.getSavedOrderModels().get( um.getActiveOrderId() ).setCutOptions(incomingOrderModel.getCutOptions());
     
         userService.updateUser(um);
         /** END ZAPIS DO BAZY */

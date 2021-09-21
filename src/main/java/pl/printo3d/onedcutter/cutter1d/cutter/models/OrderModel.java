@@ -30,8 +30,6 @@ public class OrderModel {
     @JoinColumn(name = "cutOptions_id", referencedColumnName = "id", unique = true, insertable = true, updatable = true)
     private CutOptions cutOptions;
 
-    private String usernameOrder;
-
     public void clearOrder() {
         cutList.clear();
         stockList.clear();
@@ -64,7 +62,6 @@ public class OrderModel {
     public void setCutOptions(CutOptions cutOptions) {
         this.cutOptions = cutOptions;
     }
-
 
     public Long getId() {
         return id;

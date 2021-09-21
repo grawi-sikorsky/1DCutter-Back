@@ -72,9 +72,9 @@ public class LoginController {
     UserModel um;
     um = (UserModel) uService.loadUserByUsername(ud.getUsername());
     
-    System.out.println(um.getUserSlots().getActiveOrderId());
-    OrderModel om = um.getUserSlots().getOrderModel();
-    um.setOrderModel(om);
+    System.out.println(um.getActiveOrderId());
+    OrderModel om = um.getSavedOrderModels().get(um.getActiveOrderId());
+    um.setActiveOrderModel(om);
     return um;
   }
 

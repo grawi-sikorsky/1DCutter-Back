@@ -73,8 +73,14 @@ public class UserService implements UserDetailsService
         ord.setCutOptions(new CutOptions(false, 0d, false));
         //userModel.setOrderModel(ord);
 
-        UserSlots us = new UserSlots( 1, 1, ord  );
-        userModel.setUserSlots(us);
+        OrderModel ord2 = new OrderModel();
+        ord2.setCutList(Arrays.asList(new CutModel("220", "5"), new CutModel("260", "5") ) );
+        ord2.setStockList(Arrays.asList(new StockModel("0", "1000", "6", "0"), new StockModel("1", "1000", "5", "0") ) );
+        ord2.setCutOptions(new CutOptions(false, 0d, false));
+
+        userModel.setSavedOrderModels(Arrays.asList(ord,ord2));
+        userModel.setActiveOrderId(0); // default
+        userModel.setNumberOfSavedItems(userModel.getSavedOrderModels().size());
 
         userModel.setRole("VIP"); // role dynamicznie pasuje ustawiac.
         userModel.setPassword(pEncoder.encode(userModel.getPassword()));

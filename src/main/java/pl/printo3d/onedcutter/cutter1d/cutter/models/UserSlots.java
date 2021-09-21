@@ -1,15 +1,15 @@
 package pl.printo3d.onedcutter.cutter1d.cutter.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class UserSlots {
@@ -21,14 +21,14 @@ public class UserSlots {
     Integer numberOfSavedItems;
     Integer activeOrderId;
 
-    @OneToOne(cascade = {CascadeType.ALL})
-    @JoinColumn(name = "orderModel1", referencedColumnName = "id" )
-    OrderModel orderModel1;
+    @OneToMany(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "userSlot", referencedColumnName = "id" )
+    private List<OrderModel> orderModel1 = new ArrayList<OrderModel>();
 
     public UserSlots() {
     }
 
-    public UserSlots(Integer numberOfSavedItems, Integer activeOrderId, OrderModel orderModel1) {
+    public UserSlots(Integer numberOfSavedItems, Integer activeOrderId, List<OrderModel> orderModel1) {
         this.numberOfSavedItems = numberOfSavedItems;
         this.activeOrderId = activeOrderId;
         this.orderModel1 = orderModel1;
@@ -58,11 +58,11 @@ public class UserSlots {
         this.activeOrderId = activeOrderId;
     }
 
-    public OrderModel getOrderModel() {
+    public List<OrderModel> getOrderModel() {
         return orderModel1;
     }
 
-    public void setOrderModel(OrderModel orderModel1) {
+    public void setOrderModel(List<OrderModel> orderModel1) {
         this.orderModel1 = orderModel1;
     }
 
