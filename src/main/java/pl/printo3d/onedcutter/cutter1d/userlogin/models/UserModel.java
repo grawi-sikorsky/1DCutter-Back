@@ -17,6 +17,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import pl.printo3d.onedcutter.cutter1d.cutter.models.OrderModel;
+import pl.printo3d.onedcutter.cutter1d.cutter.models.UserSlots;
 
 @Entity
 public class UserModel implements UserDetails {
@@ -36,6 +37,10 @@ public class UserModel implements UserDetails {
   @OneToOne(cascade = {CascadeType.ALL})
   @JoinColumn(name = "orderModel", referencedColumnName = "id" )
   OrderModel orderModel;
+
+  @OneToOne
+  @JoinColumn(name = "userSlots", referencedColumnName = "id" )
+  UserSlots userSlots;
 
   
   public UserModel(){}
@@ -64,37 +69,31 @@ public class UserModel implements UserDetails {
     return Collections.singleton(new SimpleGrantedAuthority(role));
     //return null;
   }
-
   @Override
   public String getPassword() {
     // TODO Auto-generated method stub
     return password;
   }
-
   @Override
   public String getUsername() {
     // TODO Auto-generated method stub
     return username;
   }
-
   @Override
   public boolean isAccountNonExpired() {
     // TODO Auto-generated method stub
     return true;
   }
-
   @Override
   public boolean isAccountNonLocked() {
     // TODO Auto-generated method stub
     return true;
   }
-
   @Override
   public boolean isCredentialsNonExpired() {
     // TODO Auto-generated method stub
     return true;
   }
-
   @Override
   public boolean isEnabled() {
     // TODO Auto-generated method stub
@@ -156,6 +155,15 @@ public class UserModel implements UserDetails {
   public void setOrderModel(OrderModel orderModel) {
     this.orderModel = orderModel;
   }
+
+  public UserSlots getUserSlots() {
+    return userSlots;
+  }
+
+  public void setUserSlots(UserSlots userSlots) {
+    this.userSlots = userSlots;
+  }
+  
   
   
 }
