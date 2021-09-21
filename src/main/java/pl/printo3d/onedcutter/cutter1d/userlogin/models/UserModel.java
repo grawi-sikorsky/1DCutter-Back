@@ -38,7 +38,7 @@ public class UserModel implements UserDetails {
   @JoinColumn(name = "orderModel", referencedColumnName = "id" )
   OrderModel orderModel;
 
-  @OneToOne
+  @OneToOne(cascade = {CascadeType.ALL})
   @JoinColumn(name = "userSlots", referencedColumnName = "id" )
   UserSlots userSlots;
 

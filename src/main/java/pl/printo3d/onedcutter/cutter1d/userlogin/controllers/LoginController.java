@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import pl.printo3d.onedcutter.cutter1d.cutter.models.OrderModel;
 import pl.printo3d.onedcutter.cutter1d.userlogin.models.AuthRequest;
 import pl.printo3d.onedcutter.cutter1d.userlogin.models.AuthResponse;
 import pl.printo3d.onedcutter.cutter1d.userlogin.models.UserModel;
@@ -70,7 +71,10 @@ public class LoginController {
     UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     UserModel um;
     um = (UserModel) uService.loadUserByUsername(ud.getUsername());
-    System.out.println(um.getUsername());
+    
+    System.out.println(um.getUserSlots().getActiveOrderId());
+    OrderModel om = um.getUserSlots().getOrderModel();
+    um.setOrderModel(om);
     return um;
   }
 

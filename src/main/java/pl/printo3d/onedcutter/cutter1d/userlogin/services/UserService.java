@@ -15,6 +15,7 @@ import pl.printo3d.onedcutter.cutter1d.cutter.models.CutModel;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.CutOptions;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.OrderModel;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.StockModel;
+import pl.printo3d.onedcutter.cutter1d.cutter.models.UserSlots;
 import pl.printo3d.onedcutter.cutter1d.userlogin.models.AuthRequest;
 import pl.printo3d.onedcutter.cutter1d.userlogin.models.UserModel;
 import pl.printo3d.onedcutter.cutter1d.userlogin.repo.UserRepo;
@@ -70,7 +71,10 @@ public class UserService implements UserDetailsService
         ord.setCutList(Arrays.asList(new CutModel("220", "5"), new CutModel("260", "5") ) );
         ord.setStockList(Arrays.asList(new StockModel("0", "1000", "6", "0"), new StockModel("1", "1000", "5", "0") ) );
         ord.setCutOptions(new CutOptions(false, 0d, false));
-        userModel.setOrderModel(ord);
+        //userModel.setOrderModel(ord);
+
+        UserSlots us = new UserSlots( 1, 1, ord  );
+        userModel.setUserSlots(us);
 
         userModel.setRole("VIP"); // role dynamicznie pasuje ustawiac.
         userModel.setPassword(pEncoder.encode(userModel.getPassword()));

@@ -101,14 +101,14 @@ public class OrderService {
     
         // najpierw czyscimy liste, aby w DB pozbyc sie osieroconych wpisow
         // dlatego getcutlist.addAll! zamiast setCutlist.add!
-        um.getOrderModel().getCutList().clear();
-        um.getOrderModel().getCutList().addAll(orderModel.getCutList());
+        um.getUserSlots().getOrderModel().getCutList().clear();
+        um.getUserSlots().getOrderModel().getCutList().addAll(orderModel.getCutList());
     
-        um.getOrderModel().getStockList().clear();
-        um.getOrderModel().getStockList().addAll(orderModel.getStockList());
+        um.getUserSlots().getOrderModel().getStockList().clear();
+        um.getUserSlots().getOrderModel().getStockList().addAll(orderModel.getStockList());
     
-        orderModel.getCutOptions().setId(um.getOrderModel().getCutOptions().getId());// ID odczytaj i przypisz, bo w orderModel jeszcze nie ma..
-        um.getOrderModel().setCutOptions(orderModel.getCutOptions());
+        orderModel.getCutOptions().setId(um.getUserSlots().getOrderModel().getCutOptions().getId());// ID odczytaj i przypisz, bo w orderModel jeszcze nie ma..
+        um.getUserSlots().getOrderModel().setCutOptions(orderModel.getCutOptions());
     
         userService.updateUser(um);
         /** END ZAPIS DO BAZY */

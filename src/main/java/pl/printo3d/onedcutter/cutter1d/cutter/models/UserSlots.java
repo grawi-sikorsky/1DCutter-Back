@@ -9,7 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 @Entity
 public class UserSlots {
@@ -21,10 +21,17 @@ public class UserSlots {
     Integer numberOfSavedItems;
     Integer activeOrderId;
 
-    @ElementCollection
-    List<Integer> savedOrdersIds;
+    @OneToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "orderModel1", referencedColumnName = "id" )
+    OrderModel orderModel1;
 
     public UserSlots() {
+    }
+
+    public UserSlots(Integer numberOfSavedItems, Integer activeOrderId, OrderModel orderModel1) {
+        this.numberOfSavedItems = numberOfSavedItems;
+        this.activeOrderId = activeOrderId;
+        this.orderModel1 = orderModel1;
     }
 
     public Long getId() {
@@ -51,13 +58,14 @@ public class UserSlots {
         this.activeOrderId = activeOrderId;
     }
 
-    public List<Integer> getSavedItemsIds() {
-        return savedOrdersIds;
+    public OrderModel getOrderModel() {
+        return orderModel1;
     }
 
-    public void setSavedItemsIds(List<Integer> savedOrdersIds) {
-        this.savedOrdersIds = savedOrdersIds;
+    public void setOrderModel(OrderModel orderModel1) {
+        this.orderModel1 = orderModel1;
     }
+
 
     
 }
