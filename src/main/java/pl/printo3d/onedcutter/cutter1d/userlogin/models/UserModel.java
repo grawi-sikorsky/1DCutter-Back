@@ -36,7 +36,6 @@ public class UserModel implements UserDetails {
   String email;
   String phone;
   String website;
-
   Integer numberOfSavedItems;
   Integer activeOrderId;
 

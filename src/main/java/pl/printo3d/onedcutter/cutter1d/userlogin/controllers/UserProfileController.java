@@ -28,5 +28,20 @@ public class UserProfileController {
     uService.updateUser(uModel);
 
     return true;
-  }  
+  }
+
+  @RequestMapping(value="/updateuser", method = RequestMethod.POST)
+  public boolean updateUser( @RequestBody UserModel userModel )
+  {
+    UserModel uModel = (UserModel)uService.loadUserByUsername(userModel.getUsername());
+
+    uModel.setActiveOrderId(userModel.getActiveOrderId());
+
+    uService.updateUser(uModel);
+
+    System.out.println("UpdateUser");
+
+    return true;
+  }
+
 }
