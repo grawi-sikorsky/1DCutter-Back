@@ -78,7 +78,6 @@ public class OrderService {
 
     cutService.cutList = orderModel.getCutList();
     cutService.stockList = orderModel.getStockList();
-
     cutService.firstFit(orderModel);
     //this.returnOrder(orderModel); //?
 
