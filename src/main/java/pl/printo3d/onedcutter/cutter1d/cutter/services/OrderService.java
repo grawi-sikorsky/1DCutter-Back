@@ -25,8 +25,6 @@ public class OrderService {
   @Autowired
   private UserService userService;
 
-  public OrderModel orderList = new OrderModel();
-  
   // Lista zawierajace dlugosci i ilosci surowca
   public List<StockModel> stockList = new ArrayList<StockModel>();
 
@@ -37,9 +35,10 @@ public class OrderService {
 
   public OrderModel returnOrder()
   {
+    OrderModel orderList = new OrderModel();
     orderList.getCutList().clear();
     orderList.getStockList().clear();
-    
+
     orderList.getCutList().add(new CutModel("260", "5"));
     orderList.getStockList().add(new StockModel("0", "1000", "4", "0"));
     
@@ -64,10 +63,6 @@ public class OrderService {
     this.setOrder(orderModel);
     /** END ZAPIS DO BAZY */
 
-    orderList.clearOrder();
-
-    cutService.cutList = orderModel.getCutList();
-    cutService.stockList = orderModel.getStockList();
     cutService.firstFit(orderModel);
 
 
@@ -81,35 +76,34 @@ public class OrderService {
     orderModel.getStockList().forEach(e->System.out.println("ID: " + e.getId() + ", frontID: " + e.getIdFront() + ", Len: " + e.getStockLength() + ", Pcs: " + e.getStockPcs() + ", price: " + e.getStockPrice() + " $" ));
     orderModel.getCutList().forEach(e->System.out.println(e.getCutLength() + " " + e.getCutPcs()));
 
-    orderList.clearOrder();
     cutService.cutList = orderModel.getCutList();
     cutService.stockList = orderModel.getStockList();
-    
+
     cutService.firstFit(orderModel);
     //this.returnOrder(orderModel); //?
 
     return resultService.makeFullResults();
   }
 
-  public void setOrder(OrderModel orderModel) 
+  public void setOrder(OrderModel orderModel)
   {
         /** ZAPIS DO BAZY */
         UserDetails ud = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UserModel um;
         um = (UserModel)userService.loadUserByUsername( ud.getUsername() );
-    
-    
+
+
         // najpierw czyscimy liste, aby w DB pozbyc sie osieroconych wpisow
         // dlatego getcutlist.addAll! zamiast setCutlist.add!
         um.getOrderModel().getCutList().clear();
         um.getOrderModel().getCutList().addAll(orderModel.getCutList());
-    
+
         um.getOrderModel().getStockList().clear();
         um.getOrderModel().getStockList().addAll(orderModel.getStockList());
-    
+
         orderModel.getCutOptions().setId(um.getOrderModel().getCutOptions().getId());// ID odczytaj i przypisz, bo w orderModel jeszcze nie ma..
         um.getOrderModel().setCutOptions(orderModel.getCutOptions());
-    
+
         userService.updateUser(um);
         /** END ZAPIS DO BAZY */
   }
