@@ -36,11 +36,13 @@ public class UserProfileController {
   }
 
   @RequestMapping(value="/updateuser", method = RequestMethod.POST)
-  public boolean updateUser( @RequestBody UserModel userModel )
+  public boolean updateUser( @RequestBody UserModel incomingUserModel )
   {
-    UserModel uModel = (UserModel)uService.loadUserByUsername(userModel.getUsername());
+    UserModel uModel = (UserModel)uService.loadUserByUsername(incomingUserModel.getUsername());
 
-    uModel.setActiveOrderId(userModel.getActiveOrderId());
+    uModel.setActiveOrderId(incomingUserModel.getActiveOrderId());
+    uModel.setActiveOrderModel(incomingUserModel.getActiveOrderModel());
+    uModel.setSavedOrderModels(incomingUserModel.getSavedOrderModels());
 
     uService.updateUser(uModel);
 

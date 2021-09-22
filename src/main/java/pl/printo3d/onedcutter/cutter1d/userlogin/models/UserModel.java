@@ -48,7 +48,7 @@ public class UserModel implements UserDetails {
   UserSlots userSlots;
 
   @OneToMany(cascade = {CascadeType.ALL})
-  @JoinColumn(name = "saved_order_models", referencedColumnName = "id" )
+  @JoinColumn(name = "user_id", referencedColumnName = "id" )
   private List<OrderModel> savedOrderModels = new ArrayList<OrderModel>();
   
   public UserModel(){}

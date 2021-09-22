@@ -67,7 +67,7 @@ public class UserService implements UserDetailsService {
         ord.setCutOptions(new CutOptions(false, 0d, false));
         ord.setProjectName("default name");
         ord.setProjectCreated(LocalDateTime.now());
-        // userModel.setOrderModel(ord);
+        ord.setProjectModified(LocalDateTime.now());
 
         OrderModel ord2 = new OrderModel();
         ord2.setCutList(Arrays.asList(new CutModel("220", "5"), new CutModel("260", "5")));
@@ -75,6 +75,7 @@ public class UserService implements UserDetailsService {
         ord2.setCutOptions(new CutOptions(false, 0d, false));
         ord2.setProjectName("default name2");
         ord2.setProjectCreated(LocalDateTime.now());
+        ord2.setProjectModified(LocalDateTime.now());
 
         userModel.setSavedOrderModels(Arrays.asList(ord, ord2));
         userModel.setActiveOrderId(0); // default
