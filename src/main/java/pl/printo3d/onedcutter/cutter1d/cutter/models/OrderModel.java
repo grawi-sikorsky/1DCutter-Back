@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +19,10 @@ public class OrderModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private String projectName;
+    private LocalDateTime projectCreated;
+    private LocalDateTime projectModified;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "order_id", referencedColumnName = "id", insertable = true, updatable = true)
@@ -29,6 +35,8 @@ public class OrderModel {
     @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "cutOptions_id", referencedColumnName = "id", unique = true, insertable = true, updatable = true)
     private CutOptions cutOptions;
+
+
 
     public void clearOrder() {
         cutList.clear();
@@ -70,4 +78,29 @@ public class OrderModel {
         this.id = id;
     }
 
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    public LocalDateTime getProjectCreated() {
+        return projectCreated;
+    }
+
+    public void setProjectCreated(LocalDateTime projectCreated) {
+        this.projectCreated = projectCreated;
+    }
+
+    public LocalDateTime getProjectModified() {
+        return projectModified;
+    }
+
+    public void setProjectModified(LocalDateTime projectModified) {
+        this.projectModified = projectModified;
+    }
+
+    
 }

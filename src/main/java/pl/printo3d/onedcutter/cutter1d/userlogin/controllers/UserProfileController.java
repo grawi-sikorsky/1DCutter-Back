@@ -1,5 +1,7 @@
 package pl.printo3d.onedcutter.cutter1d.userlogin.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -7,8 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import pl.printo3d.onedcutter.cutter1d.cutter.models.OrderModel;
 import pl.printo3d.onedcutter.cutter1d.userlogin.models.UserModel;
 import pl.printo3d.onedcutter.cutter1d.userlogin.services.UserService;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -43,5 +48,11 @@ public class UserProfileController {
 
     return true;
   }
+
+  @RequestMapping(value="/getuserprojects", method=RequestMethod.POST)
+  public List<OrderModel> getListOfSavedProjects( @RequestParam UserModel userModel ) {
+      return uService.getListOfSavedProjects(userModel);
+  }
+  
 
 }
