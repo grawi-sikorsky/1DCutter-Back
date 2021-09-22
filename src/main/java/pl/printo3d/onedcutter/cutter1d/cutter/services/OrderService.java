@@ -23,8 +23,6 @@ public class OrderService {
   @Autowired
   private UserService userService;
 
-  public OrderModel orderList = new OrderModel();
-  
   // Lista zawierajace dlugosci i ilosci surowca
   public List<StockModel> stockList = new ArrayList<StockModel>();
 
@@ -35,6 +33,7 @@ public class OrderService {
 
   public OrderModel returnOrder()
   {
+    OrderModel orderList = new OrderModel();
     orderList.cutList.clear();
     orderList.stockList.clear();
 
@@ -76,10 +75,6 @@ public class OrderService {
     userService.updateUser(um);
     /** END ZAPIS DO BAZY */
 
-    orderList.clearOrder();
-
-    cutService.cutList = orderModel.cutList;
-    cutService.stockList = orderModel.stockList;
     cutService.firstFit(orderModel);
 
 
@@ -93,7 +88,6 @@ public class OrderService {
     orderModel.stockList.forEach(e->System.out.println(e.getStockLength() + " " + e.getStockPcs() + " " + e.getStockPrice() + " $" ));
     orderModel.cutList.forEach(e->System.out.println(e.getCutLength() + " " + e.getCutPcs()));
 
-    orderList.clearOrder();
     cutService.cutList = orderModel.cutList;
     cutService.stockList = orderModel.stockList;
     cutService.firstFit(orderModel);
