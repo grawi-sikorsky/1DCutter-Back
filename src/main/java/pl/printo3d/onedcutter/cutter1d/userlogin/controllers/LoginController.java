@@ -21,66 +21,67 @@ import pl.printo3d.onedcutter.cutter1d.userlogin.utility.JWTUtil;
 @RestController
 public class LoginController {
 
-  @Autowired
-  private UserService uService;
+    @Autowired
+    private UserService uService;
 
-  @Autowired
-  private JWTUtil jwtUtil;
+    @Autowired
+    private JWTUtil jwtUtil;
 
-  @GetMapping("/login")
-  public UserModel user() {
-    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    UserModel um;
-    if (principal == "anonymousUser") {
-      System.out.println("nulex!");
-      um = new UserModel("AnonymousUser", "AnonymousUser");
-    } else {
-      System.out.println("GET Loginpage z angulara!");
-      um = (UserModel) uService.loadUserByUsername(((UserModel) principal).getUsername());
+    @GetMapping("/login")
+    public UserModel user() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserModel um;
+        if (principal == "anonymousUser") {
+            System.out.println("nulex!");
+            um = new UserModel("AnonymousUser", "AnonymousUser");
+        } else {
+            System.out.println("GET Loginpage z angulara!");
+            um = (UserModel) uService.loadUserByUsername(((UserModel) principal).getUsername());
+        }
+        return um;
     }
-    return um;
-  }
 
-  @RequestMapping(value = "/register", method = RequestMethod.POST)
-  public boolean registerForm(@RequestBody UserModel uModel) {
-    if (uService.addUser(uModel) == true) {
-      System.out.println("Register done..");
-      return true;
-    } else {
-      System.out.println("Register error");
-      return false;
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public boolean registerForm(@RequestBody UserModel uModel) {
+        if (uService.addUser(uModel) == true) {
+            System.out.println("Register done..");
+            return true;
+        } else {
+            System.out.println("Register error");
+            return false;
+        }
     }
-  }
 
-  @RequestMapping(value = "/auth/login", method = RequestMethod.POST)
-  public AuthResponse authenticateRequest(@RequestBody AuthRequest aRequest) {
+    @RequestMapping(value = "/auth/login", method = RequestMethod.POST)
+    public AuthResponse authenticateRequest(@RequestBody AuthRequest aRequest) {
 
-    if (uService.doLogin(aRequest)) {
-      UserDetails ud = uService.loadUserByUsername(aRequest.getUsername());
-      
-      return new AuthResponse(jwtUtil.generateToken(ud));
-    } 
-    else {
-      return new AuthResponse();
+        if (uService.doLogin(aRequest)) {
+            UserDetails ud = uService.loadUserByUsername(aRequest.getUsername());
+
+            return new AuthResponse(jwtUtil.generateToken(ud));
+        } else {
+            return new AuthResponse();
+        }
     }
-  }
 
-  // endpoint przez ktory przechodzi user po zalogowaniu w celu pobrania danych
-  @GetMapping("/getuserdata")
-  public UserModel getuserdata() {
-    UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    UserModel um;
-    um = (UserModel) uService.loadUserByUsername(ud.getUsername());
-    
-    System.out.println(um.getActiveOrderId());
-    OrderModel om = um.getSavedOrderModels().get(um.getActiveOrderId());
-    um.setActiveOrderModel(om);
-    return um;
-  }
+    // endpoint przez ktory przechodzi user po zalogowaniu w celu pobrania danych
+    // zwraca calego userka
+    // przypisuje aktywny rozkroj do usera - TODO czy na pewno tutaj?
+    @GetMapping("/getuserdata")
+    public UserModel getuserdata() {
+        UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserModel um;
+        um = (UserModel) uService.loadUserByUsername(ud.getUsername());
 
-  @GetMapping("/")
-  public String hometest() {
-    return "jest gitarka!";
-  }
+        System.out.println("Active order: " + um.getActiveOrderId());
+        OrderModel om = um.getSavedOrderModels().get(um.getActiveOrderId());
+        um.setActiveOrderModel(om);
+        return um;
+    }
+
+    @GetMapping("/")
+    public String hometest() {
+        return "jest gitarka!";
+    }
 
 }

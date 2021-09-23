@@ -25,176 +25,182 @@ import pl.printo3d.onedcutter.cutter1d.cutter.models.UserSlots;
 @Entity
 public class UserModel implements UserDetails {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(nullable = false, updatable = false)
-  Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false, updatable = false)
+    Long id;
 
-  String username;
-  String password;
-  String role;
-  String email;
-  String phone;
-  String website;
-  Integer numberOfSavedItems;
-  Integer activeOrderId;
+    String username;
+    String password;
+    String role;
+    String email;
+    String phone;
+    String website;
+    Integer numberOfSavedItems;
+    Integer activeOrderId;
 
-  @OneToOne(cascade = {CascadeType.ALL})
-  @JoinColumn(name = "activeOrderModel", referencedColumnName = "id" )
-  OrderModel activeOrderModel;
+    @OneToOne(cascade = { CascadeType.ALL })
+    @JoinColumn(name = "activeOrderModel", referencedColumnName = "id")
+    OrderModel activeOrderModel;
 
-  @OneToOne(cascade = {CascadeType.ALL})
-  @JoinColumn(name = "userSlots", referencedColumnName = "id" )
-  UserSlots userSlots;
+    @OneToOne(cascade = { CascadeType.ALL })
+    @JoinColumn(name = "userSlots", referencedColumnName = "id")
+    UserSlots userSlots;
 
-  @OneToMany(cascade = {CascadeType.ALL})
-  @JoinColumn(name = "user_id", referencedColumnName = "id" )
-  private List<OrderModel> savedOrderModels = new ArrayList<OrderModel>();
-  
-  public UserModel(){}
+    @OneToMany(cascade = { CascadeType.ALL })
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private List<OrderModel> savedOrderModels = new ArrayList<OrderModel>();
 
-  public UserModel(String username, String password, String email) {
-    this.username = username;
-    this.password = password;
-    this.email = email;
-  }
+    public UserModel() {
+    }
 
-  public UserModel(String username, String password) {
-    this.username = username;
-    this.password = password;
-  }
+    public UserModel(String username, String password, String email) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+    }
 
-  public UserModel(String username, String password, String email, String website) {
-    this.username = username;
-    this.email = email;
-    this.password = password;
-    this.website = website;
-  }
+    public UserModel(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 
-  @Override
-  public Collection<? extends GrantedAuthority> getAuthorities() {
-    // TODO Auto-generated method stub
-    return Collections.singleton(new SimpleGrantedAuthority(role));
-    //return null;
-  }
-  @Override
-  public String getPassword() {
-    // TODO Auto-generated method stub
-    return password;
-  }
-  @Override
-  public String getUsername() {
-    // TODO Auto-generated method stub
-    return username;
-  }
-  @Override
-  public boolean isAccountNonExpired() {
-    // TODO Auto-generated method stub
-    return true;
-  }
-  @Override
-  public boolean isAccountNonLocked() {
-    // TODO Auto-generated method stub
-    return true;
-  }
-  @Override
-  public boolean isCredentialsNonExpired() {
-    // TODO Auto-generated method stub
-    return true;
-  }
-  @Override
-  public boolean isEnabled() {
-    // TODO Auto-generated method stub
-    return true;
-  }
+    public UserModel(String username, String password, String email, String website) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.website = website;
+    }
 
-  public Long getId() {
-    return id;
-  }
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        // TODO Auto-generated method stub
+        return Collections.singleton(new SimpleGrantedAuthority(role));
+        // return null;
+    }
 
-  public void setId(Long id) {
-    this.id = id;
-  }
+    @Override
+    public String getPassword() {
+        // TODO Auto-generated method stub
+        return password;
+    }
 
-  public void setUsername(String username) {
-    this.username = username;
-  }
+    @Override
+    public String getUsername() {
+        // TODO Auto-generated method stub
+        return username;
+    }
 
-  public void setPassword(String password) {
-    this.password = password;
-  }
+    @Override
+    public boolean isAccountNonExpired() {
+        // TODO Auto-generated method stub
+        return true;
+    }
 
-  public String getRole() {
-    return role;
-  }
+    @Override
+    public boolean isAccountNonLocked() {
+        // TODO Auto-generated method stub
+        return true;
+    }
 
-  public void setRole(String role) {
-    this.role = role;
-  }
+    @Override
+    public boolean isCredentialsNonExpired() {
+        // TODO Auto-generated method stub
+        return true;
+    }
 
-  public String getEmail() {
-    return email;
-  }
+    @Override
+    public boolean isEnabled() {
+        // TODO Auto-generated method stub
+        return true;
+    }
 
-  public void setEmail(String email) {
-    this.email = email;
-  }
+    public Long getId() {
+        return id;
+    }
 
-  public String getPhone() {
-    return phone;
-  }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-  public void setPhone(String phone) {
-    this.phone = phone;
-  }
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-  public String getWebsite() {
-    return website;
-  }
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-  public void setWebsite(String website) {
-    this.website = website;
-  }
+    public String getRole() {
+        return role;
+    }
 
-  public UserSlots getUserSlots() {
-    return userSlots;
-  }
+    public void setRole(String role) {
+        this.role = role;
+    }
 
-  public void setUserSlots(UserSlots userSlots) {
-    this.userSlots = userSlots;
-  }
+    public String getEmail() {
+        return email;
+    }
 
-  public Integer getNumberOfSavedItems() {
-    return numberOfSavedItems;
-  }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-  public void setNumberOfSavedItems(Integer numberOfSavedItems) {
-    this.numberOfSavedItems = numberOfSavedItems;
-  }
+    public String getPhone() {
+        return phone;
+    }
 
-  public Integer getActiveOrderId() {
-    return activeOrderId;
-  }
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
-  public void setActiveOrderId(Integer activeOrderId) {
-    this.activeOrderId = activeOrderId;
-  }
+    public String getWebsite() {
+        return website;
+    }
 
-  public OrderModel getActiveOrderModel() {
-    return activeOrderModel;
-  }
+    public void setWebsite(String website) {
+        this.website = website;
+    }
 
-  public void setActiveOrderModel(OrderModel activeOrderModel) {
-    this.activeOrderModel = activeOrderModel;
-  }
+    public UserSlots getUserSlots() {
+        return userSlots;
+    }
 
-  public List<OrderModel> getSavedOrderModels() {
-    return savedOrderModels;
-  }
+    public void setUserSlots(UserSlots userSlots) {
+        this.userSlots = userSlots;
+    }
 
-  public void setSavedOrderModels(List<OrderModel> savedOrderModels) {
-    this.savedOrderModels = savedOrderModels;
-  }
-  
-  
+    public Integer getNumberOfSavedItems() {
+        return numberOfSavedItems;
+    }
+
+    public void setNumberOfSavedItems(Integer numberOfSavedItems) {
+        this.numberOfSavedItems = numberOfSavedItems;
+    }
+
+    public Integer getActiveOrderId() {
+        return activeOrderId;
+    }
+
+    public void setActiveOrderId(Integer activeOrderId) {
+        this.activeOrderId = activeOrderId;
+    }
+
+    public OrderModel getActiveOrderModel() {
+        return activeOrderModel;
+    }
+
+    public void setActiveOrderModel(OrderModel activeOrderModel) {
+        this.activeOrderModel = activeOrderModel;
+    }
+
+    public List<OrderModel> getSavedOrderModels() {
+        return savedOrderModels;
+    }
+
+    public void setSavedOrderModels(List<OrderModel> savedOrderModels) {
+        this.savedOrderModels = savedOrderModels;
+    }
+
 }

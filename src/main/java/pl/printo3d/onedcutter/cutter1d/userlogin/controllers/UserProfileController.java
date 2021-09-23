@@ -14,47 +14,42 @@ import pl.printo3d.onedcutter.cutter1d.userlogin.models.UserModel;
 import pl.printo3d.onedcutter.cutter1d.userlogin.services.UserService;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 public class UserProfileController {
 
-  @Autowired
-  private UserService uService;
-  
+    @Autowired
+    private UserService uService;
 
-  @RequestMapping(value="/profile", method = RequestMethod.POST)
-  public boolean profileUpdate( @RequestBody UserModel userModel )
-  {
-    UserModel uModel = (UserModel)uService.loadUserByUsername(userModel.getUsername());
+    @RequestMapping(value = "/profile", method = RequestMethod.POST)
+    public boolean profileUpdate(@RequestBody UserModel userModel) {
+        UserModel uModel = (UserModel) uService.loadUserByUsername(userModel.getUsername());
 
-    uModel.setPhone(userModel.getPhone());
-    uModel.setWebsite(userModel.getWebsite());
-    uService.updateUser(uModel);
+        uModel.setPhone(userModel.getPhone());
+        uModel.setWebsite(userModel.getWebsite());
+        uService.updateUser(uModel);
 
-    return true;
-  }
+        return true;
+    }
 
-  @RequestMapping(value="/updateuser", method = RequestMethod.POST)
-  public boolean updateUser( @RequestBody UserModel incomingUserModel )
-  {
-    UserModel uModel = (UserModel)uService.loadUserByUsername(incomingUserModel.getUsername());
+    @RequestMapping(value = "/updateuser", method = RequestMethod.POST)
+    public boolean updateUser(@RequestBody UserModel incomingUserModel) {
+        UserModel uModel = (UserModel) uService.loadUserByUsername(incomingUserModel.getUsername());
 
-    uModel.setActiveOrderId(incomingUserModel.getActiveOrderId());
-    uModel.setActiveOrderModel(incomingUserModel.getActiveOrderModel());
-    uModel.setSavedOrderModels(incomingUserModel.getSavedOrderModels());
+        uModel.setActiveOrderId(incomingUserModel.getActiveOrderId());
+        uModel.setActiveOrderModel(incomingUserModel.getActiveOrderModel());
+        uModel.setSavedOrderModels(incomingUserModel.getSavedOrderModels());
 
-    uService.updateUser(uModel);
+        uService.updateUser(uModel);
 
-    System.out.println("UpdateUser");
+        System.out.println("Request /updateuser -> UpdateUser");
 
-    return true;
-  }
+        return true;
+    }
 
-  @RequestMapping(value="/getuserprojects", method=RequestMethod.POST)
-  public List<OrderModel> getListOfSavedProjects( @RequestParam UserModel userModel ) {
-      return uService.getListOfSavedProjects(userModel);
-  }
-  
+    @RequestMapping(value = "/getuserprojects", method = RequestMethod.POST)
+    public List<OrderModel> getListOfSavedProjects(@RequestParam UserModel userModel) {
+        return uService.getListOfSavedProjects(userModel);
+    }
 
 }

@@ -19,54 +19,54 @@ import pl.printo3d.onedcutter.cutter1d.userlogin.utility.JWTFilter;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-  private UserService uService;
+    private UserService uService;
 
-  @Autowired
-  JWTFilter jwtFilter;
+    @Autowired
+    JWTFilter jwtFilter;
 
-  @Autowired
-  public SecurityConfig(UserService uService) {
-    this.uService = uService;
-  }
+    @Autowired
+    public SecurityConfig(UserService uService) {
+        this.uService = uService;
+    }
 
-  public SecurityConfig() {
-  }
+    public SecurityConfig() {
+    }
 
-  @Override
-  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-    auth.userDetailsService(uService);
-  }
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(uService);
+    }
 
-  @Override
-  protected void configure(HttpSecurity http) throws Exception {
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
 
-    CorsConfiguration corsConfiguration = new CorsConfiguration();
-    corsConfiguration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
-    corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
-    corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PUT","OPTIONS","PATCH", "DELETE"));
-    corsConfiguration.setAllowCredentials(true);
-    corsConfiguration.setExposedHeaders(Arrays.asList("Authorization"));
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+        corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
+        corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PUT", "OPTIONS", "PATCH", "DELETE"));
+        corsConfiguration.setAllowCredentials(true);
+        corsConfiguration.setExposedHeaders(Arrays.asList("Authorization"));
 
+        http.authorizeRequests()
+            .antMatchers("/login", "/img/**", "/css/**").permitAll()
+            .antMatchers("/auth/login").permitAll()
+            .antMatchers("/register", "/img/**", "/css/**").permitAll()
+            .antMatchers("/1dcut").permitAll()
+            .antMatchers("/cut").permitAll()
+            .antMatchers("/cutfree").permitAll()
+            .antMatchers("/setorder").permitAll()
+            .antMatchers("/result").permitAll()
+            .antMatchers("/profile").permitAll()
+            .antMatchers("/test").permitAll()
+            .anyRequest().authenticated();
 
-    http.authorizeRequests().antMatchers("/login", "/img/**", "/css/**").permitAll()
-        .antMatchers("/auth/login").permitAll()
-        .antMatchers("/register", "/img/**", "/css/**").permitAll()
-        .antMatchers("/1dcut").permitAll()
-        .antMatchers("/cut").permitAll()
-        .antMatchers("/cutfree").permitAll()
-        .antMatchers("/setorder").permitAll()
-        .antMatchers("/result").permitAll()
-        .antMatchers("/profile").permitAll()
-        .antMatchers("/test").permitAll()
-        .anyRequest().authenticated();
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
-    http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-    http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+        http.formLogin().permitAll().loginPage("/login").permitAll().and().logout().permitAll().deleteCookies("JSESSIONID");
 
-    http.formLogin().permitAll().loginPage("/login").permitAll().and().logout().permitAll().deleteCookies("JSESSIONID");
+        http.csrf().disable();
+        http.cors().configurationSource(request -> corsConfiguration);
 
-    http.csrf().disable();
-    http.cors().configurationSource(request -> corsConfiguration);
-
-  }
+    }
 }
