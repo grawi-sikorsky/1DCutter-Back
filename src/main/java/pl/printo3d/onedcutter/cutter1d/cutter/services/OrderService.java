@@ -1,5 +1,7 @@
 package pl.printo3d.onedcutter.cutter1d.cutter.services;
 
+import java.sql.Time;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import net.bytebuddy.asm.Advice.Local;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.CutModel;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.OrderModel;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.ResultModel;
@@ -50,14 +53,12 @@ public class OrderService {
     public ResultModel makeOrder(OrderModel orderModel) {
         System.out.println("Make Order in Java");
 
-        orderModel.getStockList()
-                .forEach(e -> System.out.println("ID: " + e.getId() + ", frontID: " + e.getIdFront() + ", Len: "
-                        + e.getStockLength() + ", Pcs: " + e.getStockPcs() + ", price: " + e.getStockPrice() + " $"));
+        orderModel.getStockList().forEach(e -> System.out.println("ID: " + e.getId() + ", frontID: " + e.getIdFront() + ", Len: " + e.getStockLength() + ", Pcs: " + e.getStockPcs() + ", price: " + e.getStockPrice() + " $"));
         orderModel.getCutList().forEach(e -> System.out.println(e.getCutLength() + " " + e.getCutPcs()));
 
-        /** ZAPIS DO BAZY */
-        this.setOrder(orderModel);
-        /** END ZAPIS DO BAZY */
+        /** ZAPIS DO BAZY [ACTIVE ORDER] */
+        this.saveActiveOrder(orderModel);
+        /** END ZAPIS DO BAZY [ACTIVE ORDER] */
 
         orderList.clearOrder();
 
@@ -71,9 +72,7 @@ public class OrderService {
     public ResultModel makeOrderFree(OrderModel orderModel) {
         System.out.println("Make FREE Order in Java");
 
-        orderModel.getStockList()
-                .forEach(e -> System.out.println("ID: " + e.getId() + ", frontID: " + e.getIdFront() + ", Len: "
-                        + e.getStockLength() + ", Pcs: " + e.getStockPcs() + ", price: " + e.getStockPrice() + " $"));
+        orderModel.getStockList().forEach(e -> System.out.println("ID: " + e.getId() + ", frontID: " + e.getIdFront() + ", Len: " + e.getStockLength() + ", Pcs: " + e.getStockPcs() + ", price: " + e.getStockPrice() + " $"));
         orderModel.getCutList().forEach(e -> System.out.println(e.getCutLength() + " " + e.getCutPcs()));
 
         orderList.clearOrder();
@@ -86,7 +85,7 @@ public class OrderService {
         return resultService.makeFullResults();
     }
 
-    public void setOrder(OrderModel incomingOrderModel) {
+    public void saveUserOrders(OrderModel incomingOrderModel) {
         /** ZAPIS DO BAZY */
         UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UserModel um;
@@ -100,12 +99,35 @@ public class OrderService {
         um.getSavedOrderModels().get(um.getActiveOrderId()).getStockList().clear();
         um.getSavedOrderModels().get(um.getActiveOrderId()).getStockList().addAll(incomingOrderModel.getStockList());
 
-        incomingOrderModel.getCutOptions()
-                .setId(um.getSavedOrderModels().get(um.getActiveOrderId()).getCutOptions().getId());// ID odczytaj i
-                                                                                                    // przypisz, bo w
-                                                                                                    // orderModel
-                                                                                                    // jeszcze nie ma..
+        incomingOrderModel.getCutOptions().setId(um.getSavedOrderModels().get(um.getActiveOrderId()).getCutOptions().getId());// ID odczytaj i przypisz, bo w orderModel jeszcze nie ma..
         um.getSavedOrderModels().get(um.getActiveOrderId()).setCutOptions(incomingOrderModel.getCutOptions());
+
+        um.getSavedOrderModels().get(um.getActiveOrderId()).setProjectName(incomingOrderModel.getProjectName());
+        um.getSavedOrderModels().get(um.getActiveOrderId()).setProjectModified(LocalDateTime.now());
+
+        userService.updateUser(um);
+        /** END ZAPIS DO BAZY */
+    }
+
+    public void saveActiveOrder(OrderModel incomingOrderModel) {
+        /** ZAPIS DO BAZY */
+        UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserModel um;
+        um = (UserModel) userService.loadUserByUsername(ud.getUsername());
+
+        // najpierw czyscimy liste, aby w DB pozbyc sie osieroconych wpisow
+        // dlatego getcutlist.addAll! zamiast setCutlist.add!
+        um.getActiveOrderModel().getCutList().clear();
+        um.getActiveOrderModel().getCutList().addAll(incomingOrderModel.getCutList());
+
+        um.getActiveOrderModel().getStockList().clear();
+        um.getActiveOrderModel().getStockList().addAll(incomingOrderModel.getStockList());
+
+        incomingOrderModel.getCutOptions().setId(um.getActiveOrderModel().getCutOptions().getId());// ID odczytaj i przypisz, bo w orderModel jeszcze nie ma..
+        um.getActiveOrderModel().setCutOptions(incomingOrderModel.getCutOptions());
+
+        um.getActiveOrderModel().setProjectName(incomingOrderModel.getProjectName());
+        um.getActiveOrderModel().setProjectModified(LocalDateTime.now());
 
         userService.updateUser(um);
         /** END ZAPIS DO BAZY */

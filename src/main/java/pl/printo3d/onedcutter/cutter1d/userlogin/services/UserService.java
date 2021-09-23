@@ -63,22 +63,21 @@ public class UserService implements UserDetailsService {
                 // 1 domyslne formatki
                 OrderModel ord = new OrderModel();
                 ord.setCutList(Arrays.asList(new CutModel("220", "5"), new CutModel("260", "5")));
-                ord.setStockList(
-                        Arrays.asList(new StockModel("0", "1000", "6", "0"), new StockModel("1", "1000", "5", "0")));
+                ord.setStockList(Arrays.asList(new StockModel("0", "1000", "6", "0"), new StockModel("1", "1000", "5", "0")));
                 ord.setCutOptions(new CutOptions(false, 0d, false));
-                ord.setProjectName("default name");
+                ord.setProjectName("Default project");
                 ord.setProjectCreated(LocalDateTime.now());
                 ord.setProjectModified(LocalDateTime.now());
 
                 OrderModel ord2 = new OrderModel();
                 ord2.setCutList(Arrays.asList(new CutModel("220", "5"), new CutModel("260", "5")));
-                ord2.setStockList(
-                        Arrays.asList(new StockModel("0", "1000", "6", "0"), new StockModel("1", "1000", "5", "0")));
+                ord2.setStockList( Arrays.asList(new StockModel("0", "1000", "6", "0"), new StockModel("1", "1000", "5", "0")));
                 ord2.setCutOptions(new CutOptions(false, 0d, false));
-                ord2.setProjectName("default name2");
+                ord2.setProjectName("Default project2");
                 ord2.setProjectCreated(LocalDateTime.now());
                 ord2.setProjectModified(LocalDateTime.now());
 
+                userModel.setActiveOrderModel(ord);
                 userModel.setSavedOrderModels(Arrays.asList(ord, ord2));
                 userModel.setActiveOrderId(0); // default
                 userModel.setNumberOfSavedItems(userModel.getSavedOrderModels().size());

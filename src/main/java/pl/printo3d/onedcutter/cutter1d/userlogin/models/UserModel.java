@@ -78,43 +78,36 @@ public class UserModel implements UserDetails {
         return Collections.singleton(new SimpleGrantedAuthority(role));
         // return null;
     }
-
     @Override
     public String getPassword() {
         // TODO Auto-generated method stub
         return password;
     }
-
     @Override
     public String getUsername() {
         // TODO Auto-generated method stub
         return username;
     }
-
     @Override
     public boolean isAccountNonExpired() {
         // TODO Auto-generated method stub
         return true;
     }
-
     @Override
     public boolean isAccountNonLocked() {
         // TODO Auto-generated method stub
         return true;
     }
-
     @Override
     public boolean isCredentialsNonExpired() {
         // TODO Auto-generated method stub
         return true;
     }
-
     @Override
     public boolean isEnabled() {
         // TODO Auto-generated method stub
         return true;
     }
-
     public Long getId() {
         return id;
     }
