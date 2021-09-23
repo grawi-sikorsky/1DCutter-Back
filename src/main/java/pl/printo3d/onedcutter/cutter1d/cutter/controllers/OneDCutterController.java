@@ -42,6 +42,7 @@ public class OneDCutterController {
         return orderService.returnOrder(orderModel);
     }
 
+    // Oblicz nie Logged
     @PostMapping("/cutfree")
     public OrderModel ProcessOrderFree(@RequestBody OrderModel orderModel,@RequestHeader HttpHeaders head) {
         System.out.println(head);
@@ -49,18 +50,15 @@ public class OneDCutterController {
         return orderService.returnOrder(orderModel);
     }
 
+    // Zapisuje bierzacy orderModel do bazy
     @PostMapping("/setorder")
     public OrderModel setOptions(@RequestBody OrderModel orderModel) {
-        orderService.setOrder(orderModel);
+        orderService.saveActiveOrder(orderModel);
 
         return orderModel;
     }
 
-    @GetMapping("/cut") // not used?
-    public OrderModel cut() {
-        return orderService.returnOrder();
-    }
-
+    // Zwraca wyniki
     @GetMapping("/result")
     public ResultModel result() {
         return resultService.makeFullResults();
