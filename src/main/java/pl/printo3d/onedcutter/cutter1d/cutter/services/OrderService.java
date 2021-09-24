@@ -1,16 +1,12 @@
 package pl.printo3d.onedcutter.cutter1d.cutter.services;
 
-import java.sql.Time;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import net.bytebuddy.asm.Advice.Local;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.CutModel;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.OrderModel;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.ResultModel;
@@ -28,17 +24,12 @@ public class OrderService {
     @Autowired
     private UserService userService;
 
-    public OrderModel orderList = new OrderModel();
-
-    // Lista zawierajace dlugosci i ilosci surowca
-    public List<StockModel> stockList = new ArrayList<StockModel>();
-
-    // Lista zawierajace klucze (dlugosci) i wartosci (ilosc) formatek do ciecia
-    public List<CutModel> cutList = new ArrayList<CutModel>();
-
+    // Default
     public OrderModel returnOrder() {
-        orderList.getCutList().clear();
-        orderList.getStockList().clear();
+        OrderModel orderList = new OrderModel();
+
+        // orderList.getCutList().clear();
+        // orderList.getStockList().clear();
 
         orderList.getCutList().add(new CutModel("260", "5"));
         orderList.getStockList().add(new StockModel("0", "1000", "4", "0"));
@@ -46,13 +37,20 @@ public class OrderService {
         return orderList;
     }
 
+    // A ODDEJ PAN COS POWZIĄŁ!! :D
     public OrderModel returnOrder(OrderModel orderModel) {
         return orderModel;
     }
 
+    /**
+     * Wykonuje obliczenia dla zalogowanego Usera -> TODO: roznica jest tylko w zapisie do bazy -> scalić w jedno.
+     * @param orderModel
+     * @return
+     */
     public ResultModel makeOrder(OrderModel orderModel) {
-        System.out.println("Make Order in Java");
+        // OrderModel orderList = new OrderModel();
 
+        System.out.println("Make Order:");
         orderModel.getStockList().forEach(e -> System.out.println("ID: " + e.getId() + ", frontID: " + e.getIdFront() + ", Len: " + e.getStockLength() + ", Pcs: " + e.getStockPcs() + ", price: " + e.getStockPrice() + " $"));
         orderModel.getCutList().forEach(e -> System.out.println(e.getCutLength() + " " + e.getCutPcs()));
 
@@ -60,31 +58,41 @@ public class OrderService {
         this.saveActiveOrder(orderModel);
         /** END ZAPIS DO BAZY [ACTIVE ORDER] */
 
-        orderList.clearOrder();
+        // orderList.clearOrder();
 
-        cutService.cutList = orderModel.getCutList();
-        cutService.stockList = orderModel.getStockList();
-        cutService.firstFit(orderModel);
+        // do ogarniecia.... 
+        // cutService.cutList = orderModel.getCutList();
+        // cutService.stockList = orderModel.getStockList();
+        //cutService.firstFit(orderModel);
 
-        return resultService.makeFullResults();
+        return resultService.makeFullResults( cutService.firstFit(orderModel), orderModel );
     }
 
+    /**
+     * Wykonuje obliczenia dla usera niezalogowanego
+     * @param orderModel
+     * @return
+     */
     public ResultModel makeOrderFree(OrderModel orderModel) {
-        System.out.println("Make FREE Order in Java");
+        // OrderModel orderList = new OrderModel();
 
+        System.out.println("Make FREE Order:");
         orderModel.getStockList().forEach(e -> System.out.println("ID: " + e.getId() + ", frontID: " + e.getIdFront() + ", Len: " + e.getStockLength() + ", Pcs: " + e.getStockPcs() + ", price: " + e.getStockPrice() + " $"));
         orderModel.getCutList().forEach(e -> System.out.println(e.getCutLength() + " " + e.getCutPcs()));
 
-        orderList.clearOrder();
-        cutService.cutList = orderModel.getCutList();
-        cutService.stockList = orderModel.getStockList();
+        // orderList.clearOrder();
+        // cutService.cutList = orderModel.getCutList();
+        // cutService.stockList = orderModel.getStockList();
 
-        cutService.firstFit(orderModel);
-        // this.returnOrder(orderModel); //?
+        
 
-        return resultService.makeFullResults();
+        return resultService.makeFullResults( cutService.firstFit(orderModel), orderModel );
     }
 
+    /**
+     * Zapisuje do bazy Order, który ma trafic w "pamiec stala" tj. wolne sloty kazdego usera
+     * @param incomingOrderModel
+     */
     public void saveUserOrders(OrderModel incomingOrderModel) {
         /** ZAPIS DO BAZY */
         UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -109,6 +117,10 @@ public class OrderService {
         /** END ZAPIS DO BAZY */
     }
 
+    /**
+     * Zapisuje do bazy wyłącznie jeden bierzący order - nie zapisuje ich do slotów pamieci usera
+     * @param incomingOrderModel
+     */
     public void saveActiveOrder(OrderModel incomingOrderModel) {
         /** ZAPIS DO BAZY */
         UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

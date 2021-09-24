@@ -1,15 +1,16 @@
 package pl.printo3d.onedcutter.cutter1d.cutter.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import pl.printo3d.onedcutter.cutter1d.cutter.models.CutModel;
-import pl.printo3d.onedcutter.cutter1d.cutter.models.OrderModel;
-import pl.printo3d.onedcutter.cutter1d.cutter.models.StockModel;
-import pl.printo3d.onedcutter.cutter1d.cutter.models.WorkPiece;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import pl.printo3d.onedcutter.cutter1d.cutter.models.CutModel;
+import pl.printo3d.onedcutter.cutter1d.cutter.models.CutterProduct;
+import pl.printo3d.onedcutter.cutter1d.cutter.models.OrderModel;
+import pl.printo3d.onedcutter.cutter1d.cutter.models.WorkPiece;
 
 @Service
 public class OneDCutService {
@@ -20,22 +21,12 @@ public class OneDCutService {
     @Autowired
     ResultService resultService;
 
-    // lista roboczych kawalkow - kazdy zawiera info o cieciach oraz o ilosci
-    // wolnego miejsca na nim
-    public List<WorkPiece> workPiecesList = new ArrayList<WorkPiece>();
-
-    // Lista zawierajace dlugosci i ilosci surowca
-    public List<StockModel> stockList = new ArrayList<StockModel>();
-
-    // Lista zawierajace klucze (dlugosci) i wartosci (ilosc) formatek do ciecia
-    public List<CutModel> cutList = new ArrayList<CutModel>();
-
-    public List<Double> partsList = new ArrayList<Double>();
 
     // Tworzy liste elementow do ciecia na podstawie wpisanych danych
-    public List<Double> makePartList(List<CutModel> CL) {
-        partsList.clear();
-        for (CutModel c : CL) {
+    public List<Double> makePartList(List<CutModel> cutList) {
+        List<Double> partsList = new ArrayList<Double>();
+ 
+        for (CutModel c : cutList) {
             for (int i = 0; i < Integer.parseInt(c.getCutPcs()); ++ i) {
                 partsList.add(Double.parseDouble(c.getCutLength()));
             }
@@ -44,8 +35,9 @@ public class OneDCutService {
     }
 
     // Sortowanie odwrotne
-    public List<Double> sortReverse() {
-        makePartList(cutList);
+    public List<Double> sortReverse(List<CutModel> cutList) {
+        List<Double> partsList = new ArrayList<Double>();
+        partsList = makePartList(cutList);
         Collections.sort(partsList);
         Collections.reverse(partsList);
 
@@ -53,12 +45,17 @@ public class OneDCutService {
     }
 
     // 1. Pierwsza metoda rozwiazania problemu
-    public List<WorkPiece> firstFit(OrderModel order) {
-        // rewers..
-        sortReverse();
+    public CutterProduct firstFit(OrderModel incomingOrder) {
 
-        // flush workpieces:
-        workPiecesList.clear();
+        CutterProduct cutterProduct = new CutterProduct();
+        // lista roboczych kawalkow - kazdy zawiera info o cieciach oraz o ilosci
+        // wolnego miejsca na nim
+        List<WorkPiece> workPiecesList = new ArrayList<WorkPiece>();
+
+        List<Double> partsList = new ArrayList<Double>();
+       
+        // rewers..
+        partsList = sortReverse(incomingOrder.getCutList());
 
         Integer tempStockCounter = 0, tempStockIterator = 0;
         List<Double> partsDone = new ArrayList<Double>();
@@ -69,26 +66,22 @@ public class OneDCutService {
             System.out.println("Next part is: " + part);
 
             // 2. JESLI NA OBECNYM SUROWCU NIE MA WOLNEGO MIEJSCA NA TE CZESC?
-            if (! workPiecesList.stream().anyMatch(work -> work.freeSpace(order.getCutOptions().getOptionSzrank()) >= part)) {
+            if (! workPiecesList.stream().anyMatch(work -> work.freeSpace(incomingOrder.getCutOptions().getOptionSzrank()) >= part)) {
                 // 3. JESLI DOSTEPNA JEST JESZCZE JEDNA SZTUKA SUROWCA DANEGO TYPU/DLUGOSCI
-                if (tempStockCounter < Integer.parseInt(stockList.get(tempStockIterator).getStockPcs())) {
+                if (tempStockCounter < Integer.parseInt(incomingOrder.getStockList().get(tempStockIterator).getStockPcs())) {
                     // 4. DODAJ SUROWIEC DANEGO TYPU
-                    workPiecesList.add(new WorkPiece(stockList.get(tempStockIterator).getIdFront(),
-                            Double.valueOf(stockList.get(tempStockIterator).getStockLength())));
-                    System.out.println("No free space left, adding new stock piece: "
-                            + stockList.get(tempStockIterator).getStockLength());
+                    workPiecesList.add(new WorkPiece(incomingOrder.getStockList().get(tempStockIterator).getIdFront(), Double.valueOf(incomingOrder.getStockList().get(tempStockIterator).getStockLength())));
+                    System.out.println("No free space left, adding new stock piece: " + incomingOrder.getStockList().get(tempStockIterator).getStockLength());
                     tempStockCounter++;
                 } else // 5. BRAKUJE JUZ SUROWCA DANEGO TYPU:
                 {
                     // 6. JESTLI SA DOSTEPNE INNE TYPY/DLUGOSCI SUROWCA:
-                    if (tempStockIterator < stockList.size() - 1) {
+                    if (tempStockIterator < incomingOrder.getStockList().size() - 1) {
                         tempStockIterator++;
                         tempStockCounter = 0;
                         // 7. DODAJ SUROWIEC NOWEGO TYPU / ZERUJ LICZNIKI
-                        workPiecesList.add(new WorkPiece(stockList.get(tempStockIterator).getIdFront(),
-                                Double.valueOf(stockList.get(tempStockIterator).getStockLength())));
-                        System.out.println("No free space left, adding new stock piece: "
-                                + stockList.get(tempStockIterator).getStockLength());
+                        workPiecesList.add(new WorkPiece(incomingOrder.getStockList().get(tempStockIterator).getIdFront(), Double.valueOf(incomingOrder.getStockList().get(tempStockIterator).getStockLength())));
+                        System.out.println("No free space left, adding new stock piece: " + incomingOrder.getStockList().get(tempStockIterator).getStockLength());
                         tempStockCounter++;
                     } else {
                         // BRAK SUROWCA
@@ -99,7 +92,7 @@ public class OneDCutService {
 
             // 8. PRZESZUKAJ LISTE UZYWANYCH SUROWCOW W POSZUKIWANIU MIEJSCA NA NOWA CZESC
             for (WorkPiece work : workPiecesList) {
-                if (work.freeSpace(order.getCutOptions().getOptionSzrank()) >= part) {
+                if (work.freeSpace(incomingOrder.getCutOptions().getOptionSzrank()) >= part) {
                     work.cut(part);
                     partsDone.add(part);
                     break; // koniecznie wyskoczyc z loopa!
@@ -112,7 +105,11 @@ public class OneDCutService {
         // 10. PRZEKAZUJEMY LISTE<DOUBLE> do uslugi ktora tworzy, zapisuje i zwraca bary
         resultService.getRemainBars(partsRemaining);
 
-        return workPiecesList;
+
+        cutterProduct.setWorkPiecesList(workPiecesList);
+        cutterProduct.setNotFittedPieces(partsRemaining);
+
+        return cutterProduct;
     }
 
 }

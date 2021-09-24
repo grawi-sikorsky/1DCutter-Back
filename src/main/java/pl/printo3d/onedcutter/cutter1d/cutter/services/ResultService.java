@@ -1,42 +1,56 @@
 package pl.printo3d.onedcutter.cutter1d.cutter.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import pl.printo3d.onedcutter.cutter1d.cutter.models.ResultBar;
-import pl.printo3d.onedcutter.cutter1d.cutter.models.ResultBarPieceModel;
-import pl.printo3d.onedcutter.cutter1d.cutter.models.ResultModel;
-import pl.printo3d.onedcutter.cutter1d.cutter.models.WorkPiece;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Service;
+
+import pl.printo3d.onedcutter.cutter1d.cutter.models.OrderModel;
+import pl.printo3d.onedcutter.cutter1d.cutter.models.ResultBar;
+import pl.printo3d.onedcutter.cutter1d.cutter.models.ResultBarPieceModel;
+import pl.printo3d.onedcutter.cutter1d.cutter.models.ResultModel;
+import pl.printo3d.onedcutter.cutter1d.cutter.models.WorkPiece;
+
 @Service
 public class ResultService {
-
-    @Autowired
-    private OneDCutService cutService;
-
-    private ResultModel fullResults = new ResultModel();
 
     private ResultBar resultBar = new ResultBar();
 
     public ResultService() {
     }
 
-
     // TODO !!! CALA USLUGA DO PRZEROBIENIA ! 4/5 metod iteruje po "List<WorkPiece>"!
-    // TODO DO ZEBRANIA W JEDNA METODE!
 
+    /**
+     * Otrzymuje remainPcs z CutterService i zapisuje do fullresultsow..
+     * @param remainPcs
+     * @return
+     */
+    public List<ResultBar> getRemainBars(List<Double> remainPcs) {
+        List<ResultBar> remainBars = new ArrayList<ResultBar>();
+        remainBars.clear();
+
+        for (Double rp : remainPcs) {
+            resultBar.addPiece(new ResultBarPieceModel((String.valueOf((rp / 1000) * 100)), String.valueOf(rp)));
+
+            remainBars.add(new ResultBar(new ArrayList<ResultBarPieceModel>(resultBar.getResultBarPieces())));
+            resultBar.clear();
+        }
+        //setResultRemainingPieces(remainBars);
+
+        return remainBars;
+    }
+
+    /**
+     * workpieces -> resultbars
+     * @param workPieces
+     * @return
+     */
     public List<ResultBar> getResultsBars(List<WorkPiece> workPieces) {
         List<ResultBar> resultBars = new ArrayList<ResultBar>();
         resultBars.clear();
-
-        // POMYSL:
-        // 1 STREAM JAKOSC ZROBIC I USUNAC WSZYSTKIE DUPLIKATY
-        // 2 POTEM ITEROWAC NOWO POWSTALA TABLICA I SPRAWDZIC CZY W PIERWODNEJ WYSTEPUJA TAKIE ELEMENTY I W JAKIEJ ILOSCI.
-        // 3 ZROZUMIEC ZE TO WSZYSTKO NIE MA SENSU...
 
         for (WorkPiece wp : workPieces) {
             for (int i = 0; i < wp.getCuts().size(); ++ i) {
@@ -48,22 +62,9 @@ public class ResultService {
         return resultBars;
     }
 
-    public List<ResultBar> getRemainBars(List<Double> remainPcs) {
-        List<ResultBar> remainBars = new ArrayList<ResultBar>();
-        remainBars.clear();
 
-        for (Double rp : remainPcs) {
-            resultBar.addPiece(new ResultBarPieceModel((String.valueOf((rp / 1000) * 100)), String.valueOf(rp)));
 
-            remainBars.add(new ResultBar(new ArrayList<ResultBarPieceModel>(resultBar.getResultBarPieces())));
-            resultBar.clear();
-        }
-        setResultRemainingPieces(remainBars);
-
-        return remainBars;
-    }
-
-    public Double calculateWaste(List<WorkPiece> workPieces) {
+    public Double calculateWaste(List<WorkPiece> workPieces, ResultModel resultToChange) {
         Double resultWaste = 0.0;
         Double resultUsed = 0.0;
         Double resultWasteProcent = 0.0;
@@ -73,9 +74,9 @@ public class ResultService {
             resultWaste += workpc.freeSpace(0.0);
         }
         resultWasteProcent = (resultWaste / resultUsed) * 100.0;
-        fullResults.setResultUsed(resultUsed);
-        fullResults.setResultWasteProcent(resultWasteProcent);
-        fullResults.setResultUsedProcent(100 - resultWasteProcent);
+        resultToChange.setResultUsed(resultUsed);
+        resultToChange.setResultWasteProcent(resultWasteProcent);
+        resultToChange.setResultUsedProcent(100 - resultWasteProcent);
 
         return resultWasteProcent;
     }
@@ -91,13 +92,13 @@ public class ResultService {
         return resultNeededStock;
     }
 
-    public Double calculatePrice(List<WorkPiece> workPieces) {
+    public Double calculatePrice(List<WorkPiece> workPieces, OrderModel incominOrderModel) {
         Double costs = 0D;
-
+        
         for (WorkPiece workpc : workPieces) {
-            for (int index = 0; index < this.cutService.stockList.size(); index++) {
-                if (this.cutService.stockList.get(index).getIdFront().equals(workpc.getFrontID())) {
-                    costs += Double.valueOf(this.cutService.stockList.get(index).getStockPrice());
+            for (int index = 0; index < incominOrderModel.getStockList().size(); index++) {
+                if (incominOrderModel.getStockList().get(index).getIdFront().equals(workpc.getFrontID())) {
+                    costs += Double.valueOf(incominOrderModel.getStockList().get(index).getStockPrice());
                 }
             }
         }
@@ -113,12 +114,16 @@ public class ResultService {
       return temp;
     }
 
-    public ResultModel makeFullResults() {
-        fullResults.setResultCutCount(this.calculateCutCount(this.cutService.workPiecesList));
-        fullResults.setResultNeededStock(this.calculateNeededStock(this.cutService.workPiecesList));
-        fullResults.setResultBars(this.getResultsBars(this.cutService.workPiecesList));
-        fullResults.setResultWaste(this.calculateWaste(this.cutService.workPiecesList));
-        fullResults.setResultCostOveral(this.calculatePrice(this.cutService.workPiecesList));
+    public ResultModel makeFullResults(List<WorkPiece> wPieces, OrderModel incominOrderModel) {
+        ResultModel fullResults = new ResultModel();
+
+        fullResults.setResultCutCount(this.calculateCutCount(wPieces));
+        fullResults.setResultNeededStock(this.calculateNeededStock(wPieces));
+        fullResults.setResultBars(this.getResultsBars(wPieces));
+        Double resWasteProc = this.calculateWaste(wPieces, fullResults);
+        fullResults.setResultWaste(resWasteProc);
+        fullResults.setResultCostOveral(this.calculatePrice(wPieces,incominOrderModel));
+        fullResults.setResultRemainingPieces(this.getRemainBars(remainPcs));
 
         return fullResults;
     }

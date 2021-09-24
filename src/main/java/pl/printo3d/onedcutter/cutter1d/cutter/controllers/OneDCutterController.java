@@ -1,4 +1,4 @@
-package pl.printo3d.onedcutter.cutter1d.cutter.controllers;
+﻿package pl.printo3d.onedcutter.cutter1d.cutter.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -34,16 +34,14 @@ public class OneDCutterController {
 
     // OBLICZ LOGGED
     @PostMapping("/cut")
-    public OrderModel ProcessOrder(@RequestBody OrderModel orderModel) {
-        orderService.makeOrder(orderModel);
-        return orderService.returnOrder(orderModel);
+    public ResultModel ProcessOrder(@RequestBody OrderModel orderModel) {
+        return orderService.makeOrder(orderModel);
     }
 
     // Oblicz nie Logged
     @PostMapping("/cutfree")
-    public OrderModel ProcessOrderFree(@RequestBody OrderModel orderModel) {
-        orderService.makeOrderFree(orderModel);
-        return orderService.returnOrder(orderModel);
+    public ResultModel ProcessOrderFree(@RequestBody OrderModel orderModel) {
+        return orderService.makeOrderFree(orderModel);
     }
 
     // Zapisuje bierzacy orderModel do bazy
@@ -54,9 +52,9 @@ public class OneDCutterController {
         return orderModel;
     }
 
-    // Zwraca wyniki
-    @GetMapping("/result")
-    public ResultModel result() {
-        return resultService.makeFullResults();
-    }
+    // // Zwraca wyniki
+    // @GetMapping("/result")
+    // public ResultModel result() {
+    //     return resultService.makeFullResults();
+    // }
 }
