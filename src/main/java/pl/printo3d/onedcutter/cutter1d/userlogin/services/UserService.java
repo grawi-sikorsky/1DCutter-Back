@@ -42,21 +42,29 @@ public class UserService implements UserDetailsService {
         return uRepo.findByUsername(arg0);
     }
 
+    /**
+     * Logowanko
+     * @param aRequest
+     * @return
+     */
     public boolean doLogin(AuthRequest aRequest) {
         UserModel um = uRepo.findByUsername(aRequest.getUsername());
 
         if (um != null) {
             if (passwordEncoder().matches(aRequest.getPassword(), um.getPassword())) {
-                return true;
-            } else
-                return false;
-        } else
-            return false;
+                return true;        // login success
+            } else return false;    // pass doesnt match
+        } else return false;        // user doesnt exists
     }
 
+    /**
+     * Rejestruje usera z zestawem domyslnych wartosci -> TODO: mozna rozdzielic tworzenie defaultowych wartosci od samego addUser dla czytelnosci
+     * @param userModel
+     * @return
+     */
     public boolean addUser(UserModel userModel) {
         if (userModel.getUsername() != "" && userModel.getPassword() != "" && userModel.getEmail() != ""
-                && userModel.getUsername() != null && userModel.getPassword() != null && userModel.getEmail() != null) {
+            && userModel.getUsername() != null && userModel.getPassword() != null && userModel.getEmail() != null) {
 
             if (!uRepo.existsByUsername(userModel.getUsername())) {
 
@@ -101,12 +109,16 @@ public class UserService implements UserDetailsService {
     public boolean updateUser(UserModel userModel) {
         System.out.println("UserService: Update User..");
 
-        // TODO Check user
         uRepo.save(userModel);
 
         return true;
     }
 
+    /**
+     * TESTOWE, zwraca tylko zapisane ordery usera
+     * @param user
+     * @return
+     */
     public List<OrderModel> getListOfSavedProjects(UserModel user) {
         List<OrderModel> oList;
         oList = uRepo.findByUsername(user.getUsername()).getSavedOrderModels();

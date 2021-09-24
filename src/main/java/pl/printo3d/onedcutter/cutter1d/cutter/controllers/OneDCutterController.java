@@ -10,14 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.OrderModel;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.ResultModel;
 import pl.printo3d.onedcutter.cutter1d.cutter.services.OrderService;
-import pl.printo3d.onedcutter.cutter1d.cutter.services.ResultService;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 public class OneDCutterController {
-
-    @Autowired
-    private ResultService resultService;
 
     @Autowired
     private OrderService orderService;
@@ -44,17 +40,11 @@ public class OneDCutterController {
         return orderService.makeOrderFree(orderModel);
     }
 
-    // Zapisuje bierzacy orderModel do bazy
+    // Zapisuje bierzacy orderModel do bazy (debounced save na froncie)
     @PostMapping("/setorder")
     public OrderModel setOptions(@RequestBody OrderModel orderModel) {
         orderService.saveActiveOrder(orderModel);
 
         return orderModel;
     }
-
-    // // Zwraca wyniki
-    // @GetMapping("/result")
-    // public ResultModel result() {
-    //     return resultService.makeFullResults();
-    // }
 }

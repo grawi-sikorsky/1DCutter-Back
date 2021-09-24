@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Klasa wynikowa dla CutterService->FirstFit..
+ * Klasa wynikowa dla CutterService->FirstFit..  Zawiera: <p>
+ * 
+ * {@code List<WorkPiece> workPiecesList} - czyli zoptymalizowane kawalki na stocku <p>
+ * {@code List<Double> nofittedPieces} - czyli odcinki ktorych nie udalo sie zoptymalizowac [brak materialu]<p>
  */
 public class CutterProduct {
 

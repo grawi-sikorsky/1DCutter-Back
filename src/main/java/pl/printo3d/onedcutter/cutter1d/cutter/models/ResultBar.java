@@ -3,6 +3,12 @@ package pl.printo3d.onedcutter.cutter1d.cutter.models;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Model zawierajacy pojedynczy wynikowy surowiec (progressbar na froncie) <p>
+ * {@code List<ResultBarPieceModel> resultBarPieces} - Lista pojedynczych odcinkow na calym precie <p>
+ * {@code Integer stackCount} - Ilosc takich samych pretow wynikowych - do stackowania na froncie <p>
+ * {@code Double onStockLength} - Informacja o tym na jakiej dlugosci surowcu powstal ten wynikowy bar <p>
+ */
 public class ResultBar {
 
     private List<ResultBarPieceModel> resultBarPieces = new ArrayList<ResultBarPieceModel>();
@@ -30,7 +36,7 @@ public class ResultBar {
         resultBarPieces.clear();
     }
 
-
+    // gettery settery
     public List<ResultBarPieceModel> getResultBarPieces() {
         return resultBarPieces;
     }

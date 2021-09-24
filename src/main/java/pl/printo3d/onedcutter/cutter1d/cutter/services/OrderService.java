@@ -28,9 +28,6 @@ public class OrderService {
     public OrderModel returnOrder() {
         OrderModel orderList = new OrderModel();
 
-        // orderList.getCutList().clear();
-        // orderList.getStockList().clear();
-
         orderList.getCutList().add(new CutModel("260", "5"));
         orderList.getStockList().add(new StockModel("0", "1000", "4", "0"));
 
@@ -45,10 +42,9 @@ public class OrderService {
     /**
      * Wykonuje obliczenia dla zalogowanego Usera -> TODO: roznica jest tylko w zapisie do bazy -> scalić w jedno.
      * @param orderModel
-     * @return
+     * @return ResultModel
      */
     public ResultModel makeOrder(OrderModel orderModel) {
-        // OrderModel orderList = new OrderModel();
 
         System.out.println("Make Order:");
         orderModel.getStockList().forEach(e -> System.out.println("ID: " + e.getId() + ", frontID: " + e.getIdFront() + ", Len: " + e.getStockLength() + ", Pcs: " + e.getStockPcs() + ", price: " + e.getStockPrice() + " $"));
@@ -58,33 +54,19 @@ public class OrderService {
         this.saveActiveOrder(orderModel);
         /** END ZAPIS DO BAZY [ACTIVE ORDER] */
 
-        // orderList.clearOrder();
-
-        // do ogarniecia.... 
-        // cutService.cutList = orderModel.getCutList();
-        // cutService.stockList = orderModel.getStockList();
-        //cutService.firstFit(orderModel);
-
         return resultService.makeFullResults( cutService.firstFit(orderModel), orderModel );
     }
 
     /**
      * Wykonuje obliczenia dla usera niezalogowanego
      * @param orderModel
-     * @return
+     * @return ResultModel
      */
     public ResultModel makeOrderFree(OrderModel orderModel) {
-        // OrderModel orderList = new OrderModel();
 
         System.out.println("Make FREE Order:");
         orderModel.getStockList().forEach(e -> System.out.println("ID: " + e.getId() + ", frontID: " + e.getIdFront() + ", Len: " + e.getStockLength() + ", Pcs: " + e.getStockPcs() + ", price: " + e.getStockPrice() + " $"));
         orderModel.getCutList().forEach(e -> System.out.println(e.getCutLength() + " " + e.getCutPcs()));
-
-        // orderList.clearOrder();
-        // cutService.cutList = orderModel.getCutList();
-        // cutService.stockList = orderModel.getStockList();
-
-        
 
         return resultService.makeFullResults( cutService.firstFit(orderModel), orderModel );
     }
@@ -144,5 +126,4 @@ public class OrderService {
         userService.updateUser(um);
         /** END ZAPIS DO BAZY */
     }
-
 }

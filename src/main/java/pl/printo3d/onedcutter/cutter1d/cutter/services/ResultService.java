@@ -23,9 +23,9 @@ public class ResultService {
     // TODO !!! CALA USLUGA DO PRZEROBIENIA ! 4/5 metod iteruje po "List<WorkPiece>"!
 
     /**
-     * Otrzymuje remainPcs z CutterService i zapisuje do fullresultsow..
-     * @param remainPcs
-     * @return
+     * Tworzy RemainResultBary nie mieszczace sie na stocku
+     * @param
+     * @return remainBars
      */
     public List<ResultBar> getRemainBars(List<Double> notFittedPcs) {
         ResultBar notFittedBar = new ResultBar();
@@ -41,7 +41,7 @@ public class ResultService {
     }
 
     /**
-     * workpieces -> resultbars
+     * Otrzymujac Liste WorkPiece'ow tworzy liste ResultBarsow do wyswietlenia na froncie
      * @param workPieces
      * @return
      */
@@ -59,7 +59,12 @@ public class ResultService {
         return resultBars;
     }
 
-
+    /**
+     * Oblicza ilosc odpadu
+     * @param workPieces
+     * @param resultToChange
+     * @return resultWasteProcent
+     */
     public Double calculateWaste(List<WorkPiece> workPieces, ResultModel resultToChange) {
         Double resultWaste = 0.0;
         Double resultUsed = 0.0;
@@ -77,6 +82,11 @@ public class ResultService {
         return resultWasteProcent;
     }
 
+    /**
+     * Oblicza ilosc wymaganego stocku
+     * @param workPieces
+     * @return
+     */
     public Map<Double, Integer> calculateNeededStock(List<WorkPiece> workPieces) {
         Map<Double, Integer> resultNeededStock = new HashMap<Double, Integer>();
         resultNeededStock.clear();
@@ -88,6 +98,12 @@ public class ResultService {
         return resultNeededStock;
     }
 
+    /**
+     * Oblicza koszt ciecia elementow z podanych cen materialu
+     * @param workPieces
+     * @param incominOrderModel
+     * @return
+     */
     public Double calculatePrice(List<WorkPiece> workPieces, OrderModel incominOrderModel) {
         Double costs = 0D;
         
@@ -101,6 +117,11 @@ public class ResultService {
         return costs;
     }
 
+    /**
+     * Oblicza ilosc cięć ktore trzeba wykonać
+     * @param workPieces
+     * @return
+     */
     public Integer calculateCutCount(List<WorkPiece> workPieces) {
       Integer temp=0;
       for(WorkPiece workpc : workPieces)
@@ -110,13 +131,19 @@ public class ResultService {
       return temp;
     }
 
+    /**
+     * Zwraca pelne wyniki obliczen 
+     * @param cutterProduct
+     * @param incominOrderModel
+     * @return fullResults
+     */
     public ResultModel makeFullResults(CutterProduct cutterProduct, OrderModel incominOrderModel) {
         ResultModel fullResults = new ResultModel();
 
         fullResults.setResultCutCount(this.calculateCutCount(cutterProduct.getWorkPiecesList()));
         fullResults.setResultNeededStock(this.calculateNeededStock(cutterProduct.getWorkPiecesList()));
         fullResults.setResultBars(this.getResultsBars(cutterProduct.getWorkPiecesList()));
-        Double resWasteProc = this.calculateWaste(cutterProduct.getWorkPiecesList(), fullResults);
+        Double resWasteProc = this.calculateWaste(cutterProduct.getWorkPiecesList(), fullResults); // TODO: to troche glupie jest, do poprawki kiedystam. [wewnatrz przerabia fullResults i zwraca jedna zmienna rozniez do fullResults..]
         fullResults.setResultWaste(resWasteProc);
         fullResults.setResultCostOveral(this.calculatePrice(cutterProduct.getWorkPiecesList(),incominOrderModel));
         fullResults.setResultRemainingPieces(this.getRemainBars(cutterProduct.getNotFittedPieces()));

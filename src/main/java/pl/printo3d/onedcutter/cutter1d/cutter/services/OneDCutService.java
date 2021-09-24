@@ -44,14 +44,20 @@ public class OneDCutService {
         return partsList;
     }
 
-    // 1. Pierwsza metoda rozwiazania problemu
+    /**
+     * Pierwsza metoda rozwiazania problemu
+     * TODO: zrobic jeszcze algorytm bestFit, worstFit
+     * @param incomingOrder
+     * @return
+     */
     public CutterProduct firstFit(OrderModel incomingOrder) {
 
         CutterProduct cutterProduct = new CutterProduct();
-        // lista roboczych kawalkow - kazdy zawiera info o cieciach oraz o ilosci
-        // wolnego miejsca na nim
+
+        // lista roboczych kawalkow - kazdy zawiera info o cieciach oraz o ilosci wolnego miejsca na nim
         List<WorkPiece> workPiecesList = new ArrayList<WorkPiece>();
 
+        // lista czesci do optymalizacji
         List<Double> partsList = new ArrayList<Double>();
        
         // rewers..
@@ -102,14 +108,9 @@ public class OneDCutService {
         // 9. STWORZ LISTE CZESCI KTORE NIE ZMIESCILY SIE NA ZADNYM SUROWCU:
         partsDone.forEach(e -> partsRemaining.remove(e));
 
-        // 10. PRZEKAZUJEMY LISTE<DOUBLE> do uslugi ktora tworzy, zapisuje i zwraca bary
-        //resultService.getRemainBars(partsRemaining);
-
-
-        cutterProduct.setWorkPiecesList(workPiecesList);
-        cutterProduct.setNotFittedPieces(partsRemaining);
+        cutterProduct.setWorkPiecesList(workPiecesList);    // 10. zapisujemy do CutterProduct liste do dalszych dzialan
+        cutterProduct.setNotFittedPieces(partsRemaining);   // 11. zapisujemy do CutterProduct liste pozostalych kawalkow (niezoptymalizowanych)
 
         return cutterProduct;
     }
-
 }

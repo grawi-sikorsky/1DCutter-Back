@@ -13,7 +13,15 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Model zawierajacy caly projekt <p>
+ * {@code String projectName} - Nazwa <p>
+ * {@code LocalDateTime projectCreated} - Data stworzenia <p>
+ * {@code LocalDateTime projectModified} - Data modyfikacji <p>
+ * {@code List<CutModel> cutList} - Lista odcinkow <p>
+ * {@code List<StockModel> stockList} - Lista surowcow <p>
+ * {@code CutOptions cutOptions} - Opcje projektu <p>
+ */
 @Entity
 public class OrderModel {
     @Id
