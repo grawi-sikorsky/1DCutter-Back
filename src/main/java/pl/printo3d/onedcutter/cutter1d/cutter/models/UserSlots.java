@@ -11,6 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
+
+/**
+ * NOT USET ... <p>
+ */
 @Entity
 public class UserSlots {
 

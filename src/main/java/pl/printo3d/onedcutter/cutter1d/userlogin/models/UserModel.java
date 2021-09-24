@@ -22,6 +22,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.OrderModel;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.UserSlots;
 
+/**
+ * Model USERA implementacja UserDetails <p>
+ */
 @Entity
 public class UserModel implements UserDetails {
 

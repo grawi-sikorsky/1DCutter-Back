@@ -1,5 +1,10 @@
 package pl.printo3d.onedcutter.cutter1d.cutter.models;
 
+/**
+ * Model zawierajacy pojedynczy wynikowy odcinek na danym precie <p>
+ * {@code String barWidthProc} - Zajmowany procent na progressBarze <p>
+ * {@code String barText} - Tekst do wyswietlenia na progressBarze <p>
+ */
 public class ResultBarPieceModel {
 
     private String barWidthProc;

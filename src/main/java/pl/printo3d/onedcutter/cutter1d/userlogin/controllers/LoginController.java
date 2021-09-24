@@ -30,6 +30,10 @@ public class LoginController {
     @Autowired
     private JWTUtil jwtUtil;
 
+    /**
+     * OLD, BEFORE JWT TOKEN, NOT USED?
+     * @return
+     */
     @GetMapping("/login")
     public UserModel user() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -60,15 +64,19 @@ public class LoginController {
 
         if (uService.doLogin(aRequest)) {
             UserDetails ud = uService.loadUserByUsername(aRequest.getUsername());
-            return new AuthResponse(jwtUtil.generateToken(ud));
+
+            return new AuthResponse(jwtUtil.generateToken(ud)); // git, zwroc token
         } else {
-            return new AuthResponse();
+            return new AuthResponse();                          // nie git, zwróć nicość!
         }
     }
-
-    // endpoint przez ktory przechodzi user po zalogowaniu w celu pobrania danych
-    // zwraca calego userka
-    // przypisuje aktywny rozkroj do usera - TODO czy na pewno tutaj?
+    
+    /**
+     * Endpoint przez ktory przchodzi user po zalogowaniu w celu pobrania danych.<p>
+     * Zwraca caaaaaaaaaalego usera..<p>
+     * TODO: Do ogarniecia, usunac chocby haslo coby nie latało ciagle w obie strony
+     * @return
+     */
     @GetMapping("/getuserdata")
     public UserModel getuserdata() {
         UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -76,14 +84,6 @@ public class LoginController {
         um = (UserModel) uService.loadUserByUsername(ud.getUsername());
 
         System.out.println("Active order: " + um.getActiveOrderId());
-        OrderModel om = um.getActiveOrderModel();
-        um.setActiveOrderModel(om);
         return um;
     }
-
-    @GetMapping("/")
-    public String hometest() {
-        return "jest gitarka!";
-    }
-
 }

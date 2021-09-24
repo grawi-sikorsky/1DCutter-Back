@@ -5,6 +5,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Model zawierajacy pełny wynik optymalizacji <p>
+ * {@code Double resultWaste} - Liczbowy odpad z ciecia <p>
+ * {@code Double resultUsed} - Liczbowa ilosc wyk. surowca <p>
+ * {@code Double resultWasteProcent} - Procent odpadu <p>
+ * {@code Double resultUsedProcent} - Procent wykorzystany <p>
+ * {@code Integer resultCutCount} - Ilosc ciec <p>
+ * {@code Double resultCostOveral} - Koszty calkowite <p>
+ * {@code Double resultCostPrecise} - Not YET.. Not YET.. <p>
+ * {@code resultNeededStock} - Mapa takich samych surowcow i ich niezbednej ilosci <p>
+ * {@code List<ResultBar> resultBars} - Zoptymalizowane odcinki <p>
+ * {@code List<ResultBar> remainBars} - WTF? DO WYWALENIA? <p>
+ * {@code List<ResultBar> resultRemainingPieces} - Niezoptymalizowane odcinki <p>
+ */
 public class ResultModel {
 
     private Double resultWaste = 0.0;

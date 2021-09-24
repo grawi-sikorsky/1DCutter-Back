@@ -5,6 +5,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+/**
+ * Model zawierajacy ustawienia uzytkownika - dla kazdego rozkroju osobne <p>
+ * {@code boolean optionStackResult} - Czy stackujemy wyniki <p>
+ * {@code Double optionSzrank} - Szerokosc ciecia / pily <p>
+ * {@code boolean optionPrice} - Czy liczymy koszty <p>
+ */
 @Entity
 public class CutOptions {
 

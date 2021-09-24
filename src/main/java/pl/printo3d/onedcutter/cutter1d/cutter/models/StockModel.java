@@ -7,7 +7,12 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 /**
- * Model zawierajacy zadeklarowana przez usera dlugosc surowca oraz ilosc takich samych odcinkow
+ * Model zawierajacy zadeklarowana przez usera dlugosc surowca oraz ilosc takich samych odcinkow <p>
+ * {@code String idFront} - ID na froncie <p>
+ * {@code String stockLength} - Dlugosc surowca <p>
+ * {@code String stockPcs} - Ilosc surowca danej dlugosci <p>
+ * {@code String stockPrice} - Cena surowca <p>
+ * {@code String name} - NOT YET.... <p>
  */
 @Entity
 public class StockModel {

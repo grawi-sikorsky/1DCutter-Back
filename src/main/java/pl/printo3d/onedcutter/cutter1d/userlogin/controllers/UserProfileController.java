@@ -26,7 +26,8 @@ public class UserProfileController {
 
     @Autowired
     private UserService uService;
-    @Autowired OrderService oService;
+    @Autowired 
+    private OrderService oService;
 
     // Zapisuje dane uzytkownika z ekranu Profil
     @RequestMapping(value = "/profile", method = RequestMethod.POST)
@@ -40,7 +41,7 @@ public class UserProfileController {
         return true;
     }
 
-    // Update user (save/load project)
+    // Load user project
     @RequestMapping(value = "/loadproject", method = RequestMethod.POST)
     public boolean loadProject(@RequestBody UserModel incomingUserModel) {
         
@@ -56,6 +57,7 @@ public class UserProfileController {
         return true;
     }
 
+    // Save user project
     @RequestMapping(value = "/saveproject", method = RequestMethod.POST)
     public boolean saveProject(@RequestBody UserModel incomingUserModel) {
 
@@ -84,7 +86,11 @@ public class UserProfileController {
         return true;
     }
 
-
+    /**
+     * Testowe
+     * @param userModel
+     * @return
+     */
     @RequestMapping(value = "/getuserprojects", method = RequestMethod.POST)
     public List<OrderModel> getListOfSavedProjects(@RequestParam UserModel userModel) {
         return uService.getListOfSavedProjects(userModel);
