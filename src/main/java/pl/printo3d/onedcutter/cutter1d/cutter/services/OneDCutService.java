@@ -103,7 +103,7 @@ public class OneDCutService {
         partsDone.forEach(e -> partsRemaining.remove(e));
 
         // 10. PRZEKAZUJEMY LISTE<DOUBLE> do uslugi ktora tworzy, zapisuje i zwraca bary
-        resultService.getRemainBars(partsRemaining);
+        //resultService.getRemainBars(partsRemaining);
 
 
         cutterProduct.setWorkPiecesList(workPiecesList);

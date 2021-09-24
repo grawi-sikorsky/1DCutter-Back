@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import pl.printo3d.onedcutter.cutter1d.cutter.models.CutterProduct;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.OrderModel;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.ResultBar;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.ResultBarPieceModel;
@@ -114,21 +115,17 @@ public class ResultService {
       return temp;
     }
 
-    public ResultModel makeFullResults(List<WorkPiece> wPieces, OrderModel incominOrderModel) {
+    public ResultModel makeFullResults(CutterProduct cutterProduct, OrderModel incominOrderModel) {
         ResultModel fullResults = new ResultModel();
 
-        fullResults.setResultCutCount(this.calculateCutCount(wPieces));
-        fullResults.setResultNeededStock(this.calculateNeededStock(wPieces));
-        fullResults.setResultBars(this.getResultsBars(wPieces));
-        Double resWasteProc = this.calculateWaste(wPieces, fullResults);
+        fullResults.setResultCutCount(this.calculateCutCount(cutterProduct.getWorkPiecesList()));
+        fullResults.setResultNeededStock(this.calculateNeededStock(cutterProduct.getWorkPiecesList()));
+        fullResults.setResultBars(this.getResultsBars(cutterProduct.getWorkPiecesList()));
+        Double resWasteProc = this.calculateWaste(cutterProduct.getWorkPiecesList(), fullResults);
         fullResults.setResultWaste(resWasteProc);
-        fullResults.setResultCostOveral(this.calculatePrice(wPieces,incominOrderModel));
-        fullResults.setResultRemainingPieces(this.getRemainBars(remainPcs));
+        fullResults.setResultCostOveral(this.calculatePrice(cutterProduct.getWorkPiecesList(),incominOrderModel));
+        fullResults.setResultRemainingPieces(this.getRemainBars(cutterProduct.getNotFittedPieces()));
 
         return fullResults;
-    }
-
-    public void setResultRemainingPieces(List<ResultBar> remain) {
-        fullResults.setResultRemainingPieces(remain);
     }
 }
