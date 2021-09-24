@@ -17,8 +17,6 @@ import pl.printo3d.onedcutter.cutter1d.cutter.models.WorkPiece;
 @Service
 public class ResultService {
 
-    private ResultBar resultBar = new ResultBar();
-
     public ResultService() {
     }
 
@@ -29,18 +27,16 @@ public class ResultService {
      * @param remainPcs
      * @return
      */
-    public List<ResultBar> getRemainBars(List<Double> remainPcs) {
+    public List<ResultBar> getRemainBars(List<Double> notFittedPcs) {
+        ResultBar notFittedBar = new ResultBar();
         List<ResultBar> remainBars = new ArrayList<ResultBar>();
-        remainBars.clear();
 
-        for (Double rp : remainPcs) {
-            resultBar.addPiece(new ResultBarPieceModel((String.valueOf((rp / 1000) * 100)), String.valueOf(rp)));
+        for (Double rp : notFittedPcs) {
+            notFittedBar.addPiece(new ResultBarPieceModel((String.valueOf((rp / 1000) * 100)), String.valueOf(rp)));
 
-            remainBars.add(new ResultBar(new ArrayList<ResultBarPieceModel>(resultBar.getResultBarPieces())));
-            resultBar.clear();
+            remainBars.add(new ResultBar(new ArrayList<ResultBarPieceModel>(notFittedBar.getResultBarPieces())));
+            notFittedBar.clear();
         }
-        //setResultRemainingPieces(remainBars);
-
         return remainBars;
     }
 
@@ -51,7 +47,7 @@ public class ResultService {
      */
     public List<ResultBar> getResultsBars(List<WorkPiece> workPieces) {
         List<ResultBar> resultBars = new ArrayList<ResultBar>();
-        resultBars.clear();
+        ResultBar resultBar = new ResultBar();
 
         for (WorkPiece wp : workPieces) {
             for (int i = 0; i < wp.getCuts().size(); ++ i) {
@@ -62,7 +58,6 @@ public class ResultService {
         }
         return resultBars;
     }
-
 
 
     public Double calculateWaste(List<WorkPiece> workPieces, ResultModel resultToChange) {
