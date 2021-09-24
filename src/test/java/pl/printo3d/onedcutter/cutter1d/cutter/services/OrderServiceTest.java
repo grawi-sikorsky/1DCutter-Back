@@ -1,56 +1,105 @@
 package pl.printo3d.onedcutter.cutter1d.cutter.services;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.spy;
-
-import java.util.logging.Logger;
-
-import org.aspectj.lang.annotation.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
-import org.mockito.junit.MockitoJUnitRunner;
-
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.authentication.TestingAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextImpl;
+import pl.printo3d.onedcutter.cutter1d.cutter.models.CutModel;
+import pl.printo3d.onedcutter.cutter1d.cutter.models.CutOptions;
+import pl.printo3d.onedcutter.cutter1d.cutter.models.CutterProduct;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.OrderModel;
+import pl.printo3d.onedcutter.cutter1d.cutter.models.ResultModel;
+import pl.printo3d.onedcutter.cutter1d.cutter.models.StockModel;
+import pl.printo3d.onedcutter.cutter1d.userlogin.models.UserModel;
 import pl.printo3d.onedcutter.cutter1d.userlogin.services.UserService;
 
-//@ExtendWith(MockitoJUnitRunner.class)
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.when;
+
+@ExtendWith(MockitoExtension.class)
 public class OrderServiceTest {
-    
-    @Spy
+
+    private static final String USERNAME = "username";
+    private static final UserModel PRINCIPAL = new UserModel(
+            "username",
+            "password"
+    );
+    @InjectMocks
+    OrderService orderServiceTest;
+
+    @Mock
     private OneDCutService cutService;
-    @Spy
+    @Mock
     private ResultService resultService;
-    @Spy
+    @Mock
     private UserService userService;
 
-    OrderService orderServiceTest = spy(OrderService.class);
-
-    private PrintForTest printer;
+    @BeforeEach
+    void setUp() {
+        SecurityContextHolder.setContext(
+                new SecurityContextImpl(
+                        new TestingAuthenticationToken(
+                                PRINCIPAL,
+                                "credentials"
+                        )
+                )
+        );
+        OrderModel activeOrderModel = new OrderModel();
+        activeOrderModel.setCutOptions(new CutOptions());
+        PRINCIPAL.setActiveOrderModel(activeOrderModel);
+    }
 
     @Test
     public void returnOrder_should_return_default_values() {
-        OrderModel orderModelTest = new OrderModel();
-        orderModelTest = orderServiceTest.returnOrder();
+        //when
+        OrderModel orderModelTest = orderServiceTest.returnOrder();
 
+        //then
         assertEquals(orderModelTest.getCutList().size(), 1);
+        CutModel cutModel = orderModelTest.getCutList().get(0);
+        assertEquals("260", cutModel.getCutLength());
+        assertEquals("5", cutModel.getCutPcs());
         assertEquals(orderModelTest.getStockList().size(), 1);
+        StockModel stockModel = orderModelTest.getStockList().get(0);
+        assertEquals("0", stockModel.getIdFront());
+        assertEquals("1000", stockModel.getStockLength());
+        assertEquals("4", stockModel.getStockPcs());
+        assertEquals("0", stockModel.getStockPrice());
+
+        verifyNoInteractions(cutService, resultService, userService);
     }
 
     @Test
     public void makeOrder_should_return_default_values() {
+        //given
         OrderModel orderModelTest = new OrderModel();
-        
-        
-        //= orderServiceTest.makeOrder( orderModelTest );
+        orderModelTest.setCutOptions(new CutOptions());
+
+        CutterProduct cutterProduct = new CutterProduct();
+        when(cutService.firstFit(orderModelTest)).thenReturn(cutterProduct);
+
+        ResultModel resultModel = new ResultModel();
+        when(resultService.makeFullResults(cutterProduct, orderModelTest)).thenReturn(resultModel);
+
+        when(userService.loadUserByUsername(USERNAME))
+                .thenReturn(PRINCIPAL);
+
+        //when
+        ResultModel model = orderServiceTest.makeOrder(orderModelTest);
 
 
-
-        //assertEquals(orderModelTest.getCutList().size(), 1);
-        //assertEquals(orderModelTest.getStockList().size(), 1);
+        //then
+        assertEquals(resultModel, model);
+        verify(cutService).firstFit(orderModelTest);
+        verify(resultService).makeFullResults(cutterProduct, orderModelTest);
+        verify(userService).loadUserByUsername(USERNAME);
     }
 
     @Test
