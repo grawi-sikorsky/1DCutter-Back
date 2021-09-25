@@ -1,5 +1,7 @@
 package pl.printo3d.onedcutter.cutter1d.userlogin.controllers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import pl.printo3d.onedcutter.cutter1d.cutter.models.OrderModel;
 import pl.printo3d.onedcutter.cutter1d.userlogin.models.AuthRequest;
 import pl.printo3d.onedcutter.cutter1d.userlogin.models.AuthResponse;
 import pl.printo3d.onedcutter.cutter1d.userlogin.models.UserModel;
@@ -20,6 +20,8 @@ import pl.printo3d.onedcutter.cutter1d.userlogin.utility.JWTUtil;
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 public class LoginController {
+
+    private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
     @Autowired
     private UserService uService;
@@ -36,10 +38,10 @@ public class LoginController {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UserModel um;
         if (principal == "anonymousUser") {
-            System.out.println("nulex!");
+            logger.info("nulex!");
             um = new UserModel("AnonymousUser", "AnonymousUser");
         } else {
-            System.out.println("GET Loginpage z angulara!");
+            logger.info("GET Loginpage z angulara!");
             um = (UserModel) uService.loadUserByUsername(((UserModel) principal).getUsername());
         }
         return um;
@@ -48,10 +50,10 @@ public class LoginController {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public boolean registerForm(@RequestBody UserModel uModel) {
         if (uService.addUser(uModel) == true) {
-            System.out.println("Register done..");
+            logger.info("Register doen..");
             return true;
         } else {
-            System.out.println("Register error");
+            logger.info("Register error");
             return false;
         }
     }
@@ -80,7 +82,7 @@ public class LoginController {
         UserModel um;
         um = (UserModel) uService.loadUserByUsername(ud.getUsername());
 
-        System.out.println("Active order: " + um.getActiveOrderId());
+        logger.info("Active order: {}", um.getActiveOrderId());
         return um;
     }
 }
