@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ch.qos.logback.core.rolling.helper.IntegerTokenConverter;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.CutModel;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.CutterProduct;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.OrderModel;
@@ -116,27 +117,64 @@ public class OneDCutService {
 
     public CutterProduct newAlgo(OrderModel incomingOrder){
         CutterProduct cutterProduct = new CutterProduct();
-        List<WorkPiece> patterns = new ArrayList<WorkPiece>();
-        patterns.add(new WorkPiece("0", 1000.0));
+        List<WorkPiece> patternList = new ArrayList<WorkPiece>();
+        List<CutModel> cutList = incomingOrder.getCutList();
 
-        List<CutModel> cm = incomingOrder.getCutList();
+        Collections.sort(incomingOrder.getCutList(),(o1,o2)-> o1.getCutLength().compareTo(o2.getCutLength()) );
+        Collections.reverse(incomingOrder.getCutList());
 
-        for (CutModel cut : cm) {
 
-            for (WorkPiece work : patterns) {
-                if (work.freeSpace(incomingOrder.getCutOptions().getOptionSzrank()) >= Double.parseDouble(cut.getCutLength())) {
-                    work.cut(Double.parseDouble(cut.getCutLength()));
-                    //partsDone.add(part);
-                    System.out.println(work.freeSpace(0.0));
+/*
+        for (CutModel part : cutList) {
+            // 1. CHWYC NOWA CZESC
+            // System.out.println("Next part is: " + part);
+
+            // 2. JESLI NA OBECNYM SUROWCU NIE MA WOLNEGO MIEJSCA NA TE CZESC?
+            if (! patternList.stream().anyMatch(work -> work.freeSpace(0.0) >= Double.parseDouble(part.getCutLength()))) {
+                // 4. DODAJ SUROWIEC DANEGO TYPU
+                patternList.add(new WorkPiece(incomingOrder.getStockList().get(0).getIdFront(), Double.valueOf(incomingOrder.getStockList().get(0).getStockLength())));
+                System.out.println("No free space left, adding new stock piece: " + incomingOrder.getStockList().get(0).getStockLength());
+            }
+
+            // 8. PRZESZUKAJ LISTE UZYWANYCH SUROWCOW W POSZUKIWANIU MIEJSCA NA NOWA CZESC
+            for (WorkPiece pattern : patternList) {
+                if (pattern.freeSpace(0.0) >= Double.parseDouble(part.getCutLength())) {
+                    pattern.cut(Double.parseDouble(part.getCutLength()));
+
+                    System.out.println("pattern free space: " + pattern.freeSpace(0.0));
+                    System.out.println("pattern get cuts: " + pattern.getCuts().toString());
+
                     break; // koniecznie wyskoczyc z loopa!
                 }
             }
+        }
+*/
 
-            cut.getCutLength();
-            System.out.println(cut.getCutLength());
+        for (CutModel part : cutList) {
 
+            patternList.add(new WorkPiece(incomingOrder.getStockList().get(0).getIdFront(), Double.valueOf(incomingOrder.getStockList().get(0).getStockLength())));
 
+            if(patternList.get(0).freeSpace(0.0) >= Double.parseDouble(cutList.get(0).getCutLength()) ){
+                patternList.get(0).cut( Double.parseDouble(cutList.get(0).getCutLength()) );
+                
+            }
+            else
+            {
+                System.out.println("no more..");
+                break;
+            }
+        }
 
+        for(int i=0; i < Integer.parseInt(cutList.get(0).getCutPcs()); ++i )
+        {
+            if(patternList.get(0).freeSpace(0.0) >= Double.parseDouble(cutList.get(0).getCutLength()) ){
+                patternList.get(0).cut( Double.parseDouble(cutList.get(0).getCutLength()) );
+            }
+            else
+            {
+                System.out.println("no more..");
+                break;
+            }
         }
 
         // 1. Stworzyc liste wszystkich mozliwych wzorow/patternow
@@ -163,5 +201,10 @@ public class OneDCutService {
         // 3. zwrocic calosc w postaci cutterProduct, dalej to już bajka..
 
         return cutterProduct;
+    }
+
+    public int rekuTest()
+    {
+        return 0;
     }
 }
