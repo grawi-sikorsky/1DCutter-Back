@@ -69,7 +69,7 @@ public class OneDCutService {
 
         for (Double part : partsList) {
             // 1. CHWYC NOWA CZESC
-            System.out.println("Next part is: " + part);
+            //System.out.println("Next part is: " + part);
 
             // 2. JESLI NA OBECNYM SUROWCU NIE MA WOLNEGO MIEJSCA NA TE CZESC?
             if (! workPiecesList.stream().anyMatch(work -> work.freeSpace(incomingOrder.getCutOptions().getOptionSzrank()) >= part)) {
@@ -77,7 +77,7 @@ public class OneDCutService {
                 if (tempStockCounter < Integer.parseInt(incomingOrder.getStockList().get(tempStockIterator).getStockPcs())) {
                     // 4. DODAJ SUROWIEC DANEGO TYPU
                     workPiecesList.add(new WorkPiece(incomingOrder.getStockList().get(tempStockIterator).getIdFront(), Double.valueOf(incomingOrder.getStockList().get(tempStockIterator).getStockLength())));
-                    System.out.println("No free space left, adding new stock piece: " + incomingOrder.getStockList().get(tempStockIterator).getStockLength());
+                    //System.out.println("No free space left, adding new stock piece: " + incomingOrder.getStockList().get(tempStockIterator).getStockLength());
                     tempStockCounter++;
                 } else // 5. BRAKUJE JUZ SUROWCA DANEGO TYPU:
                 {
@@ -87,11 +87,11 @@ public class OneDCutService {
                         tempStockCounter = 0;
                         // 7. DODAJ SUROWIEC NOWEGO TYPU / ZERUJ LICZNIKI
                         workPiecesList.add(new WorkPiece(incomingOrder.getStockList().get(tempStockIterator).getIdFront(), Double.valueOf(incomingOrder.getStockList().get(tempStockIterator).getStockLength())));
-                        System.out.println("No free space left, adding new stock piece: " + incomingOrder.getStockList().get(tempStockIterator).getStockLength());
+                        //System.out.println("No free space left, adding new stock piece: " + incomingOrder.getStockList().get(tempStockIterator).getStockLength());
                         tempStockCounter++;
                     } else {
                         // BRAK SUROWCA
-                        System.out.println("NOT ENOF STOCK AT ALL!");
+                        //System.out.println("NOT ENOF STOCK AT ALL!");
                     }
                 }
             }
@@ -116,12 +116,27 @@ public class OneDCutService {
 
     public CutterProduct newAlgo(OrderModel incomingOrder){
         CutterProduct cutterProduct = new CutterProduct();
+        List<WorkPiece> patterns = new ArrayList<WorkPiece>();
+        patterns.add(new WorkPiece("0", 1000.0));
 
         List<CutModel> cm = incomingOrder.getCutList();
 
         for (CutModel cut : cm) {
+
+            for (WorkPiece work : patterns) {
+                if (work.freeSpace(incomingOrder.getCutOptions().getOptionSzrank()) >= Double.parseDouble(cut.getCutLength())) {
+                    work.cut(Double.parseDouble(cut.getCutLength()));
+                    //partsDone.add(part);
+                    System.out.println(work.freeSpace(0.0));
+                    break; // koniecznie wyskoczyc z loopa!
+                }
+            }
+
             cut.getCutLength();
             System.out.println(cut.getCutLength());
+
+
+
         }
 
         // 1. Stworzyc liste wszystkich mozliwych wzorow/patternow

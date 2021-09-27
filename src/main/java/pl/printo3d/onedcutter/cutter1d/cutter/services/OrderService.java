@@ -46,9 +46,9 @@ public class OrderService {
      */
     public ResultModel makeOrder(OrderModel orderModel) {
 
-        System.out.println("Make Order:");
-        orderModel.getStockList().forEach(e -> System.out.println("ID: " + e.getId() + ", frontID: " + e.getIdFront() + ", Len: " + e.getStockLength() + ", Pcs: " + e.getStockPcs() + ", price: " + e.getStockPrice() + " $"));
-        orderModel.getCutList().forEach(e -> System.out.println(e.getCutLength() + " " + e.getCutPcs()));
+        //System.out.println("Make Order:");
+        //orderModel.getStockList().forEach(e -> System.out.println("ID: " + e.getId() + ", frontID: " + e.getIdFront() + ", Len: " + e.getStockLength() + ", Pcs: " + e.getStockPcs() + ", price: " + e.getStockPrice() + " $"));
+        //orderModel.getCutList().forEach(e -> System.out.println(e.getCutLength() + " " + e.getCutPcs()));
 
         /** ZAPIS DO BAZY [ACTIVE ORDER] */
         this.saveActiveOrder(orderModel);
@@ -57,7 +57,7 @@ public class OrderService {
         /** TESTOWY NOWY ALGORYTM */
         this.cutService.newAlgo(orderModel);
         /** TESTOWY NOWY ALGORYTM */
-        
+
         return resultService.makeFullResults( cutService.firstFit(orderModel), orderModel );
     }
 
