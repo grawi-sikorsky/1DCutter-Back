@@ -18,6 +18,10 @@ import pl.printo3d.onedcutter.cutter1d.cutter.models.StockModel;
 import pl.printo3d.onedcutter.cutter1d.userlogin.models.UserModel;
 import pl.printo3d.onedcutter.cutter1d.userlogin.services.UserService;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
@@ -31,6 +35,9 @@ public class OrderServiceTest {
             "username",
             "password"
     );
+    private static final String PROJECT_NAME = "test_project";
+    private static final Long CUT_OPTIONS_ID = 1L;
+
     @InjectMocks
     OrderService orderServiceTest;
 
@@ -128,12 +135,35 @@ public class OrderServiceTest {
     public void saveActiveOrder_should_niewiemco() // toć void, wiec coz ma zwrocic? @_@
     {
         // given
+        UserModel principal = new UserModel(
+                "username",
+                "password"
+        );
+        OrderModel activeOrderModel = new OrderModel();
+        CutOptions cutOptions = new CutOptions();
+        cutOptions.setId(CUT_OPTIONS_ID);
+        activeOrderModel.setCutOptions(cutOptions);
+        principal.setActiveOrderModel(activeOrderModel);
+        when(userService.loadUserByUsername(USERNAME))
+                .thenReturn(principal);
+
         OrderModel testOrder = new OrderModel();
+        testOrder.setCutOptions(new CutOptions());
+        List<CutModel> cutList = Collections.singletonList(new CutModel());
+        testOrder.setCutList(cutList);
+        List<StockModel> stockList = Collections.singletonList(new StockModel());
+        testOrder.setStockList(stockList);
+        testOrder.setProjectName(PROJECT_NAME);
 
         // when
-        //orderServiceTest.saveActiveOrder(testOrder);
+        orderServiceTest.saveActiveOrder(testOrder);
 
         // then
+        assertEquals(cutList, principal.getActiveOrderModel().getCutList());
+        assertEquals(stockList, principal.getActiveOrderModel().getStockList());
+        assertEquals(CUT_OPTIONS_ID, principal.getActiveOrderModel().getCutOptions().getId());
+        assertEquals(PROJECT_NAME, principal.getActiveOrderModel().getProjectName());
+        verify(userService).updateUser(principal);
     }
 
     @Test
