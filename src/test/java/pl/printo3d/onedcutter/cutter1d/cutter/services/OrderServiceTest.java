@@ -66,6 +66,7 @@ public class OrderServiceTest {
         CutModel cutModel = orderModelTest.getCutList().get(0);
         assertEquals("260", cutModel.getCutLength());
         assertEquals("5", cutModel.getCutPcs());
+
         assertEquals(orderModelTest.getStockList().size(), 1);
         StockModel stockModel = orderModelTest.getStockList().get(0);
         assertEquals("0", stockModel.getIdFront());
@@ -100,6 +101,37 @@ public class OrderServiceTest {
         verify(cutService).firstFit(orderModelTest);
         verify(resultService).makeFullResults(cutterProduct, orderModelTest);
         verify(userService).loadUserByUsername(USERNAME);
+    }
+
+    @Test 
+    public void makeFreeOrder_should_return_default_vals()
+    {
+        // given
+        OrderModel testOrder = new OrderModel();
+
+        CutterProduct cProduct = new CutterProduct();
+        when(cutService.firstFit(testOrder)).thenReturn(cProduct);
+
+        ResultModel rModel = new ResultModel();
+        when(resultService.makeFullResults( cProduct , testOrder )).thenReturn(rModel);
+
+        // when
+        ResultModel testResult = orderServiceTest.makeOrderFree(testOrder);
+
+        // them
+        assertEquals(testResult, rModel);
+    }
+
+    @Test 
+    public void saveActiveOrder_should_niewiemco() // toć void, wiec coz ma zwrocic? @_@
+    {
+        // given
+        OrderModel testOrder = new OrderModel();
+
+        // when
+        orderServiceTest.saveActiveOrder(testOrder);
+
+        // then
     }
 
     @Test
