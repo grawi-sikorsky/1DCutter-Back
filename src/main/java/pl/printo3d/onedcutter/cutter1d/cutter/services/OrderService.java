@@ -54,6 +54,10 @@ public class OrderService {
         this.saveActiveOrder(orderModel);
         /** END ZAPIS DO BAZY [ACTIVE ORDER] */
 
+        /** TESTOWY NOWY ALGORYTM */
+        this.cutService.newAlgo(orderModel);
+        /** TESTOWY NOWY ALGORYTM */
+        
         return resultService.makeFullResults( cutService.firstFit(orderModel), orderModel );
     }
 

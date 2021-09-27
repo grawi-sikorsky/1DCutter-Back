@@ -113,4 +113,40 @@ public class OneDCutService {
 
         return cutterProduct;
     }
+
+    public CutterProduct newAlgo(OrderModel incomingOrder){
+        CutterProduct cutterProduct = new CutterProduct();
+
+        List<CutModel> cm = incomingOrder.getCutList();
+
+        for (CutModel cut : cm) {
+            cut.getCutLength();
+            System.out.println(cut.getCutLength());
+        }
+
+        // 1. Stworzyc liste wszystkich mozliwych wzorow/patternow
+        // Każdy pattern powinien zawierac informacje o dlugosciach odcinkow, oraz posiadac informacje ile danych odcinkow znajduje sie na tym patternie.. oraz ilosc odpadu.
+
+        // Najlepiej zaczac od posortowanych odwrotnie podobnie jak w pierwszej metodzie
+        // przyklad:
+        // STOCK: 1000
+        // CUTS: A1{600 x5},A2{300x5}, A3{200x5}, A4{100x5}
+        // 
+        // pierwsza iteracja: STOCK = A1 + A2 + A4 (600 + 300 + 100 = 1000)
+        // 
+        // druga iteracja
+
+        // IDEA pattern gen tego typu:
+        // 1 stock -> pakuj max pierwszego elementu do zapelnienia stocka (jesli pozostaja elementy stop a stock pelny -> zapisuj pattern, jesli nie a stock ma wolne miejsce -> pakuj kolejny el. do zapelnienia -> zapisuj pattern)..
+        // w patternie koniecznie zapisac ilosc wolnego miejsca -> do porownania z innymi patternami
+        // kolejny stock 
+
+
+        // 2. Trzeba wyciagnac cos w postaci wektora, posiadajacego powyzsze informacje, tak aby mozna bylo policzyc ile takich konkretnych patternow trzeba uzyc 
+        // aby zaspokoic zadana ilosc odcinkow, biorac pod uwage najlepiej pozostaly odpad - tak aby zoptymalizowac ciecie
+
+        // 3. zwrocic calosc w postaci cutterProduct, dalej to już bajka..
+
+        return cutterProduct;
+    }
 }
