@@ -120,6 +120,8 @@ public class OrderServiceTest {
 
         // them
         assertEquals(testResult, rModel);
+        verify(cutService).firstFit(testOrder);
+        verify(resultService).makeFullResults(cProduct, testOrder);
     }
 
     @Test 
