@@ -134,7 +134,9 @@ public class OneDCutService {
             loops--;
             swapRandom(newPartsList);
             swapRandom(newPartsList);
-            newSolutionQuality = ffit(newPartsList, incomingOrder).getWorkPiecesList().size();
+            CutterProduct tempSolution = new CutterProduct();
+            tempSolution = ffit(newPartsList, incomingOrder);
+            newSolutionQuality = tempSolution.getWorkPiecesList().size();
 
             if( newSolutionQuality <= currentSolutionQuality )
             {
@@ -146,13 +148,13 @@ public class OneDCutService {
                 newPartsList.clear();
                 newPartsList.addAll(partsList);
             }
+
+            //if(tempSolution.getWorkPiecesList().get(0).getCuts())
             
         }
 
-        //sielankaRandomowa(loops, partsList, incomingOrder);
 
-        System.out.println("DONE");
-        // 3. zwrocic calosc w postaci cutterProduct, dalej to już bajka..
+
         cutterProduct = ffit(partsList, incomingOrder);
 
         for (WorkPiece pattern : cutterProduct.getWorkPiecesList()) {
@@ -160,8 +162,6 @@ public class OneDCutService {
             Collections.reverse(pattern.getCuts());
         }
         
-        //Collections.reverse(cutterProduct.getCutList());
-
         return cutterProduct;
     }
 
@@ -181,6 +181,7 @@ public class OneDCutService {
         List<WorkPiece> workPiecesList = new ArrayList<WorkPiece>();
         Integer tempStockCounter = 0, tempStockIterator = 0;
         List<Double> partsDone = new ArrayList<Double>();
+        List<Double> partsRemaining = new ArrayList<Double>(partsList);
 
         for (Double part : partsList) {
             // 1. CHWYC NOWA CZESC
@@ -220,8 +221,11 @@ public class OneDCutService {
                 }
             }
         }
+        // 9. STWORZ LISTE CZESCI KTORE NIE ZMIESCILY SIE NA ZADNYM SUROWCU:
+        partsDone.forEach(e -> partsRemaining.remove(e));
 
         cutterProduct.setWorkPiecesList(workPiecesList);
+        cutterProduct.setNotFittedPieces(partsRemaining);
 
         return cutterProduct;
     }
@@ -238,23 +242,6 @@ public class OneDCutService {
                 Collections.swap(incCuts, l, i);
             }
         }
-    }
-
-    /**
-     * Swap Characters at position
-     * @param a string value
-     * @param i position 1
-     * @param j position 2
-     * @return swapped string
-     */
-    public String swap(String a, int i, int j)
-    {
-        char temp;
-        char[] charArray = a.toCharArray();
-        temp = charArray[i];
-        charArray[i] = charArray[j];
-        charArray[j] = temp;
-        return String.valueOf(charArray);
     }
 
     public int rekuTest(List<Double> incCuts)
