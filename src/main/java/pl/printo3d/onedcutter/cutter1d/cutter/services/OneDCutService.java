@@ -133,10 +133,13 @@ public class OneDCutService {
         {
             loops--;
             swapRandom(newPartsList);
-            swapRandom(newPartsList);
             CutterProduct tempSolution = new CutterProduct();
             tempSolution = ffit(newPartsList, incomingOrder);
             newSolutionQuality = tempSolution.getWorkPiecesList().size();
+            
+            for (WorkPiece pattern : tempSolution.getWorkPiecesList()) {
+                pattern.getSatisfiedDemands().entrySet().forEach(System.out::println);
+            }
 
             if( newSolutionQuality <= currentSolutionQuality )
             {
@@ -144,7 +147,8 @@ public class OneDCutService {
                 partsList.addAll(newPartsList);
                 currentSolutionQuality = newSolutionQuality;
             }
-            else{
+            else
+            {
                 newPartsList.clear();
                 newPartsList.addAll(partsList);
             }

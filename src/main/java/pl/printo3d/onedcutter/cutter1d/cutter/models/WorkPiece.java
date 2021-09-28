@@ -1,7 +1,9 @@
 package pl.printo3d.onedcutter.cutter1d.cutter.models;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -17,6 +19,8 @@ public class WorkPiece {
     private Double stockLenght;
 
     private List<Double> cuts = new ArrayList<Double>();
+
+    private Map<Double, Integer> satisfiedDemands = new HashMap<Double, Integer>();
 
     public WorkPiece(String frontID, Double lenght) {
         this.stockLenght = lenght;
@@ -35,6 +39,10 @@ public class WorkPiece {
 
     public void cut(Double cutLenght) {
         cuts.add(cutLenght);
+        if( satisfiedDemands.get(cutLenght) != null )
+            satisfiedDemands.put(cutLenght, satisfiedDemands.get(cutLenght) + 1 );
+        else
+            satisfiedDemands.put(cutLenght, 1);
     }
 
     public Double getStockLenght() {
@@ -56,4 +64,13 @@ public class WorkPiece {
     public List<Double> getCuts() {
         return cuts;
     }
+
+    public Map<Double, Integer> getSatisfiedDemands() {
+        return satisfiedDemands;
+    }
+
+    public void setSatisfiedDemands(Map<Double, Integer> satisfiedDemands) {
+        this.satisfiedDemands = satisfiedDemands;
+    }
+    
 }
