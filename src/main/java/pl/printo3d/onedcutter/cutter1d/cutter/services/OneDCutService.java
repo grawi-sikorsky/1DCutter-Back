@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hibernate.Incubating;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -115,96 +116,73 @@ public class OneDCutService {
         return cutterProduct;
     }
 
-    public CutterProduct newAlgo(OrderModel incomingOrder){
+    public CutterProduct newAlgo(CutterProduct incomingSolution, OrderModel incomingOrder){
         CutterProduct cutterProduct = new CutterProduct();
-        List<WorkPiece> patternList = new ArrayList<WorkPiece>();
-        List<CutModel> cutList = incomingOrder.getCutList();
+        List<Double> differentCuts = new ArrayList<Double>();
+        List<WorkPiece> patternList = incomingSolution.getWorkPiecesList();
+        Integer currentSolutionQuality = incomingSolution.getWorkPiecesList().size();
+        Integer newSolutionQuality = currentSolutionQuality;
+        Double obecnieFree;
+        Integer loops = 5;
 
-        Collections.sort(incomingOrder.getCutList(),(o1,o2)-> o1.getCutLength().compareTo(o2.getCutLength()) );
-        Collections.reverse(incomingOrder.getCutList());
-
-
-/*
-        for (CutModel part : cutList) {
-            // 1. CHWYC NOWA CZESC
-            // System.out.println("Next part is: " + part);
-
-            // 2. JESLI NA OBECNYM SUROWCU NIE MA WOLNEGO MIEJSCA NA TE CZESC?
-            if (! patternList.stream().anyMatch(work -> work.freeSpace(0.0) >= Double.parseDouble(part.getCutLength()))) {
-                // 4. DODAJ SUROWIEC DANEGO TYPU
-                patternList.add(new WorkPiece(incomingOrder.getStockList().get(0).getIdFront(), Double.valueOf(incomingOrder.getStockList().get(0).getStockLength())));
-                System.out.println("No free space left, adding new stock piece: " + incomingOrder.getStockList().get(0).getStockLength());
-            }
-
-            // 8. PRZESZUKAJ LISTE UZYWANYCH SUROWCOW W POSZUKIWANIU MIEJSCA NA NOWA CZESC
-            for (WorkPiece pattern : patternList) {
-                if (pattern.freeSpace(0.0) >= Double.parseDouble(part.getCutLength())) {
-                    pattern.cut(Double.parseDouble(part.getCutLength()));
-
-                    System.out.println("pattern free space: " + pattern.freeSpace(0.0));
-                    System.out.println("pattern get cuts: " + pattern.getCuts().toString());
-
-                    break; // koniecznie wyskoczyc z loopa!
-                }
-            }
-        }
-*/
-
-        for (CutModel part : cutList) {
-
-            patternList.add(new WorkPiece(incomingOrder.getStockList().get(0).getIdFront(), Double.valueOf(incomingOrder.getStockList().get(0).getStockLength())));
-
-            if(patternList.get(0).freeSpace(0.0) >= Double.parseDouble(cutList.get(0).getCutLength()) ){
-                patternList.get(0).cut( Double.parseDouble(cutList.get(0).getCutLength()) );
-                
-            }
-            else
-            {
-                System.out.println("no more..");
-                break;
-            }
-        }
-
-        for(int i=0; i < Integer.parseInt(cutList.get(0).getCutPcs()); ++i )
+        for( int i=0; i < incomingOrder.getCutList().size()/2; ++i)
         {
-            if(patternList.get(0).freeSpace(0.0) >= Double.parseDouble(cutList.get(0).getCutLength()) ){
-                patternList.get(0).cut( Double.parseDouble(cutList.get(0).getCutLength()) );
-            }
-            else
-            {
-                System.out.println("no more..");
-                break;
-            }
+            differentCuts.add( Double.parseDouble( incomingOrder.getCutList().get(i).getCutLength() ) );
+        }
+        differentCuts.stream().forEach(System.out::println);
+
+        while(loops > 0)
+        {
+            loops--;
         }
 
-        // 1. Stworzyc liste wszystkich mozliwych wzorow/patternow
-        // Każdy pattern powinien zawierac informacje o dlugosciach odcinkow, oraz posiadac informacje ile danych odcinkow znajduje sie na tym patternie.. oraz ilosc odpadu.
-
-        // Najlepiej zaczac od posortowanych odwrotnie podobnie jak w pierwszej metodzie
-        // przyklad:
-        // STOCK: 1000
-        // CUTS: A1{600 x5},A2{300x5}, A3{200x5}, A4{100x5}
-        // 
-        // pierwsza iteracja: STOCK = A1 + A2 + A4 (600 + 300 + 100 = 1000)
-        // 
-        // druga iteracja
-
-        // IDEA pattern gen tego typu:
-        // 1 stock -> pakuj max pierwszego elementu do zapelnienia stocka (jesli pozostaja elementy stop a stock pelny -> zapisuj pattern, jesli nie a stock ma wolne miejsce -> pakuj kolejny el. do zapelnienia -> zapisuj pattern)..
-        // w patternie koniecznie zapisac ilosc wolnego miejsca -> do porownania z innymi patternami
-        // kolejny stock 
 
 
-        // 2. Trzeba wyciagnac cos w postaci wektora, posiadajacego powyzsze informacje, tak aby mozna bylo policzyc ile takich konkretnych patternow trzeba uzyc 
-        // aby zaspokoic zadana ilosc odcinkow, biorac pod uwage najlepiej pozostaly odpad - tak aby zoptymalizowac ciecie
+        rekuTest(differentCuts);
+        
 
         // 3. zwrocic calosc w postaci cutterProduct, dalej to już bajka..
 
         return cutterProduct;
     }
 
-    public int rekuTest()
+
+    private void permutacja(List<Double> incCuts, int l, int r)
     {
+        String str;
+        if (l == r)
+            System.out.println(incCuts);
+        else {
+            for (int i = l; i <= r; i++) {
+                Collections.swap(incCuts, l, i);
+                permutacja(incCuts, l + 1, r);
+                Collections.swap(incCuts, l, i);
+            }
+        }
+    }
+
+    /**
+     * Swap Characters at position
+     * @param a string value
+     * @param i position 1
+     * @param j position 2
+     * @return swapped string
+     */
+    public String swap(String a, int i, int j)
+    {
+        char temp;
+        char[] charArray = a.toCharArray();
+        temp = charArray[i];
+        charArray[i] = charArray[j];
+        charArray[j] = temp;
+        return String.valueOf(charArray);
+    }
+
+    public int rekuTest(List<Double> incCuts)
+    {
+        int n = incCuts.size();
+        permutacja(incCuts, 0, n - 1);
+        System.out.println("DONE");
         return 0;
     }
 }

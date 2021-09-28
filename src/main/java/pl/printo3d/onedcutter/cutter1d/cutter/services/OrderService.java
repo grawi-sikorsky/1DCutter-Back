@@ -55,10 +55,12 @@ public class OrderService {
         /** END ZAPIS DO BAZY [ACTIVE ORDER] */
 
         /** TESTOWY NOWY ALGORYTM */
-        this.cutService.newAlgo(orderModel);
+        //this.cutService.newAlgo(orderModel);
+        this.cutService.newAlgo(cutService.firstFit(orderModel), orderModel);
         /** TESTOWY NOWY ALGORYTM */
 
-        return resultService.makeFullResults( cutService.firstFit(orderModel), orderModel );
+        //return resultService.makeFullResults( cutService.firstFit(orderModel), orderModel );
+        return resultService.makeFullResults( this.cutService.newAlgo(cutService.firstFit(orderModel), orderModel), orderModel );
     }
 
     /**
