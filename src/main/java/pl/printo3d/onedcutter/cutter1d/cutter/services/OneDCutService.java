@@ -3,6 +3,7 @@ package pl.printo3d.onedcutter.cutter1d.cutter.services;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import org.hibernate.Incubating;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -118,44 +119,122 @@ public class OneDCutService {
 
     public CutterProduct newAlgo(CutterProduct incomingSolution, OrderModel incomingOrder){
         CutterProduct cutterProduct = new CutterProduct();
-        List<Double> differentCuts = new ArrayList<Double>();
-        List<WorkPiece> patternList = incomingSolution.getWorkPiecesList();
+        List<Double> partsList = new ArrayList<Double>();
+        List<Double> newPartsList = new ArrayList<Double>();
         Integer currentSolutionQuality = incomingSolution.getWorkPiecesList().size();
         Integer newSolutionQuality = currentSolutionQuality;
-        Double obecnieFree;
-        Integer loops = 5;
 
-        for( int i=0; i < incomingOrder.getCutList().size()/2; ++i)
-        {
-            differentCuts.add( Double.parseDouble( incomingOrder.getCutList().get(i).getCutLength() ) );
-        }
-        differentCuts.stream().forEach(System.out::println);
+        int loops = 1000;
+
+        partsList = sortReverse(incomingOrder.getCutList());
+        newPartsList.addAll(partsList);
 
         while(loops > 0)
         {
             loops--;
+            swapRandom(newPartsList);
+            swapRandom(newPartsList);
+            newSolutionQuality = ffit(newPartsList, incomingOrder).getWorkPiecesList().size();
+
+            if( newSolutionQuality <= currentSolutionQuality )
+            {
+                partsList.clear();
+                partsList.addAll(newPartsList);
+                currentSolutionQuality = newSolutionQuality;
+            }
+            else{
+                newPartsList.clear();
+                newPartsList.addAll(partsList);
+            }
+            
         }
 
+        //sielankaRandomowa(loops, partsList, incomingOrder);
 
-
-        rekuTest(differentCuts);
-        
-
+        System.out.println("DONE");
         // 3. zwrocic calosc w postaci cutterProduct, dalej to już bajka..
+        cutterProduct = ffit(partsList, incomingOrder);
+
+        for (WorkPiece pattern : cutterProduct.getWorkPiecesList()) {
+            Collections.sort(pattern.getCuts(), (o1,o2)-> o1.compareTo(o2) );
+            Collections.reverse(pattern.getCuts());
+        }
+        
+        //Collections.reverse(cutterProduct.getCutList());
 
         return cutterProduct;
     }
 
 
-    private void permutacja(List<Double> incCuts, int l, int r)
+    private void sielankaRandomowa(int loops, List<Double> partsList, OrderModel incomingOrder) {
+
+    }
+
+    private void swapRandom(List<Double> partsList) {
+        int index = new Random().nextInt(partsList.size());
+        int index2 = new Random().nextInt(partsList.size());
+        Collections.swap(partsList, index, index2 );
+    }
+
+    private CutterProduct ffit( List<Double> partsList, OrderModel incomingOrder ){
+        CutterProduct cutterProduct = new CutterProduct();
+        List<WorkPiece> workPiecesList = new ArrayList<WorkPiece>();
+        Integer tempStockCounter = 0, tempStockIterator = 0;
+        List<Double> partsDone = new ArrayList<Double>();
+
+        for (Double part : partsList) {
+            // 1. CHWYC NOWA CZESC
+            //System.out.println("Next part is: " + part);
+
+            // 2. JESLI NA OBECNYM SUROWCU NIE MA WOLNEGO MIEJSCA NA TE CZESC?
+            if (! workPiecesList.stream().anyMatch(work -> work.freeSpace(incomingOrder.getCutOptions().getOptionSzrank()) >= part)) {
+                // 3. JESLI DOSTEPNA JEST JESZCZE JEDNA SZTUKA SUROWCA DANEGO TYPU/DLUGOSCI
+                if (tempStockCounter < Integer.parseInt(incomingOrder.getStockList().get(tempStockIterator).getStockPcs())) {
+                    // 4. DODAJ SUROWIEC DANEGO TYPU
+                    workPiecesList.add(new WorkPiece(incomingOrder.getStockList().get(tempStockIterator).getIdFront(), Double.valueOf(incomingOrder.getStockList().get(tempStockIterator).getStockLength())));
+                    //System.out.println("No free space left, adding new stock piece: " + incomingOrder.getStockList().get(tempStockIterator).getStockLength());
+                    tempStockCounter++;
+                } else // 5. BRAKUJE JUZ SUROWCA DANEGO TYPU:
+                {
+                    // 6. JESTLI SA DOSTEPNE INNE TYPY/DLUGOSCI SUROWCA:
+                    if (tempStockIterator < incomingOrder.getStockList().size() - 1) {
+                        tempStockIterator++;
+                        tempStockCounter = 0;
+                        // 7. DODAJ SUROWIEC NOWEGO TYPU / ZERUJ LICZNIKI
+                        workPiecesList.add(new WorkPiece(incomingOrder.getStockList().get(tempStockIterator).getIdFront(), Double.valueOf(incomingOrder.getStockList().get(tempStockIterator).getStockLength())));
+                        //System.out.println("No free space left, adding new stock piece: " + incomingOrder.getStockList().get(tempStockIterator).getStockLength());
+                        tempStockCounter++;
+                    } else {
+                        // BRAK SUROWCA
+                        //System.out.println("NOT ENOF STOCK AT ALL!");
+                    }
+                }
+            }
+
+            // 8. PRZESZUKAJ LISTE UZYWANYCH SUROWCOW W POSZUKIWANIU MIEJSCA NA NOWA CZESC
+            for (WorkPiece work : workPiecesList) {
+                if (work.freeSpace(incomingOrder.getCutOptions().getOptionSzrank()) >= part) {
+                    work.cut(part);
+                    partsDone.add(part);
+                    break; // koniecznie wyskoczyc z loopa!
+                }
+            }
+        }
+
+        cutterProduct.setWorkPiecesList(workPiecesList);
+
+        return cutterProduct;
+    }
+
+    private void permutacja(List<Double> incCuts, int l, int r, int length)
     {
-        String str;
-        if (l == r)
-            System.out.println(incCuts);
+        if (l == r){
+            //System.out.println(incCuts);
+        }
         else {
             for (int i = l; i <= r; i++) {
                 Collections.swap(incCuts, l, i);
-                permutacja(incCuts, l + 1, r);
+                permutacja(incCuts, l + 1, r, length);
                 Collections.swap(incCuts, l, i);
             }
         }
@@ -180,8 +259,9 @@ public class OneDCutService {
 
     public int rekuTest(List<Double> incCuts)
     {
+        int length = 1000;
         int n = incCuts.size();
-        permutacja(incCuts, 0, n - 1);
+        permutacja(incCuts, 0, n - 1, length);
         System.out.println("DONE");
         return 0;
     }

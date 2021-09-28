@@ -10,6 +10,7 @@ import javax.persistence.Id;
  * {@code boolean optionStackResult} - Czy stackujemy wyniki <p>
  * {@code Double optionSzrank} - Szerokosc ciecia / pily <p>
  * {@code boolean optionPrice} - Czy liczymy koszty <p>
+ * {@code boolean optionAlgo} - Drugi algorytm <p>
  */
 @Entity
 public class CutOptions {
@@ -21,15 +22,17 @@ public class CutOptions {
     private boolean optionStackResult;
     private Double optionSzrank;
     private boolean optionPrice;
+    private boolean optionAlgo;
 
 
     public CutOptions() {
     }
 
-    public CutOptions(boolean optionStackResult, Double optionSzrank, boolean optionPrice) {
+    public CutOptions(boolean optionStackResult, Double optionSzrank, boolean optionPrice, boolean optionAlgo) {
         this.optionStackResult = optionStackResult;
         this.optionSzrank = optionSzrank;
         this.optionPrice = optionPrice;
+        this.optionAlgo = optionAlgo;
     }
 
 
@@ -63,6 +66,14 @@ public class CutOptions {
 
     public void setOptionPrice(boolean optionPrice) {
         this.optionPrice = optionPrice;
+    }
+
+    public boolean isOptionAlgo() {
+        return optionAlgo;
+    }
+
+    public void setOptionAlgo(boolean optionAlgo) {
+        this.optionAlgo = optionAlgo;
     }
 
 }

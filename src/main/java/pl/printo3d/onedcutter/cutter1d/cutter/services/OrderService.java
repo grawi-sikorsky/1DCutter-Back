@@ -56,11 +56,16 @@ public class OrderService {
 
         /** TESTOWY NOWY ALGORYTM */
         //this.cutService.newAlgo(orderModel);
-        this.cutService.newAlgo(cutService.firstFit(orderModel), orderModel);
+        //this.cutService.newAlgo(cutService.firstFit(orderModel), orderModel);
         /** TESTOWY NOWY ALGORYTM */
 
-        //return resultService.makeFullResults( cutService.firstFit(orderModel), orderModel );
-        return resultService.makeFullResults( this.cutService.newAlgo(cutService.firstFit(orderModel), orderModel), orderModel );
+        
+        if(orderModel.getCutOptions().isOptionAlgo()){
+            return resultService.makeFullResults( this.cutService.newAlgo(cutService.firstFit(orderModel), orderModel), orderModel );
+        }
+        else{
+            return resultService.makeFullResults( cutService.firstFit(orderModel), orderModel );
+        }
     }
 
     /**
