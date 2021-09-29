@@ -22,8 +22,9 @@ public class ResultBar {
         this.resultBarPieces = resultBarPieces;
     }
 
-    public ResultBar(List<ResultBarPieceModel> resultBarPieces, Double onStock) {
+    public ResultBar(List<ResultBarPieceModel> resultBarPieces, Double onStock, Integer stackCount) {
         this.resultBarPieces = resultBarPieces;
+        this.stackCount = stackCount;
         this.onStockLength = onStock;
     }
 

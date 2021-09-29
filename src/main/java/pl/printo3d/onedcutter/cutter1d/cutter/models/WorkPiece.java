@@ -19,12 +19,15 @@ public class WorkPiece {
     private Double stockLenght;
 
     private List<Double> cuts = new ArrayList<Double>();
+    
+    private Integer patternCount;
 
     private Map<Double, Integer> satisfiedDemands = new HashMap<Double, Integer>();
 
-    public WorkPiece(String frontID, Double lenght) {
+    public WorkPiece(String frontID, Double lenght, Integer patternCount) {
         this.stockLenght = lenght;
         this.frontID = frontID;
+        this.patternCount = patternCount;
     }
 
     public Double freeSpace(Double saw_thick) {
@@ -44,6 +47,24 @@ public class WorkPiece {
         else
             satisfiedDemands.put(cutLenght, 1);
     }
+
+    @Override
+    public boolean equals(Object objectToCompare) {
+        if (!(objectToCompare instanceof WorkPiece)) return false;
+
+        WorkPiece patternToCompare = (WorkPiece) objectToCompare;
+
+        return patternToCompare.stockLenght.equals(stockLenght) && patternToCompare.cuts.equals(cuts);
+    }
+
+    @Override
+    public int hashCode() {
+        int result=17;
+        result=31*result + stockLenght.intValue();
+        result=31*result+(cuts!=null ? cuts.hashCode():0);
+        return result;
+    }
+
 
     public Double getStockLenght() {
         return stockLenght;
@@ -71,6 +92,14 @@ public class WorkPiece {
 
     public void setSatisfiedDemands(Map<Double, Integer> satisfiedDemands) {
         this.satisfiedDemands = satisfiedDemands;
+    }
+
+    public Integer getPatternCount() {
+        return patternCount;
+    }
+
+    public void setPatternCount(Integer patternCount) {
+        this.patternCount = patternCount;
     }
     
 }

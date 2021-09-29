@@ -23,16 +23,18 @@ public class CutOptions {
     private Double optionSzrank;
     private boolean optionPrice;
     private boolean optionAlgo;
+    private Integer optionIterations;
 
 
     public CutOptions() {
     }
 
-    public CutOptions(boolean optionStackResult, Double optionSzrank, boolean optionPrice, boolean optionAlgo) {
+    public CutOptions(boolean optionStackResult, Double optionSzrank, boolean optionPrice, boolean optionAlgo, Integer optionIterations) {
         this.optionStackResult = optionStackResult;
         this.optionSzrank = optionSzrank;
         this.optionPrice = optionPrice;
         this.optionAlgo = optionAlgo;
+        this.optionIterations = optionIterations;
     }
 
 
@@ -74,6 +76,14 @@ public class CutOptions {
 
     public void setOptionAlgo(boolean optionAlgo) {
         this.optionAlgo = optionAlgo;
+    }
+
+    public Integer getOptionIterations() {
+        return optionIterations;
+    }
+
+    public void setOptionIterations(Integer optionIterations) {
+        this.optionIterations = optionIterations;
     }
 
 }

@@ -14,6 +14,16 @@ public class CutterProduct {
     List<WorkPiece> workPiecesList = new ArrayList<WorkPiece>();
     List<Double> notFittedPieces = new ArrayList<Double>();
 
+    public Integer getSolutionQuality(){
+        Integer solutionQuality = 0;
+        for (WorkPiece wPiece : workPiecesList) {
+            solutionQuality += wPiece.getPatternCount();
+        }
+        return solutionQuality;
+    }
+    public Integer getSolutionVariants(){
+        return workPiecesList.size();
+    }
 
     public List<WorkPiece> getWorkPiecesList() {
         return workPiecesList;

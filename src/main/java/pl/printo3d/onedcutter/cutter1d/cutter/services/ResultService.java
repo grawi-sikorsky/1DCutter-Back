@@ -53,7 +53,7 @@ public class ResultService {
             for (int i = 0; i < wp.getCuts().size(); ++ i) {
                 resultBar.addPiece(new ResultBarPieceModel((String.valueOf((wp.getCuts().get(i) / wp.getStockLenght()) * 100)), String.valueOf(wp.getCuts().get(i))));
             }
-            resultBars.add(new ResultBar(new ArrayList<ResultBarPieceModel>(resultBar.getResultBarPieces()), wp.getStockLenght()));
+            resultBars.add(new ResultBar(new ArrayList<ResultBarPieceModel>(resultBar.getResultBarPieces()), wp.getStockLenght(), wp.getPatternCount()));
             resultBar.clear();
         }
         return resultBars;
@@ -71,8 +71,8 @@ public class ResultService {
         Double resultWasteProcent = 0.0;
 
         for (WorkPiece workpc : workPieces) {
-            resultUsed += workpc.getStockLenght();
-            resultWaste += workpc.freeSpace(0.0);
+            resultUsed += workpc.getStockLenght() * workpc.getPatternCount();
+            resultWaste += workpc.freeSpace(0.0) * workpc.getPatternCount();
         }
         resultWasteProcent = (resultWaste / resultUsed) * 100.0;
         resultToChange.setResultUsed(resultUsed);
@@ -92,8 +92,8 @@ public class ResultService {
         resultNeededStock.clear();
 
         for (WorkPiece workpc : workPieces) {
-            if (resultNeededStock.get(workpc.getStockLenght()) == null) resultNeededStock.put(workpc.getStockLenght(), 1);  // initial zeby nie lecialo NPE
-            else resultNeededStock.put(workpc.getStockLenght(), resultNeededStock.get(workpc.getStockLenght()) + 1);
+            if (resultNeededStock.get(workpc.getStockLenght()) == null) resultNeededStock.put(workpc.getStockLenght(), workpc.getPatternCount());  // initial zeby nie lecialo NPE
+            else resultNeededStock.put(workpc.getStockLenght(), resultNeededStock.get(workpc.getStockLenght()) + workpc.getPatternCount());
         }
         return resultNeededStock;
     }
@@ -110,7 +110,7 @@ public class ResultService {
         for (WorkPiece workpc : workPieces) {
             for (int index = 0; index < incominOrderModel.getStockList().size(); index++) {
                 if (incominOrderModel.getStockList().get(index).getIdFront().equals(workpc.getFrontID())) {
-                    costs += Double.valueOf(incominOrderModel.getStockList().get(index).getStockPrice());
+                    costs += Double.valueOf(incominOrderModel.getStockList().get(index).getStockPrice()) * workpc.getPatternCount();
                 }
             }
         }
@@ -126,7 +126,7 @@ public class ResultService {
       Integer temp=0;
       for(WorkPiece workpc : workPieces)
       {
-        temp += workpc.getCuts().size();
+        temp += workpc.getCuts().size() * workpc.getPatternCount();
       }
       return temp;
     }

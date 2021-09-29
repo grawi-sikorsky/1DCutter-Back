@@ -67,7 +67,7 @@ public class UserProfileController {
             OrderModel tmpord = new OrderModel();
             tmpord.setCutList(Arrays.asList(new CutModel("220", "5"), new CutModel("260", "5")));
             tmpord.setStockList( Arrays.asList(new StockModel("0", "1000", "6", "0"), new StockModel("1", "1000", "5", "0")));
-            tmpord.setCutOptions(new CutOptions(false, 0d, false, false));
+            tmpord.setCutOptions(new CutOptions(false, 0d, false, false, 1000));
             tmpord.setProjectName("default name2");
             tmpord.setProjectCreated(LocalDateTime.now());
             tmpord.setProjectModified(LocalDateTime.now());

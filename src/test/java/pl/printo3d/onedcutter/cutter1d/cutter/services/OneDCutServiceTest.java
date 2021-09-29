@@ -1,6 +1,7 @@
 package pl.printo3d.onedcutter.cutter1d.cutter.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -13,6 +14,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import pl.printo3d.onedcutter.cutter1d.cutter.models.CutModel;
+import pl.printo3d.onedcutter.cutter1d.cutter.models.CutterProduct;
+import pl.printo3d.onedcutter.cutter1d.cutter.models.WorkPiece;
 
 @ExtendWith(MockitoExtension.class)
 public class OneDCutServiceTest {
@@ -44,6 +47,26 @@ public class OneDCutServiceTest {
         //then
         assertEquals(testedPartList, partList);
 
+    }
+
+    @Test
+    public void countDuplicatePatterns_should_return_true_if_find_duplicate(){
+        CutterProduct dataForTest = new CutterProduct();
+        CutterProduct result = new CutterProduct();
+        WorkPiece wp = new WorkPiece("1", 1000.0, 1);
+        WorkPiece wp2 = new WorkPiece("2", 1000.0, 1);
+        WorkPiece wp3 = new WorkPiece("3", 1000.0, 1);
+
+        wp.cut(250.0);  wp.cut(250.0);
+        wp2.cut(250.0); wp2.cut(250.0);
+        wp3.cut(250.0); wp3.cut(400.0);
+        dataForTest.getWorkPiecesList().add( wp );
+        dataForTest.getWorkPiecesList().add( wp2 );
+        dataForTest.getWorkPiecesList().add( wp3 );
+
+        result = testOneDCutService.countDuplicatePatterns(dataForTest);
+
+        //assertTrue(result);
     }
     
 }

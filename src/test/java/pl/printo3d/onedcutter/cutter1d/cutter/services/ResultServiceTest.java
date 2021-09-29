@@ -24,11 +24,11 @@ public class ResultServiceTest {
         List<WorkPiece> workPieces = new ArrayList<WorkPiece>();
   
         // 2 x 1000
-        workPieces.add(new WorkPiece("1", 1000.0));
-        workPieces.add(new WorkPiece("2", 1000.0));
+        workPieces.add(new WorkPiece("1", 1000.0, 1));
+        workPieces.add(new WorkPiece("2", 1000.0, 1));
         // 2 x 2000
-        workPieces.add(new WorkPiece("3", 1000.0));
-        workPieces.add(new WorkPiece("4", 1000.0));
+        workPieces.add(new WorkPiece("3", 1000.0, 1));
+        workPieces.add(new WorkPiece("4", 1000.0, 1));
 
         for (WorkPiece wp : workPieces) {
             wp.cut(500.0);

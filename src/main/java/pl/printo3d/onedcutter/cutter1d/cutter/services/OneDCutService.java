@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
-import org.hibernate.Incubating;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ch.qos.logback.core.rolling.helper.IntegerTokenConverter;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.CutModel;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.CutterProduct;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.OrderModel;
@@ -79,7 +78,7 @@ public class OneDCutService {
                 // 3. JESLI DOSTEPNA JEST JESZCZE JEDNA SZTUKA SUROWCA DANEGO TYPU/DLUGOSCI
                 if (tempStockCounter < Integer.parseInt(incomingOrder.getStockList().get(tempStockIterator).getStockPcs())) {
                     // 4. DODAJ SUROWIEC DANEGO TYPU
-                    workPiecesList.add(new WorkPiece(incomingOrder.getStockList().get(tempStockIterator).getIdFront(), Double.valueOf(incomingOrder.getStockList().get(tempStockIterator).getStockLength())));
+                    workPiecesList.add(new WorkPiece(incomingOrder.getStockList().get(tempStockIterator).getIdFront(), Double.valueOf(incomingOrder.getStockList().get(tempStockIterator).getStockLength()) , 1 ));
                     //System.out.println("No free space left, adding new stock piece: " + incomingOrder.getStockList().get(tempStockIterator).getStockLength());
                     tempStockCounter++;
                 } else // 5. BRAKUJE JUZ SUROWCA DANEGO TYPU:
@@ -89,7 +88,7 @@ public class OneDCutService {
                         tempStockIterator++;
                         tempStockCounter = 0;
                         // 7. DODAJ SUROWIEC NOWEGO TYPU / ZERUJ LICZNIKI
-                        workPiecesList.add(new WorkPiece(incomingOrder.getStockList().get(tempStockIterator).getIdFront(), Double.valueOf(incomingOrder.getStockList().get(tempStockIterator).getStockLength())));
+                        workPiecesList.add(new WorkPiece(incomingOrder.getStockList().get(tempStockIterator).getIdFront(), Double.valueOf(incomingOrder.getStockList().get(tempStockIterator).getStockLength()) , 1 ));
                         //System.out.println("No free space left, adding new stock piece: " + incomingOrder.getStockList().get(tempStockIterator).getStockLength());
                         tempStockCounter++;
                     } else {
@@ -114,17 +113,36 @@ public class OneDCutService {
         cutterProduct.setWorkPiecesList(workPiecesList);    // 10. zapisujemy do CutterProduct liste do dalszych dzialan
         cutterProduct.setNotFittedPieces(partsRemaining);   // 11. zapisujemy do CutterProduct liste pozostalych kawalkow (niezoptymalizowanych)
 
+        countDuplicatePatterns(cutterProduct);
+
         return cutterProduct;
+    }
+
+    public CutterProduct countDuplicatePatterns( CutterProduct incomingSolution ) {
+        int duplicates = 0;
+        CutterProduct resultSolution = incomingSolution;
+
+        for (WorkPiece pattern : incomingSolution.getWorkPiecesList()) {
+            duplicates = Collections.frequency(incomingSolution.getWorkPiecesList(), pattern);
+            pattern.setPatternCount(duplicates);
+        }
+
+        //List<WorkPiece> resultSolution = new ArrayList<WorkPiece>();
+        resultSolution.setWorkPiecesList( incomingSolution.getWorkPiecesList().stream().distinct().collect(Collectors.toList()) );
+
+        return resultSolution;
     }
 
     public CutterProduct newAlgo(CutterProduct incomingSolution, OrderModel incomingOrder){
         CutterProduct cutterProduct = new CutterProduct();
         List<Double> partsList = new ArrayList<Double>();
         List<Double> newPartsList = new ArrayList<Double>();
-        Integer currentSolutionQuality = incomingSolution.getWorkPiecesList().size();
+        Integer currentSolutionQuality = incomingSolution.getSolutionQuality();
         Integer newSolutionQuality = currentSolutionQuality;
+        Integer currentSolutionVariants = incomingSolution.getSolutionVariants();
+        Integer newSolutionVariants = currentSolutionVariants;
 
-        int loops = 1000;
+        int loops = incomingOrder.getCutOptions().getOptionIterations();
 
         partsList = sortReverse(incomingOrder.getCutList());
         newPartsList.addAll(partsList);
@@ -135,29 +153,25 @@ public class OneDCutService {
             swapRandom(newPartsList);
             CutterProduct tempSolution = new CutterProduct();
             tempSolution = ffit(newPartsList, incomingOrder);
-            newSolutionQuality = tempSolution.getWorkPiecesList().size();
+            newSolutionQuality = tempSolution.getSolutionQuality();
+            newSolutionVariants = tempSolution.getSolutionVariants();
             
-            for (WorkPiece pattern : tempSolution.getWorkPiecesList()) {
-                pattern.getSatisfiedDemands().entrySet().forEach(System.out::println);
-            }
-
-            if( newSolutionQuality <= currentSolutionQuality )
+            if( newSolutionQuality <= currentSolutionQuality && newSolutionVariants <= currentSolutionVariants )
             {
                 partsList.clear();
                 partsList.addAll(newPartsList);
                 currentSolutionQuality = newSolutionQuality;
+                currentSolutionVariants = newSolutionVariants;
             }
             else
             {
                 newPartsList.clear();
                 newPartsList.addAll(partsList);
             }
-
-            //if(tempSolution.getWorkPiecesList().get(0).getCuts())
-            
+           
         }
 
-
+        
 
         cutterProduct = ffit(partsList, incomingOrder);
 
@@ -165,6 +179,8 @@ public class OneDCutService {
             Collections.sort(pattern.getCuts(), (o1,o2)-> o1.compareTo(o2) );
             Collections.reverse(pattern.getCuts());
         }
+        
+        //countDuplicatePatterns(cutterProduct);
         
         return cutterProduct;
     }
@@ -196,7 +212,7 @@ public class OneDCutService {
                 // 3. JESLI DOSTEPNA JEST JESZCZE JEDNA SZTUKA SUROWCA DANEGO TYPU/DLUGOSCI
                 if (tempStockCounter < Integer.parseInt(incomingOrder.getStockList().get(tempStockIterator).getStockPcs())) {
                     // 4. DODAJ SUROWIEC DANEGO TYPU
-                    workPiecesList.add(new WorkPiece(incomingOrder.getStockList().get(tempStockIterator).getIdFront(), Double.valueOf(incomingOrder.getStockList().get(tempStockIterator).getStockLength())));
+                    workPiecesList.add(new WorkPiece(incomingOrder.getStockList().get(tempStockIterator).getIdFront(), Double.valueOf(incomingOrder.getStockList().get(tempStockIterator).getStockLength()), 1 ));
                     //System.out.println("No free space left, adding new stock piece: " + incomingOrder.getStockList().get(tempStockIterator).getStockLength());
                     tempStockCounter++;
                 } else // 5. BRAKUJE JUZ SUROWCA DANEGO TYPU:
@@ -206,7 +222,7 @@ public class OneDCutService {
                         tempStockIterator++;
                         tempStockCounter = 0;
                         // 7. DODAJ SUROWIEC NOWEGO TYPU / ZERUJ LICZNIKI
-                        workPiecesList.add(new WorkPiece(incomingOrder.getStockList().get(tempStockIterator).getIdFront(), Double.valueOf(incomingOrder.getStockList().get(tempStockIterator).getStockLength())));
+                        workPiecesList.add(new WorkPiece(incomingOrder.getStockList().get(tempStockIterator).getIdFront(), Double.valueOf(incomingOrder.getStockList().get(tempStockIterator).getStockLength()), 1 ));
                         //System.out.println("No free space left, adding new stock piece: " + incomingOrder.getStockList().get(tempStockIterator).getStockLength());
                         tempStockCounter++;
                     } else {
@@ -230,6 +246,8 @@ public class OneDCutService {
 
         cutterProduct.setWorkPiecesList(workPiecesList);
         cutterProduct.setNotFittedPieces(partsRemaining);
+
+        countDuplicatePatterns(cutterProduct);
 
         return cutterProduct;
     }
