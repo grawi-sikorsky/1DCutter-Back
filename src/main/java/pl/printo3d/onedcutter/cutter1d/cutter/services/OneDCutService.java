@@ -156,11 +156,34 @@ public class OneDCutService {
             newSolutionQuality = tempSolution.getSolutionQuality();
             newSolutionVariants = tempSolution.getSolutionVariants();
             
-            if( newSolutionQuality <= currentSolutionQuality && newSolutionVariants <= currentSolutionVariants )
+            if( newSolutionQuality <= currentSolutionQuality )
             {
                 partsList.clear();
                 partsList.addAll(newPartsList);
                 currentSolutionQuality = newSolutionQuality;
+                currentSolutionVariants = newSolutionVariants;
+            }
+            else
+            {
+                newPartsList.clear();
+                newPartsList.addAll(partsList);
+            }
+           
+        }
+
+        loops = incomingOrder.getCutOptions().getOptionIterations()*4;
+        while(loops > 0)
+        {
+            loops--;
+            swapRandom(newPartsList);
+            CutterProduct tempSolution = new CutterProduct();
+            tempSolution = ffit(newPartsList, incomingOrder);
+            newSolutionVariants = tempSolution.getSolutionVariants();
+            
+            if( newSolutionVariants <= currentSolutionVariants )
+            {
+                partsList.clear();
+                partsList.addAll(newPartsList);
                 currentSolutionVariants = newSolutionVariants;
             }
             else
