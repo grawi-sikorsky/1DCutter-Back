@@ -1,5 +1,7 @@
 package pl.printo3d.onedcutter.cutter1d.cutter.services;
 
+import java.sql.Time;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -16,6 +18,11 @@ import pl.printo3d.onedcutter.cutter1d.cutter.models.WorkPiece;
 
 @Service
 public class OneDCutService {
+
+    public void run()
+    {
+
+    }
 
     public OneDCutService() {
     }
@@ -118,107 +125,6 @@ public class OneDCutService {
         return cutterProduct;
     }
 
-    public CutterProduct countDuplicatePatterns( CutterProduct incomingSolution ) {
-        int duplicates = 0;
-        CutterProduct resultSolution = incomingSolution;
-
-        for (WorkPiece pattern : incomingSolution.getWorkPiecesList()) {
-            duplicates = Collections.frequency(incomingSolution.getWorkPiecesList(), pattern);
-            pattern.setPatternCount(duplicates);
-        }
-
-        //List<WorkPiece> resultSolution = new ArrayList<WorkPiece>();
-        resultSolution.setWorkPiecesList( incomingSolution.getWorkPiecesList().stream().distinct().collect(Collectors.toList()) );
-
-        return resultSolution;
-    }
-
-    public CutterProduct newAlgo(CutterProduct incomingSolution, OrderModel incomingOrder){
-        CutterProduct cutterProduct = new CutterProduct();
-        List<Double> partsList = new ArrayList<Double>();
-        List<Double> newPartsList = new ArrayList<Double>();
-        Integer currentSolutionQuality = incomingSolution.getSolutionQuality();
-        Integer newSolutionQuality = currentSolutionQuality;
-        Integer currentSolutionVariants = incomingSolution.getSolutionVariants();
-        Integer newSolutionVariants = currentSolutionVariants;
-
-        int loops = incomingOrder.getCutOptions().getOptionIterations();
-
-        partsList = sortReverse(incomingOrder.getCutList());
-        newPartsList.addAll(partsList);
-
-        while(loops > 0)
-        {
-            loops--;
-            swapRandom(newPartsList);
-            CutterProduct tempSolution = new CutterProduct();
-            tempSolution = ffit(newPartsList, incomingOrder);
-            newSolutionQuality = tempSolution.getSolutionQuality();
-            newSolutionVariants = tempSolution.getSolutionVariants();
-            
-            if( newSolutionQuality <= currentSolutionQuality )
-            {
-                partsList.clear();
-                partsList.addAll(newPartsList);
-                currentSolutionQuality = newSolutionQuality;
-                currentSolutionVariants = newSolutionVariants;
-            }
-            else
-            {
-                newPartsList.clear();
-                newPartsList.addAll(partsList);
-            }
-           
-        }
-
-        loops = incomingOrder.getCutOptions().getOptionIterations()*4;
-        while(loops > 0)
-        {
-            loops--;
-            swapRandom(newPartsList);
-            CutterProduct tempSolution = new CutterProduct();
-            tempSolution = ffit(newPartsList, incomingOrder);
-            newSolutionVariants = tempSolution.getSolutionVariants();
-            
-            if( newSolutionVariants <= currentSolutionVariants )
-            {
-                partsList.clear();
-                partsList.addAll(newPartsList);
-                currentSolutionVariants = newSolutionVariants;
-            }
-            else
-            {
-                newPartsList.clear();
-                newPartsList.addAll(partsList);
-            }
-           
-        }
-
-        
-
-        cutterProduct = ffit(partsList, incomingOrder);
-
-        for (WorkPiece pattern : cutterProduct.getWorkPiecesList()) {
-            Collections.sort(pattern.getCuts(), (o1,o2)-> o1.compareTo(o2) );
-            Collections.reverse(pattern.getCuts());
-        }
-        
-        //countDuplicatePatterns(cutterProduct);
-        
-        return cutterProduct;
-    }
-
-
-    private void sielankaRandomowa(int loops, List<Double> partsList, OrderModel incomingOrder) {
-
-    }
-
-    private void swapRandom(List<Double> partsList) {
-        int index = new Random().nextInt(partsList.size());
-        int index2 = new Random().nextInt(partsList.size());
-        Collections.swap(partsList, index, index2 );
-    }
-
     private CutterProduct ffit( List<Double> partsList, OrderModel incomingOrder ){
         CutterProduct cutterProduct = new CutterProduct();
         List<WorkPiece> workPiecesList = new ArrayList<WorkPiece>();
@@ -270,10 +176,114 @@ public class OneDCutService {
         cutterProduct.setWorkPiecesList(workPiecesList);
         cutterProduct.setNotFittedPieces(partsRemaining);
 
+        for (WorkPiece pattern : cutterProduct.getWorkPiecesList()) {
+            Collections.sort(pattern.getCuts(), (o1,o2)-> o1.compareTo(o2) );
+            Collections.reverse(pattern.getCuts());
+        }
+
         countDuplicatePatterns(cutterProduct);
 
         return cutterProduct;
     }
+
+    public CutterProduct countDuplicatePatterns( CutterProduct incomingSolution ) {
+        int duplicates = 0;
+        CutterProduct resultSolution = incomingSolution;
+
+        for (WorkPiece pattern : incomingSolution.getWorkPiecesList()) {
+            duplicates = Collections.frequency(incomingSolution.getWorkPiecesList(), pattern);
+            pattern.setPatternCount(duplicates);
+        }
+
+        resultSolution.setWorkPiecesList( incomingSolution.getWorkPiecesList().stream().distinct().collect(Collectors.toList()) );
+
+        return resultSolution;
+    }
+
+    public CutterProduct newAlgo(CutterProduct incomingSolution, OrderModel incomingOrder){
+        CutterProduct cutterProduct = new CutterProduct();
+        List<Double> partsList = new ArrayList<Double>();
+        List<Double> newPartsList = new ArrayList<Double>();
+        Integer currentSolutionQuality = incomingSolution.getSolutionQuality();
+        Integer newSolutionQuality = currentSolutionQuality;
+        Integer currentSolutionVariants = incomingSolution.getSolutionVariants();
+        Integer newSolutionVariants = currentSolutionVariants;
+
+        int loops = incomingOrder.getCutOptions().getOptionIterations();
+
+        partsList = sortReverse(incomingOrder.getCutList());
+        newPartsList.addAll(partsList);
+
+        while(loops > 0)
+        {
+            loops--;
+            swapRandom(newPartsList);
+            CutterProduct tempSolution = new CutterProduct();
+
+            tempSolution = ffit(newPartsList, incomingOrder);
+            newSolutionQuality = tempSolution.getSolutionQuality();
+            newSolutionVariants = tempSolution.getSolutionVariants();
+            
+            if( newSolutionQuality <= currentSolutionQuality )
+            {
+                partsList.clear();
+                partsList.addAll(newPartsList);
+                currentSolutionQuality = newSolutionQuality;
+                currentSolutionVariants = newSolutionVariants;
+            }
+            else
+            {
+                newPartsList.clear();
+                newPartsList.addAll(partsList);
+            }
+        }
+
+        loops = incomingOrder.getCutOptions().getOptionIterations()*4;
+        while(loops > 0)
+        {
+            loops--;
+            swapRandom(newPartsList);
+            CutterProduct tempSolution = new CutterProduct();
+            tempSolution = ffit(newPartsList, incomingOrder);
+            newSolutionVariants = tempSolution.getSolutionVariants();
+            
+            if( newSolutionVariants <= currentSolutionVariants )
+            {
+                partsList.clear();
+                partsList.addAll(newPartsList);
+                currentSolutionVariants = newSolutionVariants;
+            }
+            else
+            {
+                newPartsList.clear();
+                newPartsList.addAll(partsList);
+            }
+           
+        }
+
+        cutterProduct = ffit(partsList, incomingOrder);
+
+        przewalanko(cutterProduct);
+        
+        return cutterProduct;
+    }
+
+    private void swapRandom(List<Double> partsList) {
+        int index = new Random().nextInt(partsList.size());
+        int index2 = new Random().nextInt(partsList.size());
+        Collections.swap(partsList, index, index2 );
+    }
+
+    private void przewalanko(CutterProduct cutterProduct) {
+        List<WorkPiece> workPieces = cutterProduct.getWorkPiecesList();
+
+        for (WorkPiece pattern : workPieces) {
+            pattern.getSatisfiedDemands().forEach( (e, k) -> System.out.println(e + " " + k) );
+        }
+
+    }
+
+
 
     private void permutacja(List<Double> incCuts, int l, int r, int length)
     {
