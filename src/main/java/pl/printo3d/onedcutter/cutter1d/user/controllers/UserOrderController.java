@@ -50,8 +50,9 @@ public class UserOrderController {
 
     @PostMapping
     public OrderModel saveOrder(@RequestBody OrderModel incomingOrderModel){
-        
-        return ;
+        UserModel userModel = (UserModel) userService.loadUserByUsername( ((UserModel)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
+        userModel.setActiveOrderModel(incomingOrderModel);
+        return userModel.getActiveOrderModel();
     }
 
     @PatchMapping("{activeOrderId}")

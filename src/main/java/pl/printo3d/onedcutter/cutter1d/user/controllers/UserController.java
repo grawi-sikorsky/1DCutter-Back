@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,5 +48,12 @@ public class UserController {
         userService.updateUser(uModel);
 
         return true;
+    }
+
+    @PatchMapping
+    public UserDTO updateUser(@RequestBody UserDTO userDTO){
+        UserModel userModel = (UserModel) userService.loadUserByUsername( ((UserModel)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
+        userService.updateUser(userDTO)
+        return ;
     }
 }
