@@ -23,11 +23,13 @@ public class LoginController {
 
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
-    @Autowired
-    private UserService uService;
+    private final UserService userService;
+    private final JWTUtil jwtUtil;
 
-    @Autowired
-    private JWTUtil jwtUtil;
+    public LoginController(UserService userService, JWTUtil jwtUtil){
+        this.jwtUtil = jwtUtil;
+        this.userService = userService;
+    }
 
     /**
      * OLD, BEFORE JWT TOKEN, NOT USED?
@@ -42,14 +44,14 @@ public class LoginController {
             um = new UserModel("AnonymousUser", "AnonymousUser");
         } else {
             logger.info("GET Loginpage z angulara!");
-            um = (UserModel) uService.loadUserByUsername(((UserModel) principal).getUsername());
+            um = (UserModel) userService.loadUserByUsername(((UserModel) principal).getUsername());
         }
         return um;
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public boolean registerForm(@RequestBody UserModel uModel) {
-        if (uService.addUser(uModel) == true) {
+        if (userService.addUser(uModel) == true) {
             logger.info("Register doen..");
             return true;
         } else {
@@ -61,8 +63,8 @@ public class LoginController {
     @RequestMapping(value = "/auth/login", method = RequestMethod.POST)
     public AuthResponse authenticateRequest(@RequestBody AuthRequest aRequest) {
 
-        if (uService.doLogin(aRequest)) {
-            UserDetails ud = uService.loadUserByUsername(aRequest.getUsername());
+        if (userService.doLogin(aRequest)) {
+            UserDetails ud = userService.loadUserByUsername(aRequest.getUsername());
 
             return new AuthResponse(jwtUtil.generateToken(ud)); // git, zwroc token
         } else {
@@ -80,7 +82,7 @@ public class LoginController {
     public UserModel getuserdata() {
         UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UserModel um;
-        um = (UserModel) uService.loadUserByUsername(ud.getUsername());
+        um = (UserModel) userService.loadUserByUsername(ud.getUsername());
 
         logger.info("Active order: {}", um.getActiveOrderId());
         return um;
