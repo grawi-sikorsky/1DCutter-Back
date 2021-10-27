@@ -1,4 +1,4 @@
-package pl.printo3d.onedcutter.cutter1d.userlogin.utility;
+package pl.printo3d.onedcutter.cutter1d.user.utility;
 
 import java.io.Serializable;
 import java.util.Date;

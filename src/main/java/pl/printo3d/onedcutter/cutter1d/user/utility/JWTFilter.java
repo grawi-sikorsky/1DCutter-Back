@@ -1,4 +1,4 @@
-package pl.printo3d.onedcutter.cutter1d.userlogin.utility;
+package pl.printo3d.onedcutter.cutter1d.user.utility;
 
 import java.io.IOException;
 
@@ -15,7 +15,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import pl.printo3d.onedcutter.cutter1d.userlogin.services.UserService;
+import pl.printo3d.onedcutter.cutter1d.user.services.UserService;
 
 @Component
 public class JWTFilter extends OncePerRequestFilter {

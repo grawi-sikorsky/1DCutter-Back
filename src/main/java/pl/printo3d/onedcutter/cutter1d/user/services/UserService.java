@@ -1,9 +1,9 @@
-package pl.printo3d.onedcutter.cutter1d.userlogin.services;
+package pl.printo3d.onedcutter.cutter1d.user.services;
 
-import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,17 +13,17 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import pl.printo3d.onedcutter.cutter1d.cutter.models.CutModel;
-import pl.printo3d.onedcutter.cutter1d.cutter.models.CutOptions;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.OrderModel;
-import pl.printo3d.onedcutter.cutter1d.cutter.models.StockModel;
-import pl.printo3d.onedcutter.cutter1d.userlogin.models.AuthRequest;
-import pl.printo3d.onedcutter.cutter1d.userlogin.models.UserModel;
-import pl.printo3d.onedcutter.cutter1d.userlogin.repo.UserRepo;
+import pl.printo3d.onedcutter.cutter1d.user.models.AuthRequest;
+import pl.printo3d.onedcutter.cutter1d.user.models.UserModel;
+import pl.printo3d.onedcutter.cutter1d.user.repo.UserRepo;
 
 @Service
 public class UserService implements UserDetailsService {
-    private UserRepo uRepo;
+    
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
+
+    private final UserRepo uRepo;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -68,46 +68,23 @@ public class UserService implements UserDetailsService {
 
             if (!uRepo.existsByUsername(userModel.getUsername())) {
 
-                // 1 domyslne formatki
-                OrderModel ord = new OrderModel();
-                ord.setCutList(Arrays.asList(new CutModel("220", "5"), new CutModel("260", "5")));
-                ord.setStockList(Arrays.asList(new StockModel("0", "1000", "6", "0"), new StockModel("1", "1000", "5", "0")));
-                ord.setCutOptions(new CutOptions(false, 0d, false, false, 1000));
-                ord.setProjectName("Default project");
-                ord.setProjectCreated(LocalDateTime.now());
-                ord.setProjectModified(LocalDateTime.now());
-
-                OrderModel ord2 = new OrderModel();
-                ord2.setCutList(Arrays.asList(new CutModel("220", "5"), new CutModel("260", "5")));
-                ord2.setStockList( Arrays.asList(new StockModel("0", "1000", "6", "0"), new StockModel("1", "1000", "5", "0")));
-                ord2.setCutOptions(new CutOptions(false, 0d, false, false, 1000));
-                ord2.setProjectName("Default project2");
-                ord2.setProjectCreated(LocalDateTime.now());
-                ord2.setProjectModified(LocalDateTime.now());
-
-                userModel.setActiveOrderModel(ord);
-                userModel.setSavedOrderModels(Arrays.asList(ord, ord2));
-                userModel.setActiveOrderId(0); // default
-                userModel.setNumberOfSavedItems(userModel.getSavedOrderModels().size());
-
-                userModel.setRole("VIP"); // role dynamicznie pasuje ustawiac.
                 userModel.setPassword(pEncoder.encode(userModel.getPassword()));
                 uRepo.save(userModel);
-                System.out.println("uService Dodajemy Usera..");
+                logger.info("Dodajemy Usera..");
 
                 return true;
             } else {
-                System.out.println("uService: User exists!");
+                logger.info("User exists!");
                 return false;
             }
         } else {
-            System.out.println("uService: Bad kredenszals!");
+            logger.info("Bad kredenszals!");
             return false;
         }
     }
 
     public boolean updateUser(UserModel userModel) {
-        System.out.println("UserService: Update User..");
+        logger.info("Update User..");
 
         uRepo.save(userModel);
 

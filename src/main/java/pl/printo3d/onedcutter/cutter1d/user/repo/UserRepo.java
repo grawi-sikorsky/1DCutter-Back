@@ -1,9 +1,9 @@
-package pl.printo3d.onedcutter.cutter1d.userlogin.repo;
+package pl.printo3d.onedcutter.cutter1d.user.repo;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import pl.printo3d.onedcutter.cutter1d.userlogin.models.UserModel;
+import pl.printo3d.onedcutter.cutter1d.user.models.UserModel;
 
 @Repository
 public interface UserRepo extends CrudRepository<UserModel, Long> {

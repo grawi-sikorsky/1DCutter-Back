@@ -1,8 +1,7 @@
-package pl.printo3d.onedcutter.cutter1d.userlogin.controllers;
+package pl.printo3d.onedcutter.cutter1d.user.controllers;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -11,11 +10,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import pl.printo3d.onedcutter.cutter1d.userlogin.models.AuthRequest;
-import pl.printo3d.onedcutter.cutter1d.userlogin.models.AuthResponse;
-import pl.printo3d.onedcutter.cutter1d.userlogin.models.UserModel;
-import pl.printo3d.onedcutter.cutter1d.userlogin.services.UserService;
-import pl.printo3d.onedcutter.cutter1d.userlogin.utility.JWTUtil;
+
+import pl.printo3d.onedcutter.cutter1d.user.models.AuthRequest;
+import pl.printo3d.onedcutter.cutter1d.user.models.AuthResponse;
+import pl.printo3d.onedcutter.cutter1d.user.models.UserModel;
+import pl.printo3d.onedcutter.cutter1d.user.services.UserService;
+import pl.printo3d.onedcutter.cutter1d.user.utility.JWTUtil;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -52,7 +52,7 @@ public class LoginController {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public boolean registerForm(@RequestBody UserModel uModel) {
         if (userService.addUser(uModel) == true) {
-            logger.info("Register doen..");
+            logger.info("Register done..");
             return true;
         } else {
             logger.info("Register error");
@@ -70,21 +70,5 @@ public class LoginController {
         } else {
             return new AuthResponse();                          // nie git, zwróć nicość!
         }
-    }
-    
-    /**
-     * Endpoint przez ktory przchodzi user po zalogowaniu w celu pobrania danych.<p>
-     * Zwraca caaaaaaaaaalego usera..<p>
-     * TODO: Do ogarniecia, usunac chocby haslo coby nie latało ciagle w obie strony
-     * @return
-     */
-    @GetMapping("/getuserdata")
-    public UserModel getuserdata() {
-        UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserModel um;
-        um = (UserModel) userService.loadUserByUsername(ud.getUsername());
-
-        logger.info("Active order: {}", um.getActiveOrderId());
-        return um;
     }
 }

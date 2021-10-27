@@ -1,9 +1,12 @@
-package pl.printo3d.onedcutter.cutter1d.userlogin.models;
+package pl.printo3d.onedcutter.cutter1d.user.models;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -14,13 +17,16 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import pl.printo3d.onedcutter.cutter1d.cutter.models.CutModel;
+import pl.printo3d.onedcutter.cutter1d.cutter.models.CutOptions;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.OrderModel;
-import pl.printo3d.onedcutter.cutter1d.cutter.models.UserSlots;
+import pl.printo3d.onedcutter.cutter1d.cutter.models.StockModel;
 
 /**
  * Model USERA implementacja UserDetails <p>
@@ -31,28 +37,54 @@ public class UserModel implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, updatable = false)
-    Long id;
+    private Long id;
 
-    String username;
-    String password;
-    String role;
-    String email;
-    String phone;
-    String website;
-    Integer numberOfSavedItems;
-    Integer activeOrderId;
+    private String uuid;
+    private String username;
+    private String password;
+    private String role;
+    private String email;
+    private String phone;
+    private String website;
+    private Integer numberOfSavedItems;
+    private Integer activeOrderId;
 
     @OneToOne(cascade = { CascadeType.ALL })
     @JoinColumn(name = "activeOrderModel", referencedColumnName = "id")
-    OrderModel activeOrderModel;
-
-    @OneToOne(cascade = { CascadeType.ALL })
-    @JoinColumn(name = "userSlots", referencedColumnName = "id")
-    UserSlots userSlots;
+    private OrderModel activeOrderModel;
 
     @OneToMany(cascade = { CascadeType.ALL })
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private List<OrderModel> savedOrderModels = new ArrayList<OrderModel>();
+
+    @PrePersist
+    public void prepersist(){
+        this.uuid = UUID.randomUUID().toString();
+
+        // 1 domyslne formatki
+        OrderModel ord = new OrderModel();
+        ord.setCutList(Arrays.asList(new CutModel("220", "5"), new CutModel("260", "5")));
+        ord.setStockList(Arrays.asList(new StockModel("0", "1000", "6", "0"), new StockModel("1", "1000", "5", "0")));
+        ord.setCutOptions(new CutOptions(false, 0d, false, false, 1000));
+        ord.setProjectName("Default project");
+        ord.setProjectCreated(LocalDateTime.now());
+        ord.setProjectModified(LocalDateTime.now());
+
+        OrderModel ord2 = new OrderModel();
+        ord2.setCutList(Arrays.asList(new CutModel("220", "5"), new CutModel("260", "5")));
+        ord2.setStockList( Arrays.asList(new StockModel("0", "1000", "6", "0"), new StockModel("1", "1000", "5", "0")));
+        ord2.setCutOptions(new CutOptions(false, 0d, false, false, 1000));
+        ord2.setProjectName("Default project2");
+        ord2.setProjectCreated(LocalDateTime.now());
+        ord2.setProjectModified(LocalDateTime.now());
+
+        this.setActiveOrderModel(ord);
+        this.setSavedOrderModels(Arrays.asList(ord, ord2));
+        this.setActiveOrderId(0); // default
+        this.setNumberOfSavedItems(this.getSavedOrderModels().size());
+
+        this.setRole("VIP"); // role dynamicznie pasuje ustawiac.        
+    }
 
     public UserModel() {
     }
@@ -119,6 +151,14 @@ public class UserModel implements UserDetails {
         this.id = id;
     }
 
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
     public void setUsername(String username) {
         this.username = username;
     }
@@ -157,14 +197,6 @@ public class UserModel implements UserDetails {
 
     public void setWebsite(String website) {
         this.website = website;
-    }
-
-    public UserSlots getUserSlots() {
-        return userSlots;
-    }
-
-    public void setUserSlots(UserSlots userSlots) {
-        this.userSlots = userSlots;
     }
 
     public Integer getNumberOfSavedItems() {

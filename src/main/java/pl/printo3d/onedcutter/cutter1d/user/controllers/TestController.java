@@ -1,4 +1,4 @@
-package pl.printo3d.onedcutter.cutter1d.userlogin.controllers;
+package pl.printo3d.onedcutter.cutter1d.user.controllers;
 
 import java.util.List;
 
@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import pl.printo3d.onedcutter.cutter1d.userlogin.models.UserModel;
-import pl.printo3d.onedcutter.cutter1d.userlogin.repo.UserRepo;
+import pl.printo3d.onedcutter.cutter1d.user.models.UserModel;
+import pl.printo3d.onedcutter.cutter1d.user.repo.UserRepo;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
