@@ -4,7 +4,14 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,20 +23,42 @@ import pl.printo3d.onedcutter.cutter1d.cutter.models.CutOptions;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.OrderModel;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.StockModel;
 import pl.printo3d.onedcutter.cutter1d.cutter.services.OrderService;
+import pl.printo3d.onedcutter.cutter1d.user.models.UserDTO;
 import pl.printo3d.onedcutter.cutter1d.user.models.UserModel;
 import pl.printo3d.onedcutter.cutter1d.user.services.UserService;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/user/{uuid}/order")
+@RequestMapping("/user/order")
 public class UserOrderController {
 
+    private final static Logger logger = LoggerFactory.getLogger(UserOrderController.class);
     private final UserService userService;
     private final OrderService orderService;
 
     public UserOrderController(UserService userService, OrderService orderService){
         this.userService = userService;
         this.orderService = orderService;
+    }
+
+    // for now 0-4 list index not db index!
+    @GetMapping("{orderId}")
+    public OrderModel loadOrder(@PathVariable Integer orderId){
+        UserModel userModel = (UserModel) userService.loadUserByUsername( ((UserModel)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
+        return userModel.getSavedOrderModels().get(orderId);
+    }
+
+    @PostMapping
+    public OrderModel saveOrder(@RequestBody OrderModel incomingOrderModel){
+        
+        return ;
+    }
+
+    @PatchMapping("{activeOrderId}")
+    public UserDTO setActiveOrder(@PathVariable Integer activeOrderId){
+        UserModel userModel = (UserModel) userService.loadUserByUsername( ((UserModel)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
+        userModel.setActiveOrderId(activeOrderId);
+        return new UserDTO(userModel);
     }
 
     // Load user project
@@ -43,7 +72,7 @@ public class UserOrderController {
 
         userService.updateUser(uModel);
 
-        System.out.println("Request /loadproject -> UpdateUser(activeorderID)");
+        logger.info("Request /loadproject -> UpdateUser(activeorderID)");
 
         return true;
     }
@@ -73,7 +102,7 @@ public class UserOrderController {
 
         orderService.saveUserOrders(incomingUserModel.getActiveOrderModel()); // tutaj musi trafic zestaw bez id w przeciwnym razie przy kopii ze slota na inny slot bedzie leciec duplicate entry.
         
-        System.out.println("Request /saveproject -> UpdateUser(activeorderID)");
+        logger.info("Request /saveproject -> UpdateUser(activeorderID)");
         return true;
     }
 
