@@ -1,7 +1,5 @@
 package pl.printo3d.onedcutter.cutter1d.cutter.services;
 
-import java.sql.Time;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
