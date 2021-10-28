@@ -19,6 +19,9 @@ public class UserDTO {
     private OrderModel activeOrderModel;
     private List<OrderModel> savedOrderModels = new ArrayList<OrderModel>();
 
+    public UserDTO() {
+    }
+
     public UserDTO(UserModel userModel){
         this.uuid = userModel.getUuid();
         this.username = userModel.getUsername();

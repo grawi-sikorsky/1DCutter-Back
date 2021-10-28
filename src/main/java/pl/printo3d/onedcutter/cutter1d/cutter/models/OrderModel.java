@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -44,13 +45,10 @@ public class OrderModel {
     @JoinColumn(name = "cutOptions_id", referencedColumnName = "id", unique = true, insertable = true, updatable = true)
     private CutOptions cutOptions;
 
-
-
-    public void clearOrder() {
-        cutList.clear();
-        stockList.clear();
+    @PrePersist
+    public void prepersist(){
+        this.projectCreated = LocalDateTime.now();
     }
-
 
     public OrderModel() {
     }

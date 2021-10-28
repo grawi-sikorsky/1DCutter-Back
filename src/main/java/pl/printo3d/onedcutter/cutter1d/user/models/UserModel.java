@@ -70,16 +70,8 @@ public class UserModel implements UserDetails {
         ord.setProjectCreated(LocalDateTime.now());
         ord.setProjectModified(LocalDateTime.now());
 
-        OrderModel ord2 = new OrderModel();
-        ord2.setCutList(Arrays.asList(new CutModel("220", "5"), new CutModel("260", "5")));
-        ord2.setStockList( Arrays.asList(new StockModel("0", "1000", "6", "0"), new StockModel("1", "1000", "5", "0")));
-        ord2.setCutOptions(new CutOptions(false, 0d, false, false, 1000));
-        ord2.setProjectName("Default project2");
-        ord2.setProjectCreated(LocalDateTime.now());
-        ord2.setProjectModified(LocalDateTime.now());
-
         this.setActiveOrderModel(ord);
-        this.setSavedOrderModels(Arrays.asList(ord, ord2));
+        this.setSavedOrderModels(Arrays.asList(ord));
         this.setActiveOrderId(0); // default
         this.setNumberOfSavedItems(this.getSavedOrderModels().size());
 

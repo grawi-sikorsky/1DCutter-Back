@@ -2,7 +2,6 @@ package pl.printo3d.onedcutter.cutter1d.cutter.services;
 
 import java.time.LocalDateTime;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -11,32 +10,24 @@ import pl.printo3d.onedcutter.cutter1d.cutter.models.CutModel;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.OrderModel;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.ResultModel;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.StockModel;
+import pl.printo3d.onedcutter.cutter1d.user.models.UserDTO;
 import pl.printo3d.onedcutter.cutter1d.user.models.UserModel;
+import pl.printo3d.onedcutter.cutter1d.user.repo.OrderRepository;
 import pl.printo3d.onedcutter.cutter1d.user.services.UserService;
 
 @Service
 public class OrderService {
 
-    @Autowired
-    private OneDCutService cutService;
-    @Autowired
-    private ResultService resultService;
-    @Autowired
-    private UserService userService;
+    private final OneDCutService cutService;
+    private final ResultService resultService;
+    private final UserService userService;
+    private final OrderRepository orderRepository;
 
-    // Default
-    public OrderModel returnOrder() {
-        OrderModel orderList = new OrderModel();
-
-        orderList.getCutList().add(new CutModel("260", "5"));
-        orderList.getStockList().add(new StockModel("0", "1000", "4", "0"));
-
-        return orderList;
-    }
-
-    // A ODDEJ PAN COS POWZIĄŁ!! :D
-    public OrderModel returnOrder(OrderModel orderModel) {
-        return orderModel;
+    public OrderService(OneDCutService cutService,ResultService resultService,UserService userService, OrderRepository orderRepository){
+        this.cutService = cutService;
+        this.resultService = resultService;
+        this.userService = userService;
+        this.orderRepository = orderRepository;
     }
 
     /**
@@ -96,7 +87,7 @@ public class OrderService {
         um.getSavedOrderModels().get(um.getActiveOrderId()).setProjectName(incomingOrderModel.getProjectName());
         um.getSavedOrderModels().get(um.getActiveOrderId()).setProjectModified(LocalDateTime.now());
 
-        userService.updateUser(um);
+        userService.updateUser(new UserDTO(um));
         /** END ZAPIS DO BAZY */
     }
 
@@ -104,7 +95,7 @@ public class OrderService {
      * Zapisuje do bazy wyłącznie jeden bierzący order - nie zapisuje ich do slotów pamieci usera
      * @param incomingOrderModel
      */
-    public void saveActiveOrder(OrderModel incomingOrderModel) {
+    public OrderModel saveActiveOrder(OrderModel incomingOrderModel) {
         /** ZAPIS DO BAZY */
         UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UserModel um;
@@ -124,7 +115,28 @@ public class OrderService {
         um.getActiveOrderModel().setProjectName(incomingOrderModel.getProjectName());
         um.getActiveOrderModel().setProjectModified(LocalDateTime.now());
 
-        userService.updateUser(um);
+        userService.updateUser(new UserDTO(um));
         /** END ZAPIS DO BAZY */
+        return um.getActiveOrderModel();
+    }
+
+    public OrderModel addOrderModel(OrderModel incomingOrderModel){
+        UserModel userModel = (UserModel) userService.loadUserByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
+
+        userModel.getSavedOrderModels().add(incomingOrderModel);
+        userModel.setActiveOrderModel(incomingOrderModel);
+        userService.saveUserEntity(userModel);
+        return userModel.getActiveOrderModel();
+    }
+
+    public OrderModel editOrderModel(OrderModel incomingOrderModel) {
+        UserModel userModel = (UserModel) userService.loadUserByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
+        OrderModel orderModel = orderRepository.findOrderModelById(incomingOrderModel.getId());
+        orderModel.setCutOptions(incomingOrderModel.getCutOptions());
+
+        //userModel.setActiveOrderModel(incomingOrderModel);
+        userService.saveUserEntity(userModel);
+        //userService.saveActiveOrder(incomingOrderModel);
+        return userModel.getActiveOrderModel();
     }
 }

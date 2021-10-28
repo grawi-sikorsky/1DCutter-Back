@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import pl.printo3d.onedcutter.cutter1d.cutter.models.OrderModel;
 import pl.printo3d.onedcutter.cutter1d.user.models.AuthRequest;
+import pl.printo3d.onedcutter.cutter1d.user.models.UserDTO;
 import pl.printo3d.onedcutter.cutter1d.user.models.UserModel;
 import pl.printo3d.onedcutter.cutter1d.user.repo.UserRepo;
 
@@ -58,7 +60,7 @@ public class UserService implements UserDetailsService {
     }
 
     /**
-     * Rejestruje usera z zestawem domyslnych wartosci -> TODO: mozna rozdzielic tworzenie defaultowych wartosci od samego addUser dla czytelnosci
+     * Rejestruje usera
      * @param userModel
      * @return
      */
@@ -83,12 +85,23 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public boolean updateUser(UserModel userModel) {
+    public UserModel updateUser(UserDTO userDTO) {
         logger.info("Update User..");
 
-        uRepo.save(userModel);
+        UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserModel uModel = (UserModel) this.loadUserByUsername(ud.getUsername());
 
-        return true;
+        uModel.setPhone(userDTO.getPhone());
+        uModel.setWebsite(userDTO.getWebsite());
+        uModel.setActiveOrderId(userDTO.getActiveOrderId());
+
+        uRepo.save(uModel);
+
+        return uModel;
+    }
+
+    public void saveUserEntity(UserModel um) {
+        uRepo.save(um);
     }
 
     /**
@@ -102,5 +115,7 @@ public class UserService implements UserDetailsService {
 
         return oList;
     }
+
+
 
 }

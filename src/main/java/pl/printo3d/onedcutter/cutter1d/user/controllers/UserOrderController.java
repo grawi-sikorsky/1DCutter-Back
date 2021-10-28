@@ -29,7 +29,7 @@ import pl.printo3d.onedcutter.cutter1d.user.services.UserService;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/user/order")
+@RequestMapping("/user/orders")
 public class UserOrderController {
 
     private final static Logger logger = LoggerFactory.getLogger(UserOrderController.class);
@@ -41,6 +41,12 @@ public class UserOrderController {
         this.orderService = orderService;
     }
 
+    @GetMapping
+    public List<OrderModel> getUserOrderModels(){
+        UserModel userModel = (UserModel) userService.loadUserByUsername( ((UserModel)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
+        return userModel.getSavedOrderModels();
+    }
+
     // for now 0-4 list index not db index!
     @GetMapping("{orderId}")
     public OrderModel loadOrder(@PathVariable Integer orderId){
@@ -50,28 +56,24 @@ public class UserOrderController {
 
     @PostMapping
     public OrderModel saveOrder(@RequestBody OrderModel incomingOrderModel){
-        UserModel userModel = (UserModel) userService.loadUserByUsername( ((UserModel)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
-        userModel.setActiveOrderModel(incomingOrderModel);
-        return userModel.getActiveOrderModel();
+        return orderService.addOrderModel(incomingOrderModel);
     }
 
-    @PatchMapping("{activeOrderId}")
-    public UserDTO setActiveOrder(@PathVariable Integer activeOrderId){
-        UserModel userModel = (UserModel) userService.loadUserByUsername( ((UserModel)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
-        userModel.setActiveOrderId(activeOrderId);
-        return new UserDTO(userModel);
+    @PatchMapping
+    public OrderModel setActiveOrder(@RequestBody OrderModel incomingOrderModel){
+        return orderService.editOrderModel(incomingOrderModel);
     }
 
     // Load user project
     @RequestMapping(value = "/loadproject", method = RequestMethod.POST)
-    public boolean loadProject(@RequestBody UserModel incomingUserModel) {
+    public boolean loadProject(@RequestBody UserDTO incomingUserModel) {
         
         UserModel uModel = (UserModel) userService.loadUserByUsername(incomingUserModel.getUsername());
 
         uModel.setActiveOrderId(incomingUserModel.getActiveOrderId());
         uModel.setActiveOrderModel(uModel.getSavedOrderModels().get(incomingUserModel.getActiveOrderId()));
 
-        userService.updateUser(uModel);
+        userService.updateUser(new UserDTO(uModel));
 
         logger.info("Request /loadproject -> UpdateUser(activeorderID)");
 
@@ -96,7 +98,7 @@ public class UserOrderController {
             uModel.setNumberOfSavedItems(uModel.getNumberOfSavedItems()+1);
         }
         uModel.setActiveOrderId(incomingUserModel.getActiveOrderId());
-        userService.updateUser(uModel);
+        userService.updateUser(new UserDTO(uModel));
 
         incomingUserModel.getActiveOrderModel().getCutList().forEach(e->e.setId(null));
         incomingUserModel.getActiveOrderModel().getStockList().forEach(e->e.setId(null));
