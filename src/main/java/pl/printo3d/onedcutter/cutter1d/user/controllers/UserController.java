@@ -50,10 +50,10 @@ public class UserController {
         return true;
     }
 
-    @PatchMapping
-    public UserDTO updateUser(@RequestBody UserDTO userDTO){
-        UserModel userModel = (UserModel) userService.loadUserByUsername( ((UserModel)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
-        userService.updateUser(userDTO)
-        return ;
-    }
+    // @PatchMapping
+    // public UserDTO updateUser(@RequestBody UserDTO userDTO){
+    //     UserModel userModel = (UserModel) userService.loadUserByUsername( ((UserModel)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
+    //     userService.updateUser(userDTO)
+    //     return ;
+    // }
 }
