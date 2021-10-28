@@ -1,12 +1,16 @@
 package pl.printo3d.onedcutter.cutter1d.cutter.services;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
+import org.hibernate.hql.spi.id.cte.CteValuesListDeleteHandlerImpl;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import pl.printo3d.onedcutter.cutter1d.cutter.models.CutModel;
+import pl.printo3d.onedcutter.cutter1d.cutter.models.CutOptions;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.OrderModel;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.ResultModel;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.StockModel;
@@ -130,13 +134,29 @@ public class OrderService {
     }
 
     public OrderModel editOrderModel(OrderModel incomingOrderModel) {
-        UserModel userModel = (UserModel) userService.loadUserByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
-        OrderModel orderModel = orderRepository.findOrderModelById(incomingOrderModel.getId());
+        //UserModel userModel = (UserModel) userService.loadUserByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
+        OrderModel orderModel = orderRepository.getById(incomingOrderModel.getId());
+
+        CutOptions cutOptionsToUpdate = incomingOrderModel.getCutOptions();
+        cutOptionsToUpdate.setId(orderModel.getCutOptions().getId());
+
+        List<CutModel> cutListToUpdate = incomingOrderModel.getCutList();
+        //cutListToUpdate.forEach(  );
+        // List<StockModel> stockListToUpdate = incomingOrderModel.getStockList();
+        
+        orderModel.setProjectName(incomingOrderModel.getProjectName());
+        orderModel.setProjectModified(LocalDateTime.now());
+        // orderModel.setCutList(cutListToUpdate);
+        // orderModel.setStockList(stockListToUpdate);
         orderModel.setCutOptions(incomingOrderModel.getCutOptions());
 
+        orderRepository.save(orderModel);
+
+        //orderModel.setCutOptions(incomingOrderModel.getCutOptions());
+
         //userModel.setActiveOrderModel(incomingOrderModel);
-        userService.saveUserEntity(userModel);
+        //userService.saveUserEntity(userModel);
         //userService.saveActiveOrder(incomingOrderModel);
-        return userModel.getActiveOrderModel();
+        return orderModel; //userModel.getActiveOrderModel();
     }
 }

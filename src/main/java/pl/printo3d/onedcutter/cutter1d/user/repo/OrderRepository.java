@@ -9,5 +9,5 @@ import pl.printo3d.onedcutter.cutter1d.cutter.models.OrderModel;
 public interface OrderRepository extends CrudRepository<OrderModel, Long>{
 
     OrderModel findOrderModelById(Long id);
-
+    OrderModel getById(Long id);
 }
