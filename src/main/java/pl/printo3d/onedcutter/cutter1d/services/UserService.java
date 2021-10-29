@@ -14,7 +14,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import pl.printo3d.onedcutter.cutter1d.dto.UserDTO;
 import pl.printo3d.onedcutter.cutter1d.dto.UserUpdateDTO;
 import pl.printo3d.onedcutter.cutter1d.models.project.ProjectModel;
 import pl.printo3d.onedcutter.cutter1d.models.user.AuthRequest;

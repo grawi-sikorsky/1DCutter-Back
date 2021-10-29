@@ -2,15 +2,12 @@ package pl.printo3d.onedcutter.cutter1d.services;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import pl.printo3d.onedcutter.cutter1d.dto.UserDTO;
 import pl.printo3d.onedcutter.cutter1d.models.project.ProjectModel;
-import pl.printo3d.onedcutter.cutter1d.models.project.ResultModel;
 import pl.printo3d.onedcutter.cutter1d.models.user.UserModel;
 import pl.printo3d.onedcutter.cutter1d.repo.ProjectRepository;
 
@@ -84,7 +81,7 @@ public class ProjectService {
     }
 
 
-    public ProjectModel addOrderModel(ProjectModel incomingProject){
+    public ProjectModel addNewProject(ProjectModel incomingProject){
         UserModel userModel = (UserModel) userService.loadUserByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
 
         if(userModel.getNumberOfSavedItems() < 5){
@@ -99,25 +96,25 @@ public class ProjectService {
         else throw new RuntimeException("There's no more space for this user");
     }
 
-    public ProjectModel editOrderModel(Long id, ProjectModel incomingProject) {
+    public ProjectModel editProject(Long id, ProjectModel incomingProject) {
         UserModel userModel = (UserModel) userService.loadUserByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
 
         if( projectRepository.getByIdAndUserId(id, userModel.getId()) != null ){
-            ProjectModel orderModel = projectRepository.getByIdAndUserId(id, userModel.getId());
-            orderModel.getCutList().clear();
-            orderModel.getCutList().addAll(incomingProject.getCutList());
+            ProjectModel project = projectRepository.getByIdAndUserId(id, userModel.getId());
+            project.getCutList().clear();
+            project.getCutList().addAll(incomingProject.getCutList());
 
-            orderModel.getStockList().clear();
-            orderModel.getStockList().addAll(incomingProject.getStockList());
+            project.getStockList().clear();
+            project.getStockList().addAll(incomingProject.getStockList());
 
-            orderModel.setCutOptions(incomingProject.getCutOptions());
+            project.setCutOptions(incomingProject.getCutOptions());
 
-            orderModel.setProjectName(incomingProject.getProjectName());
-            orderModel.setProjectModified(LocalDateTime.now());
+            project.setProjectName(incomingProject.getProjectName());
+            project.setProjectModified(LocalDateTime.now());
 
-            projectRepository.save(orderModel);
+            projectRepository.save(project);
 
-            return orderModel;
+            return project;
         }
         else throw new RuntimeException("User or model not found!");
     }

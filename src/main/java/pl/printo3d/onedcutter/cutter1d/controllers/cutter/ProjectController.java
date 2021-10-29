@@ -1,13 +1,10 @@
 package pl.printo3d.onedcutter.cutter1d.controllers.cutter;
 
-import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,12 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
-import pl.printo3d.onedcutter.cutter1d.dto.UserDTO;
-import pl.printo3d.onedcutter.cutter1d.dto.UserUpdateDTO;
-import pl.printo3d.onedcutter.cutter1d.models.project.CutModel;
-import pl.printo3d.onedcutter.cutter1d.models.project.CutOptions;
 import pl.printo3d.onedcutter.cutter1d.models.project.ProjectModel;
-import pl.printo3d.onedcutter.cutter1d.models.project.StockModel;
 import pl.printo3d.onedcutter.cutter1d.models.user.UserModel;
 import pl.printo3d.onedcutter.cutter1d.services.ProjectService;
 import pl.printo3d.onedcutter.cutter1d.services.UserService;
@@ -58,13 +50,13 @@ public class ProjectController {
     }
 
     @PostMapping
-    public ProjectModel saveOrder(@RequestBody ProjectModel incomingOrderModel){
-        return projectService.addOrderModel(incomingOrderModel);
+    public ProjectModel addNewProject(@RequestBody ProjectModel incomingProject){
+        return projectService.addNewProject(incomingProject);
     }
 
     @PatchMapping("{orderId}")
-    public ProjectModel setActiveOrder(@PathVariable Long orderId, @RequestBody ProjectModel incomingOrderModel){
-        return projectService.editOrderModel(orderId, incomingOrderModel);
+    public ProjectModel editProject(@PathVariable Long orderId, @RequestBody ProjectModel incomingProject){
+        return projectService.editProject(orderId, incomingProject);
     }
 
     @DeleteMapping("{id}")
@@ -72,53 +64,6 @@ public class ProjectController {
         projectService.removeOrderModel(Long.valueOf(id));
         return ResponseEntity.noContent().build();
     }
-
-    // Load user project
-    @RequestMapping(value = "/loadproject", method = RequestMethod.POST)
-    public boolean loadProject(@RequestBody UserUpdateDTO incomingUserUpdateDTO) {
-        
-        // UserModel uModel = (UserModel) userService.loadUserByUsername(incomingUserUpdateDTO.getUsername());
-        // uModel.setActiveOrderId(incomingUserUpdateDTO.getActiveOrderId());
-        // uModel.setActiveOrderModel(uModel.getSavedOrderModels().get(incomingUserUpdateDTO.getActiveOrderId()));
-
-        userService.updateUser(incomingUserUpdateDTO);
-
-        logger.info("Request /loadproject -> UpdateUser(activeorderID)");
-
-        return true;
-    }
-
-    // Save user project
-    @RequestMapping(value = "/saveproject", method = RequestMethod.POST)
-    public boolean saveProject(@RequestBody UserDTO userDTO) {
-
-        // UserModel uModel = (UserModel) userService.loadUserByUsername(incomingUserUpdateDTO.getUsername());
-        // // zrobic id catch
-        // if(uModel.getNumberOfSavedItems() <= incomingUserUpdateDTO.getActiveOrderId() && uModel.getNumberOfSavedItems() < 5 ) {
-        //     ProjectModel tmpord = new ProjectModel();
-        //     tmpord.setCutList(Arrays.asList(new CutModel("220", "5"), new CutModel("260", "5")));
-        //     tmpord.setStockList( Arrays.asList(new StockModel("0", "1000", "6", "0"), new StockModel("1", "1000", "5", "0")));
-        //     tmpord.setCutOptions(new CutOptions(false, 0d, false, false, 1000));
-        //     tmpord.setProjectName("default name2");
-        //     tmpord.setProjectCreated(LocalDateTime.now());
-        //     tmpord.setProjectModified(LocalDateTime.now());
-        //     uModel.getSavedOrderModels().add(tmpord);
-        //     uModel.setNumberOfSavedItems(uModel.getNumberOfSavedItems()+1);
-        // }
-
-        // uModel.setActiveOrderId(incomingUserUpdateDTO.getActiveOrderId());
-        projectService.saveUserOrders(userDTO.getActiveOrderModel());
-
-        // incomingUserUpdateDTO.getActiveOrderModel().getCutList().forEach(e->e.setId(null));
-        // incomingUserUpdateDTO.getActiveOrderModel().getStockList().forEach(e->e.setId(null));
-
-        // projectService.saveUserOrders(incomingUserUpdateDTO.getActiveOrderModel()); // tutaj musi trafic zestaw bez id w przeciwnym razie przy kopii ze slota na inny slot bedzie leciec duplicate entry.
-        
-        logger.info("Request /saveproject -> UpdateUser(activeorderID)");
-        return true;
-    }
-
-
 
     /**
      * Testowe
