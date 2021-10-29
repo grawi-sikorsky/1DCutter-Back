@@ -8,7 +8,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import pl.printo3d.onedcutter.cutter1d.models.project.CutterProduct;
-import pl.printo3d.onedcutter.cutter1d.models.project.OrderModel;
+import pl.printo3d.onedcutter.cutter1d.models.project.ProjectModel;
 import pl.printo3d.onedcutter.cutter1d.models.project.ResultBar;
 import pl.printo3d.onedcutter.cutter1d.models.project.ResultBarPieceModel;
 import pl.printo3d.onedcutter.cutter1d.models.project.ResultModel;
@@ -104,7 +104,7 @@ public class ResultService {
      * @param incominOrderModel
      * @return
      */
-    public Double calculatePrice(List<WorkPiece> workPieces, OrderModel incominOrderModel) {
+    public Double calculatePrice(List<WorkPiece> workPieces, ProjectModel incominOrderModel) {
         Double costs = 0D;
         
         for (WorkPiece workpc : workPieces) {
@@ -137,7 +137,7 @@ public class ResultService {
      * @param incominOrderModel
      * @return fullResults
      */
-    public ResultModel makeFullResults(CutterProduct cutterProduct, OrderModel incominOrderModel) {
+    public ResultModel makeFullResults(CutterProduct cutterProduct, ProjectModel incominOrderModel) {
         ResultModel fullResults = new ResultModel();
 
         fullResults.setResultCutCount(this.calculateCutCount(cutterProduct.getWorkPiecesList()));

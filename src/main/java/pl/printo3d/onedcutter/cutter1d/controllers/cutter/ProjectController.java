@@ -23,10 +23,10 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.printo3d.onedcutter.cutter1d.dto.UserDTO;
 import pl.printo3d.onedcutter.cutter1d.models.project.CutModel;
 import pl.printo3d.onedcutter.cutter1d.models.project.CutOptions;
-import pl.printo3d.onedcutter.cutter1d.models.project.OrderModel;
+import pl.printo3d.onedcutter.cutter1d.models.project.ProjectModel;
 import pl.printo3d.onedcutter.cutter1d.models.project.StockModel;
 import pl.printo3d.onedcutter.cutter1d.models.user.UserModel;
-import pl.printo3d.onedcutter.cutter1d.services.OrderService;
+import pl.printo3d.onedcutter.cutter1d.services.ProjectService;
 import pl.printo3d.onedcutter.cutter1d.services.UserService;
 
 @CrossOrigin(origins = "http://localhost:4200")
@@ -36,33 +36,33 @@ public class ProjectController {
 
     private final static Logger logger = LoggerFactory.getLogger(ProjectController.class);
     private final UserService userService;
-    private final OrderService orderService;
+    private final ProjectService orderService;
 
-    public ProjectController(UserService userService, OrderService orderService){
+    public ProjectController(UserService userService, ProjectService orderService){
         this.userService = userService;
         this.orderService = orderService;
     }
 
     @GetMapping
-    public List<OrderModel> getUserOrderModels(){
+    public List<ProjectModel> getUserOrderModels(){
         UserModel userModel = (UserModel) userService.loadUserByUsername( ((UserModel)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
         return userModel.getSavedOrderModels();
     }
 
     // for now 0-4 list index not db index!
     @GetMapping("{orderId}")
-    public OrderModel loadOrder(@PathVariable Integer orderId){
+    public ProjectModel loadOrder(@PathVariable Integer orderId){
         UserModel userModel = (UserModel) userService.loadUserByUsername( ((UserModel)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
         return userModel.getSavedOrderModels().get(orderId);
     }
 
     @PostMapping
-    public OrderModel saveOrder(@RequestBody OrderModel incomingOrderModel){
+    public ProjectModel saveOrder(@RequestBody ProjectModel incomingOrderModel){
         return orderService.addOrderModel(incomingOrderModel);
     }
 
     @PatchMapping("{orderId}")
-    public OrderModel setActiveOrder(@PathVariable Long orderId, @RequestBody OrderModel incomingOrderModel){
+    public ProjectModel setActiveOrder(@PathVariable Long orderId, @RequestBody ProjectModel incomingOrderModel){
         return orderService.editOrderModel(orderId, incomingOrderModel);
     }
 
@@ -95,7 +95,7 @@ public class ProjectController {
         UserModel uModel = (UserModel) userService.loadUserByUsername(incomingUserModel.getUsername());
         // zrobic id catch
         if(uModel.getNumberOfSavedItems() <= incomingUserModel.getActiveOrderId() && uModel.getNumberOfSavedItems() < 5 ) {
-            OrderModel tmpord = new OrderModel();
+            ProjectModel tmpord = new ProjectModel();
             tmpord.setCutList(Arrays.asList(new CutModel("220", "5"), new CutModel("260", "5")));
             tmpord.setStockList( Arrays.asList(new StockModel("0", "1000", "6", "0"), new StockModel("1", "1000", "5", "0")));
             tmpord.setCutOptions(new CutOptions(false, 0d, false, false, 1000));
@@ -125,7 +125,7 @@ public class ProjectController {
      * @return
      */
     @RequestMapping(value = "/getuserprojects", method = RequestMethod.POST)
-    public List<OrderModel> getListOfSavedProjects(@RequestParam UserModel userModel) {
+    public List<ProjectModel> getListOfSavedProjects(@RequestParam UserModel userModel) {
         return userService.getListOfSavedProjects(userModel);
     }
 

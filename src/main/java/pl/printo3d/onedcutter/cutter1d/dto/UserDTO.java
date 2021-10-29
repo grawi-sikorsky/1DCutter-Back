@@ -3,7 +3,7 @@ package pl.printo3d.onedcutter.cutter1d.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.printo3d.onedcutter.cutter1d.models.project.OrderModel;
+import pl.printo3d.onedcutter.cutter1d.models.project.ProjectModel;
 import pl.printo3d.onedcutter.cutter1d.models.user.UserModel;
 
 public class UserDTO {
@@ -17,8 +17,8 @@ public class UserDTO {
     private Integer numberOfSavedItems;
     private Integer activeOrderId;
 
-    private OrderModel activeOrderModel;
-    private List<OrderModel> savedOrderModels = new ArrayList<OrderModel>();
+    private ProjectModel activeOrderModel;
+    private List<ProjectModel> savedOrderModels = new ArrayList<ProjectModel>();
 
     public UserDTO() {
     }
@@ -117,19 +117,19 @@ public class UserDTO {
         this.activeOrderId = activeOrderId;
     }
 
-    public OrderModel getActiveOrderModel() {
+    public ProjectModel getActiveOrderModel() {
         return activeOrderModel;
     }
 
-    public void setActiveOrderModel(OrderModel activeOrderModel) {
+    public void setActiveOrderModel(ProjectModel activeOrderModel) {
         this.activeOrderModel = activeOrderModel;
     }
 
-    public List<OrderModel> getSavedOrderModels() {
+    public List<ProjectModel> getSavedOrderModels() {
         return savedOrderModels;
     }
 
-    public void setSavedOrderModels(List<OrderModel> savedOrderModels) {
+    public void setSavedOrderModels(List<ProjectModel> savedOrderModels) {
         this.savedOrderModels = savedOrderModels;
     }
 

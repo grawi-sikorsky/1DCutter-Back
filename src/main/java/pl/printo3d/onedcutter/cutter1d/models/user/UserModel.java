@@ -25,7 +25,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import pl.printo3d.onedcutter.cutter1d.models.project.CutModel;
 import pl.printo3d.onedcutter.cutter1d.models.project.CutOptions;
-import pl.printo3d.onedcutter.cutter1d.models.project.OrderModel;
+import pl.printo3d.onedcutter.cutter1d.models.project.ProjectModel;
 import pl.printo3d.onedcutter.cutter1d.models.project.StockModel;
 
 /**
@@ -51,18 +51,18 @@ public class UserModel implements UserDetails {
 
     @OneToOne(cascade = { CascadeType.ALL })
     @JoinColumn(name = "activeOrderModel", referencedColumnName = "id")
-    private OrderModel activeOrderModel;
+    private ProjectModel activeOrderModel;
 
     @OneToMany(cascade = { CascadeType.ALL })
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private List<OrderModel> savedOrderModels = new ArrayList<OrderModel>();
+    private List<ProjectModel> savedOrderModels = new ArrayList<ProjectModel>();
 
     @PrePersist
     public void prepersist(){
         this.uuid = UUID.randomUUID().toString();
 
         // 1 domyslne formatki
-        OrderModel ord = new OrderModel();
+        ProjectModel ord = new ProjectModel();
         ord.setCutList(Arrays.asList(new CutModel("220", "5"), new CutModel("260", "5")));
         ord.setStockList(Arrays.asList(new StockModel("0", "1000", "6", "0"), new StockModel("1", "1000", "5", "0")));
         ord.setCutOptions(new CutOptions(false, 0d, false, false, 1000));
@@ -207,19 +207,19 @@ public class UserModel implements UserDetails {
         this.activeOrderId = activeOrderId;
     }
 
-    public OrderModel getActiveOrderModel() {
+    public ProjectModel getActiveOrderModel() {
         return activeOrderModel;
     }
 
-    public void setActiveOrderModel(OrderModel activeOrderModel) {
+    public void setActiveOrderModel(ProjectModel activeOrderModel) {
         this.activeOrderModel = activeOrderModel;
     }
 
-    public List<OrderModel> getSavedOrderModels() {
+    public List<ProjectModel> getSavedOrderModels() {
         return savedOrderModels;
     }
 
-    public void setSavedOrderModels(List<OrderModel> savedOrderModels) {
+    public void setSavedOrderModels(List<ProjectModel> savedOrderModels) {
         this.savedOrderModels = savedOrderModels;
     }
 

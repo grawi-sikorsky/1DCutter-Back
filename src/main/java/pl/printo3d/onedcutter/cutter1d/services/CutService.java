@@ -11,18 +11,18 @@ import org.springframework.stereotype.Service;
 
 import pl.printo3d.onedcutter.cutter1d.models.project.CutModel;
 import pl.printo3d.onedcutter.cutter1d.models.project.CutterProduct;
-import pl.printo3d.onedcutter.cutter1d.models.project.OrderModel;
+import pl.printo3d.onedcutter.cutter1d.models.project.ProjectModel;
 import pl.printo3d.onedcutter.cutter1d.models.project.WorkPiece;
 
 @Service
-public class OneDCutService {
+public class CutService {
 
     public void run()
     {
 
     }
 
-    public OneDCutService() {
+    public CutService() {
     }
 
     @Autowired
@@ -57,7 +57,7 @@ public class OneDCutService {
      * @param incomingOrder
      * @return
      */
-    public CutterProduct firstFit(OrderModel incomingOrder) {
+    public CutterProduct firstFit(ProjectModel incomingOrder) {
 
         CutterProduct cutterProduct = new CutterProduct();
 
@@ -123,7 +123,7 @@ public class OneDCutService {
         return cutterProduct;
     }
 
-    private CutterProduct ffit( List<Double> partsList, OrderModel incomingOrder ){
+    private CutterProduct ffit( List<Double> partsList, ProjectModel incomingOrder ){
         CutterProduct cutterProduct = new CutterProduct();
         List<WorkPiece> workPiecesList = new ArrayList<WorkPiece>();
         Integer tempStockCounter = 0, tempStockIterator = 0;
@@ -198,7 +198,7 @@ public class OneDCutService {
         return resultSolution;
     }
 
-    public CutterProduct newAlgo(CutterProduct incomingSolution, OrderModel incomingOrder){
+    public CutterProduct newAlgo(CutterProduct incomingSolution, ProjectModel incomingOrder){
         CutterProduct cutterProduct = new CutterProduct();
         List<Double> partsList = new ArrayList<Double>();
         List<Double> newPartsList = new ArrayList<Double>();

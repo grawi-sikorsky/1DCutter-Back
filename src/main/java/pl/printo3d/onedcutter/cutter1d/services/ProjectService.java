@@ -7,20 +7,20 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import pl.printo3d.onedcutter.cutter1d.dto.UserDTO;
-import pl.printo3d.onedcutter.cutter1d.models.project.OrderModel;
+import pl.printo3d.onedcutter.cutter1d.models.project.ProjectModel;
 import pl.printo3d.onedcutter.cutter1d.models.project.ResultModel;
 import pl.printo3d.onedcutter.cutter1d.models.user.UserModel;
-import pl.printo3d.onedcutter.cutter1d.repo.OrderRepository;
+import pl.printo3d.onedcutter.cutter1d.repo.ProjectRepository;
 
 @Service
-public class OrderService {
+public class ProjectService {
 
-    private final OneDCutService cutService;
+    private final CutService cutService;
     private final ResultService resultService;
     private final UserService userService;
-    private final OrderRepository orderRepository;
+    private final ProjectRepository orderRepository;
 
-    public OrderService(OneDCutService cutService,ResultService resultService,UserService userService, OrderRepository orderRepository){
+    public ProjectService(CutService cutService,ResultService resultService,UserService userService, ProjectRepository orderRepository){
         this.cutService = cutService;
         this.resultService = resultService;
         this.userService = userService;
@@ -32,7 +32,7 @@ public class OrderService {
      * @param orderModel
      * @return ResultModel
      */
-    public ResultModel makeOrder(OrderModel orderModel) {
+    public ResultModel makeOrder(ProjectModel orderModel) {
 
         /** ZAPIS DO BAZY [ACTIVE ORDER] */
         this.saveActiveOrder(orderModel);
@@ -51,7 +51,7 @@ public class OrderService {
      * @param orderModel
      * @return ResultModel
      */
-    public ResultModel makeOrderFree(OrderModel orderModel) {
+    public ResultModel makeOrderFree(ProjectModel orderModel) {
 
         System.out.println("Make FREE Order:");
         orderModel.getStockList().forEach(e -> System.out.println("ID: " + e.getId() + ", frontID: " + e.getIdFront() + ", Len: " + e.getStockLength() + ", Pcs: " + e.getStockPcs() + ", price: " + e.getStockPrice() + " $"));
@@ -64,7 +64,7 @@ public class OrderService {
      * Zapisuje do bazy Order, który ma trafic w "pamiec stala" tj. wolne sloty kazdego usera
      * @param incomingOrderModel
      */
-    public void saveUserOrders(OrderModel incomingOrderModel) {
+    public void saveUserOrders(ProjectModel incomingOrderModel) {
         /** ZAPIS DO BAZY */
         UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UserModel um;
@@ -92,7 +92,7 @@ public class OrderService {
      * Zapisuje do bazy wyłącznie jeden bierzący order - nie zapisuje ich do slotów pamieci usera
      * @param incomingOrderModel
      */
-    public OrderModel saveActiveOrder(OrderModel incomingOrderModel) {
+    public ProjectModel saveActiveOrder(ProjectModel incomingOrderModel) {
         /** ZAPIS DO BAZY */
         UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UserModel um;
@@ -118,7 +118,7 @@ public class OrderService {
     }
 
 
-    public OrderModel addOrderModel(OrderModel incomingOrderModel){
+    public ProjectModel addOrderModel(ProjectModel incomingOrderModel){
         UserModel userModel = (UserModel) userService.loadUserByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
 
         if(userModel.getNumberOfSavedItems() < 5){
@@ -133,11 +133,11 @@ public class OrderService {
         else throw new RuntimeException("There's no more space for this user");
     }
 
-    public OrderModel editOrderModel(Long id, OrderModel incomingOrderModel) {
+    public ProjectModel editOrderModel(Long id, ProjectModel incomingOrderModel) {
         UserModel userModel = (UserModel) userService.loadUserByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
 
         if( orderRepository.getByIdAndUserId(id, userModel.getId()) != null ){
-            OrderModel orderModel = orderRepository.getByIdAndUserId(id, userModel.getId());
+            ProjectModel orderModel = orderRepository.getByIdAndUserId(id, userModel.getId());
             orderModel.getCutList().clear();
             orderModel.getCutList().addAll(incomingOrderModel.getCutList());
 

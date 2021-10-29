@@ -36,10 +36,10 @@ public class OrderServiceTest {
             "password"
     );
     @InjectMocks
-    OrderService orderServiceTest;
+    ProjectService orderServiceTest;
 
     @Mock
-    private OneDCutService cutService;
+    private CutService cutService;
     @Mock
     private ResultService resultService;
     @Mock
@@ -55,7 +55,7 @@ public class OrderServiceTest {
                         )
                 )
         );
-        OrderModel activeOrderModel = new OrderModel();
+        ProjectModel activeOrderModel = new ProjectModel();
         activeOrderModel.setCutOptions(new CutOptions());
         PRINCIPAL.setActiveOrderModel(activeOrderModel);
     }
@@ -84,7 +84,7 @@ public class OrderServiceTest {
     @Test
     public void makeOrder_should_return_default_values() {
         //given
-        OrderModel orderModelTest = new OrderModel();
+        ProjectModel orderModelTest = new ProjectModel();
         orderModelTest.setCutOptions(new CutOptions());
 
         CutterProduct cutterProduct = new CutterProduct();
@@ -111,7 +111,7 @@ public class OrderServiceTest {
     public void makeFreeOrder_should_return_default_vals()
     {
         // given
-        OrderModel testOrder = new OrderModel();
+        ProjectModel testOrder = new ProjectModel();
 
         CutterProduct cProduct = new CutterProduct();
         when(cutService.firstFit(testOrder)).thenReturn(cProduct);
@@ -132,7 +132,7 @@ public class OrderServiceTest {
     public void saveActiveOrder_should_niewiemco() // toć void, wiec coz ma zwrocic? @_@
     {
         // given
-        OrderModel testOrder = new OrderModel();
+        ProjectModel testOrder = new ProjectModel();
 
         // when
         //orderServiceTest.saveActiveOrder(testOrder);

@@ -24,7 +24,7 @@ public class CutModel {
     private String name; // byc moze nazwy kawalkow beda
 
     @ManyToOne
-    private OrderModel orderModel;
+    private ProjectModel orderModel;
 
     public CutModel() {
     }
@@ -65,11 +65,11 @@ public class CutModel {
         this.id = id;
     }
 
-    public OrderModel getOrderModel() {
+    public ProjectModel getOrderModel() {
         return orderModel;
     }
 
-    public void setOrderModel(OrderModel orderModel) {
+    public void setOrderModel(ProjectModel orderModel) {
         this.orderModel = orderModel;
     }
 

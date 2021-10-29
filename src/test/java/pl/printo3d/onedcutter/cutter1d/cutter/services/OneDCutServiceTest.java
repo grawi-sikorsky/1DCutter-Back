@@ -26,7 +26,7 @@ public class OneDCutServiceTest {
     ResultService resultService;
 
     @InjectMocks
-    OneDCutService testOneDCutService;
+    CutService testOneDCutService;
 
     @Test
     public void makePartList_should_return_ktoz_to_wie(){

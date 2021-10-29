@@ -27,7 +27,7 @@ public class StockModel {
     private String name;
 
     @ManyToOne
-    private OrderModel orderModel;
+    private ProjectModel orderModel;
 
     public StockModel() {
     }
@@ -72,11 +72,11 @@ public class StockModel {
         this.id = id;
     }
 
-    public OrderModel getOrderModel() {
+    public ProjectModel getOrderModel() {
         return orderModel;
     }
 
-    public void setOrderModel(OrderModel orderModel) {
+    public void setOrderModel(ProjectModel orderModel) {
         this.orderModel = orderModel;
     }
 

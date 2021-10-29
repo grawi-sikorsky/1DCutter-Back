@@ -25,7 +25,7 @@ import java.util.List;
  * {@code CutOptions cutOptions} - Opcje projektu <p>
  */
 @Entity
-public class OrderModel {
+public class ProjectModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -54,7 +54,7 @@ public class OrderModel {
         this.projectCreated = LocalDateTime.now();
     }
 
-    public OrderModel() {
+    public ProjectModel() {
     }
 
     public List<CutModel> getCutList() {
