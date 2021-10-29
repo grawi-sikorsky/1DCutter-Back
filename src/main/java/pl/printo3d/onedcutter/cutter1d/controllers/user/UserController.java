@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import pl.printo3d.onedcutter.cutter1d.dto.UserDTO;
+import pl.printo3d.onedcutter.cutter1d.dto.UserUpdateDTO;
 import pl.printo3d.onedcutter.cutter1d.models.user.UserModel;
 import pl.printo3d.onedcutter.cutter1d.services.UserService;
 
@@ -42,8 +43,8 @@ public class UserController {
 
     // TODO: change to USER DTO
     @PatchMapping
-    public UserDTO updateUser(@RequestBody UserDTO userDTO) {
-        return new UserDTO(userService.updateUser(userDTO));
+    public UserDTO updateUser(@RequestBody UserUpdateDTO userUpdateDTO) {
+        return new UserDTO(userService.updateUser(userUpdateDTO));
     }
 
     @DeleteMapping("{uuid}")

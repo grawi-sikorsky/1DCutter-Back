@@ -15,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import pl.printo3d.onedcutter.cutter1d.dto.UserDTO;
+import pl.printo3d.onedcutter.cutter1d.dto.UserUpdateDTO;
 import pl.printo3d.onedcutter.cutter1d.models.project.ProjectModel;
 import pl.printo3d.onedcutter.cutter1d.models.user.AuthRequest;
 import pl.printo3d.onedcutter.cutter1d.models.user.UserModel;
@@ -87,21 +88,24 @@ public class UserService implements UserDetailsService {
 
     
 
-    public UserModel updateUser(UserDTO userDTO) {
+    public UserModel updateUser(UserUpdateDTO userUpdateDTO) {
         UserModel userModel = (UserModel) userRepo.findByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
 
-        userModel.setPhone(userDTO.getPhone());
-        userModel.setWebsite(userDTO.getWebsite());
-        userModel.setActiveOrderId(userDTO.getActiveOrderId());
-
-        userRepo.save(userModel);
-
-        logger.info("Update User..");
-        return userModel;
+        if( userRepo.findByUuid(userModel.getUuid()) != null){
+            userModel.setPhone(userUpdateDTO.getPhone());
+            userModel.setWebsite(userUpdateDTO.getWebsite());
+            userModel.setActiveOrderId(userUpdateDTO.getActiveOrderId());
+            userModel.setActiveOrderModel(userModel.getSavedOrderModels().get(userModel.getActiveOrderId()));
+    
+            userRepo.save(userModel);
+            logger.info("Update User..");
+            return userModel;
+        }
+        throw new RuntimeException("No such user for update!");
     }
 
-    public void saveUserEntity(UserModel um) {
-        userRepo.save(um);
+    public void saveUserEntity(UserModel userModel) {
+        userRepo.save(userModel);
     }
 
 

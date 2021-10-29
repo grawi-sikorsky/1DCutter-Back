@@ -52,7 +52,7 @@ public class ProjectService {
         userModel.getSavedOrderModels().get(userModel.getActiveOrderId()).setProjectName(incomingProject.getProjectName());
         userModel.getSavedOrderModels().get(userModel.getActiveOrderId()).setProjectModified(LocalDateTime.now());
 
-        userService.updateUser(new UserDTO(userModel));
+        userService.saveUserEntity(userModel);
         /** END ZAPIS DO BAZY */
     }
 
@@ -78,7 +78,7 @@ public class ProjectService {
         userModel.getActiveOrderModel().setProjectName(incomingProject.getProjectName());
         userModel.getActiveOrderModel().setProjectModified(LocalDateTime.now());
 
-        userService.updateUser(new UserDTO(userModel));
+        userService.saveUserEntity(userModel);
         /** END ZAPIS DO BAZY */
         return userModel.getActiveOrderModel();
     }

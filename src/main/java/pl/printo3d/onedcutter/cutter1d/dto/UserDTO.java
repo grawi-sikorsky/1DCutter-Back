@@ -33,7 +33,7 @@ public class UserDTO {
         this.numberOfSavedItems = userModel.getNumberOfSavedItems();
         this.activeOrderId = userModel.getActiveOrderId();
         this.activeOrderModel = userModel.getActiveOrderModel();
-        this.savedOrderModels = userModel.getSavedOrderModels();
+        this.savedOrderModels = userModel.getSavedOrderModels(); // todo: out!
     }
 
     public UserModel toEntity(){
