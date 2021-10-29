@@ -17,11 +17,11 @@ import pl.printo3d.onedcutter.cutter1d.models.project.WorkPiece;
 @Service
 public class ResolveService {
 
-    public ResolveService() {}
+    private final ResultService resultService;
 
-    @Autowired
-    ResultService resultService;
-
+    public ResolveService(ResultService resultService){
+        this.resultService = resultService;
+    }
 
     // Tworzy liste elementow do ciecia na podstawie wpisanych danych
     public List<Double> makePartList(List<CutModel> cutList) {

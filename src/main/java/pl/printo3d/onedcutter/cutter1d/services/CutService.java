@@ -8,9 +8,9 @@ import pl.printo3d.onedcutter.cutter1d.models.project.ResultModel;
 @Service
 public class CutService {
 
-    private ResultService resultService;
-    private ProjectService projectService;
-    private ResolveService resolveService;
+    private final ResultService resultService;
+    private final ProjectService projectService;
+    private final ResolveService resolveService;
 
     public CutService(ResultService resultService, ProjectService projectService, ResolveService resolveService) {
         this.resultService = resultService;

@@ -1,6 +1,7 @@
 package pl.printo3d.onedcutter.cutter1d.services;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -137,5 +138,11 @@ public class ProjectService {
         if(projectRepository.findProjectModelByIdAndUserId(projectId, userModel.getId()) != null){
             return projectRepository.findProjectModelById(projectId);
         } else throw new RuntimeException("No project or user found with this ID!");
+    }
+
+
+    public List<ProjectModel> getAllUserProjects() {
+        UserModel userModel = (UserModel) userService.loadUserByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
+        return userModel.getSavedOrderModels();
     }
 }

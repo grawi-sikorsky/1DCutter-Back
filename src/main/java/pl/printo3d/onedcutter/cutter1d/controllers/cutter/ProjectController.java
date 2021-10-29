@@ -44,9 +44,8 @@ public class ProjectController {
     }
 
     @GetMapping
-    public List<ProjectModel> getUserOrderModels(){
-        UserModel userModel = (UserModel) userService.loadUserByUsername( ((UserModel)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
-        return userModel.getSavedOrderModels();
+    public List<ProjectModel> getAllUserProjects(){
+        return projectService.getAllUserProjects();
     }
 
     @GetMapping("{projectId}")

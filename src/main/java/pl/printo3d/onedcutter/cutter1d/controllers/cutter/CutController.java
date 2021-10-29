@@ -1,6 +1,5 @@
 package pl.printo3d.onedcutter.cutter1d.controllers.cutter;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,12 +21,6 @@ public class CutController {
         this.cutService = cutService;
         this.projectService = projectService;
     }
-
-    /**
-     * Showing home page of One D Cutter, does nothing but return order details (cutlist, stocklist) - default or saved in user database.
-     *
-     * @return OrderModel
-     */
 
     // OBLICZ LOGGED
     @PostMapping("/cut")
