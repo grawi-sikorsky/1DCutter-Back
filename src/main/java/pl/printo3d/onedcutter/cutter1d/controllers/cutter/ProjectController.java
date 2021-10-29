@@ -36,11 +36,11 @@ public class ProjectController {
 
     private final static Logger logger = LoggerFactory.getLogger(ProjectController.class);
     private final UserService userService;
-    private final ProjectService orderService;
+    private final ProjectService projectService;
 
-    public ProjectController(UserService userService, ProjectService orderService){
+    public ProjectController(UserService userService, ProjectService projectService){
         this.userService = userService;
-        this.orderService = orderService;
+        this.projectService = projectService;
     }
 
     @GetMapping
@@ -49,26 +49,24 @@ public class ProjectController {
         return userModel.getSavedOrderModels();
     }
 
-    // for now 0-4 list index not db index!
-    @GetMapping("{orderId}")
-    public ProjectModel loadOrder(@PathVariable Integer orderId){
-        UserModel userModel = (UserModel) userService.loadUserByUsername( ((UserModel)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
-        return userModel.getSavedOrderModels().get(orderId);
+    @GetMapping("{projectId}")
+    public ProjectModel loadProject(@PathVariable Long projectId){
+        return projectService.getProject(projectId);
     }
 
     @PostMapping
     public ProjectModel saveOrder(@RequestBody ProjectModel incomingOrderModel){
-        return orderService.addOrderModel(incomingOrderModel);
+        return projectService.addOrderModel(incomingOrderModel);
     }
 
     @PatchMapping("{orderId}")
     public ProjectModel setActiveOrder(@PathVariable Long orderId, @RequestBody ProjectModel incomingOrderModel){
-        return orderService.editOrderModel(orderId, incomingOrderModel);
+        return projectService.editOrderModel(orderId, incomingOrderModel);
     }
 
     @DeleteMapping("{id}")
     public ResponseEntity<Void> removeOrder(@PathVariable String id){
-        orderService.removeOrderModel(Long.valueOf(id));
+        projectService.removeOrderModel(Long.valueOf(id));
         return ResponseEntity.noContent().build();
     }
 
@@ -111,7 +109,7 @@ public class ProjectController {
         incomingUserModel.getActiveOrderModel().getCutList().forEach(e->e.setId(null));
         incomingUserModel.getActiveOrderModel().getStockList().forEach(e->e.setId(null));
 
-        orderService.saveUserOrders(incomingUserModel.getActiveOrderModel()); // tutaj musi trafic zestaw bez id w przeciwnym razie przy kopii ze slota na inny slot bedzie leciec duplicate entry.
+        projectService.saveUserOrders(incomingUserModel.getActiveOrderModel()); // tutaj musi trafic zestaw bez id w przeciwnym razie przy kopii ze slota na inny slot bedzie leciec duplicate entry.
         
         logger.info("Request /saveproject -> UpdateUser(activeorderID)");
         return true;

@@ -8,14 +8,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 import pl.printo3d.onedcutter.cutter1d.models.project.ProjectModel;
 import pl.printo3d.onedcutter.cutter1d.models.project.ResultModel;
+import pl.printo3d.onedcutter.cutter1d.services.CutService;
 import pl.printo3d.onedcutter.cutter1d.services.ProjectService;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-public class OneDCutterController {
+public class CutController {
 
-    @Autowired
-    private ProjectService orderService;
+    private ProjectService projectService;
+    private CutService cutService;
+
+    public CutController(CutService cutService, ProjectService projectService){
+        this.cutService = cutService;
+        this.projectService = projectService;
+    }
 
     /**
      * Showing home page of One D Cutter, does nothing but return order details (cutlist, stocklist) - default or saved in user database.
@@ -25,20 +31,20 @@ public class OneDCutterController {
 
     // OBLICZ LOGGED
     @PostMapping("/cut")
-    public ResultModel ProcessOrder(@RequestBody ProjectModel orderModel) {
-        return orderService.makeOrder(orderModel);
+    public ResultModel resolveCutting(@RequestBody ProjectModel projectModel) {
+        return cutService.makeOrder(projectModel);
     }
 
     // Oblicz nie Logged
     @PostMapping("/cutfree")
     public ResultModel ProcessOrderFree(@RequestBody ProjectModel orderModel) {
-        return orderService.makeOrderFree(orderModel);
+        return cutService.makeOrderFree(orderModel);
     }
 
     // Zapisuje bierzacy orderModel do bazy (debounced save na froncie)
     @PostMapping("/setorder")
     public ProjectModel setOptions(@RequestBody ProjectModel orderModel) {
-        orderService.saveActiveOrder(orderModel);
+        projectService.saveActiveOrder(orderModel);
 
         return orderModel;
     }

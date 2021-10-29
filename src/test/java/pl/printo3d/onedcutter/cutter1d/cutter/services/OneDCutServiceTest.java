@@ -14,7 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import pl.printo3d.onedcutter.cutter1d.models.project.CutModel;
 import pl.printo3d.onedcutter.cutter1d.models.project.CutterProduct;
 import pl.printo3d.onedcutter.cutter1d.models.project.WorkPiece;
-import pl.printo3d.onedcutter.cutter1d.services.CutService;
+import pl.printo3d.onedcutter.cutter1d.services.ResolveService;
 import pl.printo3d.onedcutter.cutter1d.services.ResultService;
 
 @ExtendWith(MockitoExtension.class)
@@ -24,7 +24,7 @@ public class OneDCutServiceTest {
     ResultService resultService;
 
     @InjectMocks
-    CutService testOneDCutService;
+    ResolveService testOneDCutService;
 
     @Test
     public void makePartList_should_return_ktoz_to_wie(){

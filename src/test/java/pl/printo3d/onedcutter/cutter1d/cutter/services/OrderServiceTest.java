@@ -19,6 +19,7 @@ import pl.printo3d.onedcutter.cutter1d.models.project.CutterProduct;
 import pl.printo3d.onedcutter.cutter1d.models.project.ProjectModel;
 import pl.printo3d.onedcutter.cutter1d.models.project.ResultModel;
 import pl.printo3d.onedcutter.cutter1d.models.user.UserModel;
+import pl.printo3d.onedcutter.cutter1d.services.ResolveService;
 import pl.printo3d.onedcutter.cutter1d.services.CutService;
 import pl.printo3d.onedcutter.cutter1d.services.ProjectService;
 import pl.printo3d.onedcutter.cutter1d.services.ResultService;
@@ -33,10 +34,10 @@ public class OrderServiceTest {
             "password"
     );
     @InjectMocks
-    ProjectService orderServiceTest;
+    CutService cutService;
 
     @Mock
-    private CutService cutService;
+    private ResolveService resolveService;
     @Mock
     private ResultService resultService;
     @Mock
@@ -85,7 +86,7 @@ public class OrderServiceTest {
         orderModelTest.setCutOptions(new CutOptions());
 
         CutterProduct cutterProduct = new CutterProduct();
-        when(cutService.firstFit(orderModelTest)).thenReturn(cutterProduct);
+        when(resolveService.firstFit(orderModelTest)).thenReturn(cutterProduct);
 
         ResultModel resultModel = new ResultModel();
         when(resultService.makeFullResults(cutterProduct, orderModelTest)).thenReturn(resultModel);
@@ -94,12 +95,12 @@ public class OrderServiceTest {
                 .thenReturn(PRINCIPAL);
 
         //when
-        ResultModel model = orderServiceTest.makeOrder(orderModelTest);
+        ResultModel model = cutService.makeOrder(orderModelTest);
 
 
         //then
         assertEquals(resultModel, model);
-        verify(cutService).firstFit(orderModelTest);
+        verify(resolveService).firstFit(orderModelTest);
         verify(resultService).makeFullResults(cutterProduct, orderModelTest);
         verify(userService).loadUserByUsername(USERNAME);
     }
@@ -111,17 +112,17 @@ public class OrderServiceTest {
         ProjectModel testOrder = new ProjectModel();
 
         CutterProduct cProduct = new CutterProduct();
-        when(cutService.firstFit(testOrder)).thenReturn(cProduct);
+        when(resolveService.firstFit(testOrder)).thenReturn(cProduct);
 
         ResultModel rModel = new ResultModel();
         when(resultService.makeFullResults( cProduct , testOrder )).thenReturn(rModel);
 
         // when
-        ResultModel testResult = orderServiceTest.makeOrderFree(testOrder);
+        ResultModel testResult = cutService.makeOrderFree(testOrder);
 
         // them
         assertEquals(testResult, rModel);
-        verify(cutService).firstFit(testOrder);
+        verify(resolveService).firstFit(testOrder);
         verify(resultService).makeFullResults(cProduct, testOrder);
     }
 
@@ -132,14 +133,14 @@ public class OrderServiceTest {
         ProjectModel testOrder = new ProjectModel();
 
         // when
-        //orderServiceTest.saveActiveOrder(testOrder);
+        //cutService.saveActiveOrder(testOrder);
 
         // then
     }
 
     @Test
     public void costam() {
-        System.out.println(orderServiceTest);
+        System.out.println(cutService);
     }
 
 
