@@ -12,8 +12,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
-import pl.printo3d.onedcutter.cutter1d.user.services.UserService;
-import pl.printo3d.onedcutter.cutter1d.user.utility.JWTFilter;
+import pl.printo3d.onedcutter.cutter1d.services.UserService;
+import pl.printo3d.onedcutter.cutter1d.utility.JWTFilter;
 
 @Configuration
 @EnableWebSecurity

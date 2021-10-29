@@ -13,9 +13,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import pl.printo3d.onedcutter.cutter1d.cutter.models.CutModel;
-import pl.printo3d.onedcutter.cutter1d.cutter.models.CutterProduct;
-import pl.printo3d.onedcutter.cutter1d.cutter.models.WorkPiece;
+import pl.printo3d.onedcutter.cutter1d.user.models.project.CutModel;
+import pl.printo3d.onedcutter.cutter1d.user.models.project.CutterProduct;
+import pl.printo3d.onedcutter.cutter1d.user.models.project.WorkPiece;
+import pl.printo3d.onedcutter.cutter1d.user.services.OneDCutService;
+import pl.printo3d.onedcutter.cutter1d.user.services.ResultService;
 
 @ExtendWith(MockitoExtension.class)
 public class OneDCutServiceTest {

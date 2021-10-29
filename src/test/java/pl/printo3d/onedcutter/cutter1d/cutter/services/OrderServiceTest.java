@@ -9,13 +9,17 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
-import pl.printo3d.onedcutter.cutter1d.cutter.models.CutModel;
-import pl.printo3d.onedcutter.cutter1d.cutter.models.CutOptions;
-import pl.printo3d.onedcutter.cutter1d.cutter.models.CutterProduct;
-import pl.printo3d.onedcutter.cutter1d.cutter.models.OrderModel;
-import pl.printo3d.onedcutter.cutter1d.cutter.models.ResultModel;
-import pl.printo3d.onedcutter.cutter1d.cutter.models.StockModel;
-import pl.printo3d.onedcutter.cutter1d.user.models.UserModel;
+
+import pl.printo3d.onedcutter.cutter1d.user.models.project.CutModel;
+import pl.printo3d.onedcutter.cutter1d.user.models.project.CutOptions;
+import pl.printo3d.onedcutter.cutter1d.user.models.project.CutterProduct;
+import pl.printo3d.onedcutter.cutter1d.user.models.project.OrderModel;
+import pl.printo3d.onedcutter.cutter1d.user.models.project.ResultModel;
+import pl.printo3d.onedcutter.cutter1d.user.models.project.StockModel;
+import pl.printo3d.onedcutter.cutter1d.user.models.user.UserModel;
+import pl.printo3d.onedcutter.cutter1d.user.services.OneDCutService;
+import pl.printo3d.onedcutter.cutter1d.user.services.OrderService;
+import pl.printo3d.onedcutter.cutter1d.user.services.ResultService;
 import pl.printo3d.onedcutter.cutter1d.user.services.UserService;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
