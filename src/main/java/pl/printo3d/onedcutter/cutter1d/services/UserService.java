@@ -25,7 +25,7 @@ public class UserService implements UserDetailsService {
     
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
-    private final UserRepo uRepo;
+    private final UserRepo userRepo;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -35,13 +35,13 @@ public class UserService implements UserDetailsService {
     @Autowired
     private PasswordEncoder pEncoder;
 
-    public UserService(UserRepo uRepo) {
-        this.uRepo = uRepo;
+    public UserService(UserRepo userRepo) {
+        this.userRepo = userRepo;
     }
 
     @Override
     public UserDetails loadUserByUsername(String arg0) throws UsernameNotFoundException {
-        return uRepo.findByUsername(arg0);
+        return userRepo.findByUsername(arg0);
     }
 
     /**
@@ -50,10 +50,10 @@ public class UserService implements UserDetailsService {
      * @return
      */
     public boolean doLogin(AuthRequest aRequest) {
-        UserModel um = uRepo.findByUsername(aRequest.getUsername());
+        UserModel userModel = userRepo.findByUsername(aRequest.getUsername());
 
-        if (um != null) {
-            if (passwordEncoder().matches(aRequest.getPassword(), um.getPassword())) {
+        if (userModel != null) {
+            if (passwordEncoder().matches(aRequest.getPassword(), userModel.getPassword())) {
                 return true;        // login success
             } else return false;    // pass doesnt match
         } else return false;        // user doesnt exists
@@ -68,10 +68,10 @@ public class UserService implements UserDetailsService {
         if (userModel.getUsername() != "" && userModel.getPassword() != "" && userModel.getEmail() != ""
             && userModel.getUsername() != null && userModel.getPassword() != null && userModel.getEmail() != null) {
 
-            if (!uRepo.existsByUsername(userModel.getUsername())) {
+            if (!userRepo.existsByUsername(userModel.getUsername())) {
 
                 userModel.setPassword(pEncoder.encode(userModel.getPassword()));
-                uRepo.save(userModel);
+                userRepo.save(userModel);
                 logger.info("Dodajemy Usera..");
 
                 return true;
@@ -85,24 +85,34 @@ public class UserService implements UserDetailsService {
         }
     }
 
+    
+
     public UserModel updateUser(UserDTO userDTO) {
+        UserModel userModel = (UserModel) userRepo.findByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
+
+        userModel.setPhone(userDTO.getPhone());
+        userModel.setWebsite(userDTO.getWebsite());
+        userModel.setActiveOrderId(userDTO.getActiveOrderId());
+
+        userRepo.save(userModel);
+
         logger.info("Update User..");
-
-        UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserModel uModel = (UserModel) this.loadUserByUsername(ud.getUsername());
-
-        uModel.setPhone(userDTO.getPhone());
-        uModel.setWebsite(userDTO.getWebsite());
-        uModel.setActiveOrderId(userDTO.getActiveOrderId());
-
-        uRepo.save(uModel);
-
-        return uModel;
+        return userModel;
     }
 
     public void saveUserEntity(UserModel um) {
-        uRepo.save(um);
+        userRepo.save(um);
     }
+
+
+    public void removeUser(String uuid) {
+        UserModel userModel = userRepo.findByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
+
+        if( (userRepo.findByUuid(uuid) != null) && userModel.getUuid().equals(uuid) ){
+            userRepo.deleteByUuid(uuid);
+        } else throw new RuntimeException("No uuid found, or user dont have access to delete this uuid");
+    }
+
 
     /**
      * TESTOWE, zwraca tylko zapisane ordery usera
@@ -111,11 +121,8 @@ public class UserService implements UserDetailsService {
      */
     public List<ProjectModel> getListOfSavedProjects(UserModel user) {
         List<ProjectModel> oList;
-        oList = uRepo.findByUsername(user.getUsername()).getSavedOrderModels();
+        oList = userRepo.findByUsername(user.getUsername()).getSavedOrderModels();
 
         return oList;
     }
-
-
-
 }

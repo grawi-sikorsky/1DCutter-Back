@@ -1,8 +1,6 @@
 package pl.printo3d.onedcutter.cutter1d.cutter.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,11 +11,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import pl.printo3d.onedcutter.cutter1d.user.models.project.CutModel;
-import pl.printo3d.onedcutter.cutter1d.user.models.project.CutterProduct;
-import pl.printo3d.onedcutter.cutter1d.user.models.project.WorkPiece;
-import pl.printo3d.onedcutter.cutter1d.user.services.OneDCutService;
-import pl.printo3d.onedcutter.cutter1d.user.services.ResultService;
+import pl.printo3d.onedcutter.cutter1d.models.project.CutModel;
+import pl.printo3d.onedcutter.cutter1d.models.project.CutterProduct;
+import pl.printo3d.onedcutter.cutter1d.models.project.WorkPiece;
+import pl.printo3d.onedcutter.cutter1d.services.CutService;
+import pl.printo3d.onedcutter.cutter1d.services.ResultService;
 
 @ExtendWith(MockitoExtension.class)
 public class OneDCutServiceTest {

@@ -1,5 +1,9 @@
 package pl.printo3d.onedcutter.cutter1d.cutter.services;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,22 +14,15 @@ import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
 
-import pl.printo3d.onedcutter.cutter1d.user.models.project.CutModel;
-import pl.printo3d.onedcutter.cutter1d.user.models.project.CutOptions;
-import pl.printo3d.onedcutter.cutter1d.user.models.project.CutterProduct;
-import pl.printo3d.onedcutter.cutter1d.user.models.project.OrderModel;
-import pl.printo3d.onedcutter.cutter1d.user.models.project.ResultModel;
-import pl.printo3d.onedcutter.cutter1d.user.models.project.StockModel;
-import pl.printo3d.onedcutter.cutter1d.user.models.user.UserModel;
-import pl.printo3d.onedcutter.cutter1d.user.services.OneDCutService;
-import pl.printo3d.onedcutter.cutter1d.user.services.OrderService;
-import pl.printo3d.onedcutter.cutter1d.user.services.ResultService;
-import pl.printo3d.onedcutter.cutter1d.user.services.UserService;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
-import static org.mockito.Mockito.when;
+import pl.printo3d.onedcutter.cutter1d.models.project.CutOptions;
+import pl.printo3d.onedcutter.cutter1d.models.project.CutterProduct;
+import pl.printo3d.onedcutter.cutter1d.models.project.ProjectModel;
+import pl.printo3d.onedcutter.cutter1d.models.project.ResultModel;
+import pl.printo3d.onedcutter.cutter1d.models.user.UserModel;
+import pl.printo3d.onedcutter.cutter1d.services.CutService;
+import pl.printo3d.onedcutter.cutter1d.services.ProjectService;
+import pl.printo3d.onedcutter.cutter1d.services.ResultService;
+import pl.printo3d.onedcutter.cutter1d.services.UserService;
 
 @ExtendWith(MockitoExtension.class)
 public class OrderServiceTest {

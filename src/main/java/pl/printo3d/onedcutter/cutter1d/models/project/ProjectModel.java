@@ -35,15 +35,15 @@ public class ProjectModel {
     private LocalDateTime projectModified;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "order_id", referencedColumnName = "id", insertable = true, updatable = true)
+    @JoinColumn(name = "project_id", referencedColumnName = "id", insertable = true, updatable = true)
     private List<CutModel> cutList = new ArrayList<CutModel>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "order_id", referencedColumnName = "id", insertable = true, updatable = true)
+    @JoinColumn(name = "project_id", referencedColumnName = "id", insertable = true, updatable = true)
     private List<StockModel> stockList = new ArrayList<StockModel>();
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "cutOptions_id", referencedColumnName = "id", unique = true, insertable = true, updatable = true)
+    @JoinColumn(name = "cut_options_id", referencedColumnName = "id", unique = true, insertable = true, updatable = true)
     private CutOptions cutOptions;
 
     @Column(name = "user_id")

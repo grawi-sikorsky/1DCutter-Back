@@ -50,7 +50,7 @@ public class UserModel implements UserDetails {
     private Integer activeOrderId;
 
     @OneToOne(cascade = { CascadeType.ALL })
-    @JoinColumn(name = "activeOrderModel", referencedColumnName = "id")
+    @JoinColumn(name = "active_order_model", referencedColumnName = "id")
     private ProjectModel activeOrderModel;
 
     @OneToMany(cascade = { CascadeType.ALL })
