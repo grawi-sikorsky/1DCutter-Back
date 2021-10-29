@@ -1,6 +1,7 @@
 package pl.printo3d.onedcutter.cutter1d.cutter.models;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -41,9 +42,12 @@ public class OrderModel {
     @JoinColumn(name = "order_id", referencedColumnName = "id", insertable = true, updatable = true)
     private List<StockModel> stockList = new ArrayList<StockModel>();
 
-    @OneToOne(cascade = {CascadeType.ALL})
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "cutOptions_id", referencedColumnName = "id", unique = true, insertable = true, updatable = true)
     private CutOptions cutOptions;
+
+    @Column(name = "user_id")
+    private Long userId;
 
     @PrePersist
     public void prepersist(){

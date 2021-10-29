@@ -6,8 +6,11 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -59,9 +62,15 @@ public class UserOrderController {
         return orderService.addOrderModel(incomingOrderModel);
     }
 
-    @PatchMapping
-    public OrderModel setActiveOrder(@RequestBody OrderModel incomingOrderModel){
-        return orderService.editOrderModel(incomingOrderModel);
+    @PatchMapping("{orderId}")
+    public OrderModel setActiveOrder(@PathVariable Long orderId, @RequestBody OrderModel incomingOrderModel){
+        return orderService.editOrderModel(orderId, incomingOrderModel);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> removeOrder(@PathVariable String id){
+        orderService.removeOrderModel(Long.valueOf(id));
+        return ResponseEntity.noContent().build();
     }
 
     // Load user project
@@ -108,6 +117,8 @@ public class UserOrderController {
         logger.info("Request /saveproject -> UpdateUser(activeorderID)");
         return true;
     }
+
+
 
     /**
      * Testowe

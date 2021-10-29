@@ -1,19 +1,13 @@
 package pl.printo3d.onedcutter.cutter1d.cutter.services;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
-import org.hibernate.hql.spi.id.cte.CteValuesListDeleteHandlerImpl;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import pl.printo3d.onedcutter.cutter1d.cutter.models.CutModel;
-import pl.printo3d.onedcutter.cutter1d.cutter.models.CutOptions;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.OrderModel;
 import pl.printo3d.onedcutter.cutter1d.cutter.models.ResultModel;
-import pl.printo3d.onedcutter.cutter1d.cutter.models.StockModel;
 import pl.printo3d.onedcutter.cutter1d.user.models.UserDTO;
 import pl.printo3d.onedcutter.cutter1d.user.models.UserModel;
 import pl.printo3d.onedcutter.cutter1d.user.repo.OrderRepository;
@@ -124,39 +118,53 @@ public class OrderService {
         return um.getActiveOrderModel();
     }
 
+
     public OrderModel addOrderModel(OrderModel incomingOrderModel){
         UserModel userModel = (UserModel) userService.loadUserByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
 
-        userModel.getSavedOrderModels().add(incomingOrderModel);
-        userModel.setActiveOrderModel(incomingOrderModel);
-        userService.saveUserEntity(userModel);
-        return userModel.getActiveOrderModel();
+        if(userModel.getNumberOfSavedItems() < 5){
+            userModel.getSavedOrderModels().add(incomingOrderModel);
+            userModel.setActiveOrderModel(incomingOrderModel);
+            userModel.setNumberOfSavedItems(userModel.getSavedOrderModels().size());
+
+            userService.saveUserEntity(userModel);
+
+            return userModel.getActiveOrderModel();
+        }
+        else throw new RuntimeException("There's no more space for this user");
     }
 
-    public OrderModel editOrderModel(OrderModel incomingOrderModel) {
-        //UserModel userModel = (UserModel) userService.loadUserByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
-        OrderModel orderModel = orderRepository.getById(incomingOrderModel.getId());
+    public OrderModel editOrderModel(Long id, OrderModel incomingOrderModel) {
+        UserModel userModel = (UserModel) userService.loadUserByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
 
-        CutOptions cutOptionsToUpdate = incomingOrderModel.getCutOptions();
-        cutOptionsToUpdate.setId(orderModel.getCutOptions().getId());
+        if( orderRepository.getByIdAndUserId(id, userModel.getId()) != null ){
+            OrderModel orderModel = orderRepository.getByIdAndUserId(id, userModel.getId());
+            orderModel.getCutList().clear();
+            orderModel.getCutList().addAll(incomingOrderModel.getCutList());
 
-        List<CutModel> cutListToUpdate = incomingOrderModel.getCutList();
-        //cutListToUpdate.forEach(  );
-        // List<StockModel> stockListToUpdate = incomingOrderModel.getStockList();
+            orderModel.getStockList().clear();
+            orderModel.getStockList().addAll(incomingOrderModel.getStockList());
+
+            orderModel.setCutOptions(incomingOrderModel.getCutOptions());
+
+            orderModel.setProjectName(incomingOrderModel.getProjectName());
+            orderModel.setProjectModified(LocalDateTime.now());
+
+            orderRepository.save(orderModel);
+
+            return orderModel;
+        }
+        else throw new RuntimeException("User or model not found!");
+    }
+
+    public void removeOrderModel(Long id){
+        UserModel userModel = (UserModel) userService.loadUserByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
+        if(orderRepository.findByIdAndUserId(id, userModel.getId()) != null){
+            orderRepository.deleteById(id);
+            
+            userModel.setNumberOfSavedItems(userModel.getSavedOrderModels().size());
+            userService.saveUserEntity(userModel);
+        } else throw new RuntimeException("No user or ordermodel");
         
-        orderModel.setProjectName(incomingOrderModel.getProjectName());
-        orderModel.setProjectModified(LocalDateTime.now());
-        // orderModel.setCutList(cutListToUpdate);
-        // orderModel.setStockList(stockListToUpdate);
-        orderModel.setCutOptions(incomingOrderModel.getCutOptions());
-
-        orderRepository.save(orderModel);
-
-        //orderModel.setCutOptions(incomingOrderModel.getCutOptions());
-
-        //userModel.setActiveOrderModel(incomingOrderModel);
-        //userService.saveUserEntity(userModel);
-        //userService.saveActiveOrder(incomingOrderModel);
-        return orderModel; //userModel.getActiveOrderModel();
     }
 }
