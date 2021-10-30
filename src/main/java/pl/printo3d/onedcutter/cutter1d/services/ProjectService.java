@@ -14,14 +14,10 @@ import pl.printo3d.onedcutter.cutter1d.repo.ProjectRepository;
 @Service
 public class ProjectService {
 
-    private final ResolveService cutService;
-    private final ResultService resultService;
     private final UserService userService;
     private final ProjectRepository projectRepository;
 
-    public ProjectService(ResolveService cutService,ResultService resultService,UserService userService, ProjectRepository projectRepository){
-        this.cutService = cutService;
-        this.resultService = resultService;
+    public ProjectService(UserService userService, ProjectRepository projectRepository){
         this.userService = userService;
         this.projectRepository = projectRepository;
     }

@@ -115,17 +115,4 @@ public class UserService implements UserDetailsService {
             userRepo.deleteByUuid(uuid);
         } else throw new RuntimeException("No uuid found, or user dont have access to delete this uuid");
     }
-
-
-    /**
-     * TESTOWE, zwraca tylko zapisane ordery usera
-     * @param user
-     * @return
-     */
-    public List<ProjectModel> getListOfSavedProjects(UserModel user) {
-        List<ProjectModel> oList;
-        oList = userRepo.findByUsername(user.getUsername()).getSavedOrderModels();
-
-        return oList;
-    }
 }

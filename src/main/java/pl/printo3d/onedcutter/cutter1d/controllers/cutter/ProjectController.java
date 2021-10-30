@@ -64,15 +64,4 @@ public class ProjectController {
         projectService.removeOrderModel(Long.valueOf(id));
         return ResponseEntity.noContent().build();
     }
-
-    /**
-     * Testowe
-     * @param userModel
-     * @return
-     */
-    @RequestMapping(value = "/getuserprojects", method = RequestMethod.POST)
-    public List<ProjectModel> getListOfSavedProjects(@RequestParam UserModel userModel) {
-        return userService.getListOfSavedProjects(userModel);
-    }
-
 }
