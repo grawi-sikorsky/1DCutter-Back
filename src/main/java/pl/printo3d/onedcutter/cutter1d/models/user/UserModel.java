@@ -102,8 +102,7 @@ public class UserModel implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // TODO Auto-generated method stub
-        return Collections.singleton(new SimpleGrantedAuthority(role));
-        // return null;
+        return Collections.singleton(new SimpleGrantedAuthority("ROLE_"+role));
     }
     @Override
     public String getPassword() {
