@@ -24,14 +24,14 @@ public class UserDTO {
     }
 
     public UserDTO(UserModel userModel){
-        this.uuid = userModel.getUuid();
-        this.username = userModel.getUsername();
-        this.role = userModel.getRole();
-        this.email = userModel.getEmail();
-        this.phone = userModel.getPhone();
-        this.website = userModel.getWebsite();
+        this.uuid       = userModel.getUuid();
+        this.username   = userModel.getUsername();
+        this.role       = userModel.getRole();
+        this.email      = userModel.getEmail();
+        this.phone      = userModel.getPhone();
+        this.website    = userModel.getWebsite();
         this.numberOfSavedItems = userModel.getNumberOfSavedItems();
-        this.activeProjectId = userModel.getactiveProjectId();
+        this.activeProjectId    = userModel.getactiveProjectId();
         this.activeProjectModel = userModel.getactiveProjectModel();
         this.savedProjectModels = userModel.getsavedProjectModels(); // todo: out!
     }
