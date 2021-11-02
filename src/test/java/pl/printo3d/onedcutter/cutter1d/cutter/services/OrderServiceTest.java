@@ -1,61 +1,146 @@
 package pl.printo3d.onedcutter.cutter1d.cutter.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-import java.util.logging.Logger;
-
-import org.aspectj.lang.annotation.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.authentication.TestingAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextImpl;
 
-import pl.printo3d.onedcutter.cutter1d.cutter.models.OrderModel;
-import pl.printo3d.onedcutter.cutter1d.userlogin.services.UserService;
+import pl.printo3d.onedcutter.cutter1d.models.project.CutOptions;
+import pl.printo3d.onedcutter.cutter1d.models.project.CutterProduct;
+import pl.printo3d.onedcutter.cutter1d.models.project.ProjectModel;
+import pl.printo3d.onedcutter.cutter1d.models.project.ResultModel;
+import pl.printo3d.onedcutter.cutter1d.models.user.UserModel;
+import pl.printo3d.onedcutter.cutter1d.services.ResolveService;
+import pl.printo3d.onedcutter.cutter1d.services.CutService;
+import pl.printo3d.onedcutter.cutter1d.services.ProjectService;
+import pl.printo3d.onedcutter.cutter1d.services.ResultService;
+import pl.printo3d.onedcutter.cutter1d.services.UserService;
 
-//@ExtendWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class OrderServiceTest {
-    
-    @Spy
-    private OneDCutService cutService;
-    @Spy
+
+    private static final String USERNAME = "username";
+    private static final UserModel PRINCIPAL = new UserModel(
+            "username",
+            "password"
+    );
+    @InjectMocks
+    CutService cutService;
+
+    @Mock
+    private ResolveService resolveService;
+    @Mock
     private ResultService resultService;
-    @Spy
+    @Mock
     private UserService userService;
 
-    OrderService orderServiceTest = spy(OrderService.class);
-
-    private PrintForTest printer;
+    @BeforeEach
+    void setUp() {
+        SecurityContextHolder.setContext(
+                new SecurityContextImpl(
+                        new TestingAuthenticationToken(
+                                PRINCIPAL,
+                                "credentials"
+                        )
+                )
+        );
+        ProjectModel activeOrderModel = new ProjectModel();
+        activeOrderModel.setCutOptions(new CutOptions());
+        PRINCIPAL.setActiveOrderModel(activeOrderModel);
+    }
 
     @Test
     public void returnOrder_should_return_default_values() {
-        OrderModel orderModelTest = new OrderModel();
-        orderModelTest = orderServiceTest.returnOrder();
+        // //when
+        // OrderModel orderModelTest = orderServiceTest.returnOrder();
 
-        assertEquals(orderModelTest.getCutList().size(), 1);
-        assertEquals(orderModelTest.getStockList().size(), 1);
+        // //then
+        // assertEquals(orderModelTest.getCutList().size(), 1);
+        // CutModel cutModel = orderModelTest.getCutList().get(0);
+        // assertEquals("260", cutModel.getCutLength());
+        // assertEquals("5", cutModel.getCutPcs());
+
+        // assertEquals(orderModelTest.getStockList().size(), 1);
+        // StockModel stockModel = orderModelTest.getStockList().get(0);
+        // assertEquals("0", stockModel.getIdFront());
+        // assertEquals("1000", stockModel.getStockLength());
+        // assertEquals("4", stockModel.getStockPcs());
+        // assertEquals("0", stockModel.getStockPrice());
+
+        // verifyNoInteractions(cutService, resultService, userService);
     }
 
     @Test
     public void makeOrder_should_return_default_values() {
-        OrderModel orderModelTest = new OrderModel();
-        
-        
-        //= orderServiceTest.makeOrder( orderModelTest );
+        //given
+        ProjectModel orderModelTest = new ProjectModel();
+        orderModelTest.setCutOptions(new CutOptions());
+
+        CutterProduct cutterProduct = new CutterProduct();
+        when(resolveService.firstFit(orderModelTest)).thenReturn(cutterProduct);
+
+        ResultModel resultModel = new ResultModel();
+        when(resultService.makeFullResults(cutterProduct, orderModelTest)).thenReturn(resultModel);
+
+        when(userService.loadUserByUsername(USERNAME))
+                .thenReturn(PRINCIPAL);
+
+        //when
+        ResultModel model = cutService.makeOrder(orderModelTest);
 
 
+        //then
+        assertEquals(resultModel, model);
+        verify(resolveService).firstFit(orderModelTest);
+        verify(resultService).makeFullResults(cutterProduct, orderModelTest);
+        verify(userService).loadUserByUsername(USERNAME);
+    }
 
-        //assertEquals(orderModelTest.getCutList().size(), 1);
-        //assertEquals(orderModelTest.getStockList().size(), 1);
+    @Test 
+    public void makeFreeOrder_should_return_default_vals()
+    {
+        // given
+        ProjectModel testOrder = new ProjectModel();
+
+        CutterProduct cProduct = new CutterProduct();
+        when(resolveService.firstFit(testOrder)).thenReturn(cProduct);
+
+        ResultModel rModel = new ResultModel();
+        when(resultService.makeFullResults( cProduct , testOrder )).thenReturn(rModel);
+
+        // when
+        ResultModel testResult = cutService.makeOrderFree(testOrder);
+
+        // them
+        assertEquals(testResult, rModel);
+        verify(resolveService).firstFit(testOrder);
+        verify(resultService).makeFullResults(cProduct, testOrder);
+    }
+
+    @Test 
+    public void saveActiveOrder_should_niewiemco() // toć void, wiec coz ma zwrocic? @_@
+    {
+        // given
+        ProjectModel testOrder = new ProjectModel();
+
+        // when
+        //cutService.saveActiveOrder(testOrder);
+
+        // then
     }
 
     @Test
     public void costam() {
-        System.out.println(orderServiceTest);
+        System.out.println(cutService);
     }
 
 
