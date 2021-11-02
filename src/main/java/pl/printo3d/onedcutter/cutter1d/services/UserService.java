@@ -93,8 +93,8 @@ public class UserService implements UserDetailsService {
         if( userRepo.findByUuid(userModel.getUuid()) != null){
             userModel.setPhone(userUpdateDTO.getPhone());
             userModel.setWebsite(userUpdateDTO.getWebsite());
-            userModel.setActiveOrderId(userUpdateDTO.getActiveOrderId());
-            userModel.setActiveOrderModel(userModel.getSavedOrderModels().get(userModel.getActiveOrderId()));
+            userModel.setactiveProjectId(userUpdateDTO.getactiveProjectId());
+            userModel.setactiveProjectModel(userModel.getsavedProjectModels().get(userModel.getactiveProjectId()));
     
             userRepo.save(userModel);
             logger.info("Update User..");

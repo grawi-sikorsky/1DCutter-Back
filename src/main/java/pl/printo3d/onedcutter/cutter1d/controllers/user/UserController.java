@@ -18,7 +18,7 @@ import pl.printo3d.onedcutter.cutter1d.dto.UserUpdateDTO;
 import pl.printo3d.onedcutter.cutter1d.models.user.UserModel;
 import pl.printo3d.onedcutter.cutter1d.services.UserService;
 
-@RequestMapping("/user")
+@RequestMapping("/users")
 @RestController
 public class UserController {
 
@@ -35,7 +35,7 @@ public class UserController {
         UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UserDTO userDTO = new UserDTO( (UserModel) userService.loadUserByUsername(ud.getUsername()));
 
-        logger.info("Active order: {}", userDTO.getActiveOrderId());
+        logger.info("Active order: {}", userDTO.getactiveProjectId());
         return userDTO;
     }
 
