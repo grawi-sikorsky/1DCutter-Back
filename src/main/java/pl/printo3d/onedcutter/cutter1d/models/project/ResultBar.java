@@ -14,6 +14,7 @@ public class ResultBar {
     private List<ResultBarPieceModel> resultBarPieces = new ArrayList<ResultBarPieceModel>();
     private Integer stackCount = 0;
     private Double onStockLength = 0.0;
+    private Double freeSpaceOnStock = 0.0;
 
     public ResultBar() {
     }
@@ -26,6 +27,13 @@ public class ResultBar {
         this.resultBarPieces = resultBarPieces;
         this.stackCount = stackCount;
         this.onStockLength = onStock;
+    }
+
+    public ResultBar(List<ResultBarPieceModel> resultBarPieces, Double onStock, Integer stackCount, Double freeSpaceOnStock) {
+        this.resultBarPieces = resultBarPieces;
+        this.stackCount = stackCount;
+        this.onStockLength = onStock;
+        this.freeSpaceOnStock = freeSpaceOnStock;
     }
 
 
@@ -61,4 +69,13 @@ public class ResultBar {
     public void setOnStockLength(Double onStockLength) {
         this.onStockLength = onStockLength;
     }
+
+    public Double getFreeSpaceOnStock() {
+        return freeSpaceOnStock;
+    }
+
+    public void setFreeSpaceOnStock(Double freeSpaceOnStock) {
+        this.freeSpaceOnStock = freeSpaceOnStock;
+    }
+    
 }

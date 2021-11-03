@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import pl.printo3d.onedcutter.cutter1d.models.project.CutterProduct;
@@ -13,11 +15,15 @@ import pl.printo3d.onedcutter.cutter1d.models.project.ResultBar;
 import pl.printo3d.onedcutter.cutter1d.models.project.ResultBarPieceModel;
 import pl.printo3d.onedcutter.cutter1d.models.project.ResultModel;
 import pl.printo3d.onedcutter.cutter1d.models.project.WorkPiece;
+import pl.printo3d.onedcutter.cutter1d.models.user.UserModel;
 
 @Service
 public class ResultService {
 
-    public ResultService() {
+    private final UserService userService;
+
+    public ResultService(UserService userService) {
+        this.userService = userService;
     }
 
     // TODO !!! CALA USLUGA DO PRZEROBIENIA ! 4/5 metod iteruje po "List<WorkPiece>"!
@@ -46,6 +52,7 @@ public class ResultService {
      * @return
      */
     public List<ResultBar> getResultsBars(List<WorkPiece> workPieces) {
+        UserModel userModel = (UserModel) userService.loadUserByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
         List<ResultBar> resultBars = new ArrayList<ResultBar>();
         ResultBar resultBar = new ResultBar();
 
@@ -53,7 +60,7 @@ public class ResultService {
             for (int i = 0; i < wp.getCuts().size(); ++ i) {
                 resultBar.addPiece(new ResultBarPieceModel((String.valueOf((wp.getCuts().get(i) / wp.getStockLenght()) * 100)), String.valueOf(wp.getCuts().get(i))));
             }
-            resultBars.add(new ResultBar(new ArrayList<ResultBarPieceModel>(resultBar.getResultBarPieces()), wp.getStockLenght(), wp.getPatternCount()));
+            resultBars.add(new ResultBar(new ArrayList<ResultBarPieceModel>(resultBar.getResultBarPieces()), wp.getStockLenght(), wp.getPatternCount(), wp.freeSpace(userModel.getactiveProjectModel().getCutOptions().getOptionSzrank())));
             resultBar.clear();
         }
         return resultBars;
