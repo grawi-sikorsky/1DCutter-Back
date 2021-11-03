@@ -30,7 +30,7 @@ public class CutController {
 
     // Oblicz nie Logged
     @PostMapping("/cutfree")
-    public ResultModel ProcessOrderFree(@RequestBody ProjectModel orderModel) {
+    public ResultModel processOrderFree(@RequestBody ProjectModel orderModel) {
         return cutService.makeOrderFree(orderModel);
     }
 

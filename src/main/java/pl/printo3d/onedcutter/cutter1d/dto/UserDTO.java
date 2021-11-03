@@ -15,25 +15,25 @@ public class UserDTO {
     private String phone;
     private String website;
     private Integer numberOfSavedItems;
-    private Integer activeOrderId;
+    private Integer activeProjectId;
 
-    private ProjectModel activeOrderModel;
-    private List<ProjectModel> savedOrderModels = new ArrayList<ProjectModel>();
+    private ProjectModel activeProjectModel;
+    private List<ProjectModel> savedProjectModels = new ArrayList<ProjectModel>();
 
     public UserDTO() {
     }
 
     public UserDTO(UserModel userModel){
-        this.uuid = userModel.getUuid();
-        this.username = userModel.getUsername();
-        this.role = userModel.getRole();
-        this.email = userModel.getEmail();
-        this.phone = userModel.getPhone();
-        this.website = userModel.getWebsite();
+        this.uuid       = userModel.getUuid();
+        this.username   = userModel.getUsername();
+        this.role       = userModel.getRole();
+        this.email      = userModel.getEmail();
+        this.phone      = userModel.getPhone();
+        this.website    = userModel.getWebsite();
         this.numberOfSavedItems = userModel.getNumberOfSavedItems();
-        this.activeOrderId = userModel.getActiveOrderId();
-        this.activeOrderModel = userModel.getActiveOrderModel();
-        this.savedOrderModels = userModel.getSavedOrderModels(); // todo: out!
+        this.activeProjectId    = userModel.getactiveProjectId();
+        this.activeProjectModel = userModel.getactiveProjectModel();
+        this.savedProjectModels = userModel.getsavedProjectModels(); // todo: out!
     }
 
     public UserModel toEntity(){
@@ -46,9 +46,9 @@ public class UserDTO {
         userModel.setPhone(this.phone);
         userModel.setWebsite(this.website);
         userModel.setNumberOfSavedItems(this.numberOfSavedItems);
-        userModel.setActiveOrderId(this.activeOrderId);
-        userModel.setActiveOrderModel(this.activeOrderModel);
-        userModel.setSavedOrderModels(this.savedOrderModels);
+        userModel.setactiveProjectId(this.activeProjectId);
+        userModel.setactiveProjectModel(this.activeProjectModel);
+        userModel.setsavedProjectModels(this.savedProjectModels);
 
         return userModel;
     }
@@ -109,28 +109,28 @@ public class UserDTO {
         this.numberOfSavedItems = numberOfSavedItems;
     }
 
-    public Integer getActiveOrderId() {
-        return activeOrderId;
+    public Integer getactiveProjectId() {
+        return activeProjectId;
     }
 
-    public void setActiveOrderId(Integer activeOrderId) {
-        this.activeOrderId = activeOrderId;
+    public void setactiveProjectId(Integer activeProjectId) {
+        this.activeProjectId = activeProjectId;
     }
 
-    public ProjectModel getActiveOrderModel() {
-        return activeOrderModel;
+    public ProjectModel getactiveProjectModel() {
+        return activeProjectModel;
     }
 
-    public void setActiveOrderModel(ProjectModel activeOrderModel) {
-        this.activeOrderModel = activeOrderModel;
+    public void setactiveProjectModel(ProjectModel activeProjectModel) {
+        this.activeProjectModel = activeProjectModel;
     }
 
-    public List<ProjectModel> getSavedOrderModels() {
-        return savedOrderModels;
+    public List<ProjectModel> getsavedProjectModels() {
+        return savedProjectModels;
     }
 
-    public void setSavedOrderModels(List<ProjectModel> savedOrderModels) {
-        this.savedOrderModels = savedOrderModels;
+    public void setsavedProjectModels(List<ProjectModel> savedProjectModels) {
+        this.savedProjectModels = savedProjectModels;
     }
 
     

@@ -6,13 +6,13 @@ public class UserUpdateDTO {
 
     private String phone;
     private String website;
-    private Integer activeOrderId;
+    private Integer activeProjectId;
 
     public UserUpdateDTO() {}
     public UserUpdateDTO(UserModel userModel) {
         this.phone = userModel.getPhone();
         this.website = userModel.getWebsite();
-        this.activeOrderId = userModel.getActiveOrderId();
+        this.activeProjectId = userModel.getactiveProjectId();
     }
     
     public String getPhone() {
@@ -27,11 +27,11 @@ public class UserUpdateDTO {
     public void setWebsite(String website) {
         this.website = website;
     }
-    public Integer getActiveOrderId() {
-        return activeOrderId;
+    public Integer getactiveProjectId() {
+        return activeProjectId;
     }
-    public void setActiveOrderId(Integer activeOrderId) {
-        this.activeOrderId = activeOrderId;
+    public void setactiveProjectId(Integer activeProjectId) {
+        this.activeProjectId = activeProjectId;
     }
 
     

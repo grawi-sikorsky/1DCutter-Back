@@ -47,15 +47,15 @@ public class UserModel implements UserDetails {
     private String phone;
     private String website;
     private Integer numberOfSavedItems;
-    private Integer activeOrderId;
+    private Integer activeProjectId;
 
     @OneToOne(cascade = { CascadeType.ALL })
-    @JoinColumn(name = "active_order_model", referencedColumnName = "id")
-    private ProjectModel activeOrderModel;
+    @JoinColumn(name = "active_project_model", referencedColumnName = "id")
+    private ProjectModel activeProjectModel;
 
     @OneToMany(cascade = { CascadeType.ALL })
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private List<ProjectModel> savedOrderModels = new ArrayList<ProjectModel>();
+    private List<ProjectModel> savedProjectModels = new ArrayList<ProjectModel>();
 
     @PrePersist
     public void prepersist(){
@@ -70,10 +70,10 @@ public class UserModel implements UserDetails {
         ord.setProjectCreated(LocalDateTime.now());
         ord.setProjectModified(LocalDateTime.now());
 
-        this.setActiveOrderModel(ord);
-        this.setSavedOrderModels(Arrays.asList(ord));
-        this.setActiveOrderId(0); // default
-        this.setNumberOfSavedItems(this.getSavedOrderModels().size());
+        this.setactiveProjectModel(ord);
+        this.setsavedProjectModels(Arrays.asList(ord));
+        this.setactiveProjectId(0); // default
+        this.setNumberOfSavedItems(this.getsavedProjectModels().size());
 
         this.setRole("VIP"); // role dynamicznie pasuje ustawiac.        
     }
@@ -198,28 +198,28 @@ public class UserModel implements UserDetails {
         this.numberOfSavedItems = numberOfSavedItems;
     }
 
-    public Integer getActiveOrderId() {
-        return activeOrderId;
+    public Integer getactiveProjectId() {
+        return activeProjectId;
     }
 
-    public void setActiveOrderId(Integer activeOrderId) {
-        this.activeOrderId = activeOrderId;
+    public void setactiveProjectId(Integer activeProjectId) {
+        this.activeProjectId = activeProjectId;
     }
 
-    public ProjectModel getActiveOrderModel() {
-        return activeOrderModel;
+    public ProjectModel getactiveProjectModel() {
+        return activeProjectModel;
     }
 
-    public void setActiveOrderModel(ProjectModel activeOrderModel) {
-        this.activeOrderModel = activeOrderModel;
+    public void setactiveProjectModel(ProjectModel activeProjectModel) {
+        this.activeProjectModel = activeProjectModel;
     }
 
-    public List<ProjectModel> getSavedOrderModels() {
-        return savedOrderModels;
+    public List<ProjectModel> getsavedProjectModels() {
+        return savedProjectModels;
     }
 
-    public void setSavedOrderModels(List<ProjectModel> savedOrderModels) {
-        this.savedOrderModels = savedOrderModels;
+    public void setsavedProjectModels(List<ProjectModel> savedProjectModels) {
+        this.savedProjectModels = savedProjectModels;
     }
 
 }
