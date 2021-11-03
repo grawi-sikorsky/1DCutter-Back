@@ -1,6 +1,7 @@
 package pl.printo3d.onedcutter.cutter1d.services;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,11 +19,12 @@ import pl.printo3d.onedcutter.cutter1d.dto.UserUpdateDTO;
 import pl.printo3d.onedcutter.cutter1d.models.project.ProjectModel;
 import pl.printo3d.onedcutter.cutter1d.models.user.AuthRequest;
 import pl.printo3d.onedcutter.cutter1d.models.user.UserModel;
+import pl.printo3d.onedcutter.cutter1d.repo.ProjectRepository;
 import pl.printo3d.onedcutter.cutter1d.repo.UserRepo;
 
 @Service
 public class UserService implements UserDetailsService {
-    
+
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     private final UserRepo userRepo;
@@ -46,6 +48,7 @@ public class UserService implements UserDetailsService {
 
     /**
      * Logowanko
+     * 
      * @param aRequest
      * @return
      */
@@ -54,19 +57,22 @@ public class UserService implements UserDetailsService {
 
         if (userModel != null) {
             if (passwordEncoder().matches(aRequest.getPassword(), userModel.getPassword())) {
-                return true;        // login success
-            } else return false;    // pass doesnt match
-        } else return false;        // user doesnt exists
+                return true; // login success
+            } else
+                return false; // pass doesnt match
+        } else
+            return false; // user doesnt exists
     }
 
     /**
      * Rejestruje usera
+     * 
      * @param userModel
      * @return
      */
     public boolean addUser(UserModel userModel) {
         if (userModel.getUsername() != "" && userModel.getPassword() != "" && userModel.getEmail() != ""
-            && userModel.getUsername() != null && userModel.getPassword() != null && userModel.getEmail() != null) {
+                && userModel.getUsername() != null && userModel.getPassword() != null && userModel.getEmail() != null) {
 
             if (!userRepo.existsByUsername(userModel.getUsername())) {
 
@@ -85,17 +91,19 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    
-
     public UserModel updateUser(UserUpdateDTO userUpdateDTO) {
-        UserModel userModel = (UserModel) userRepo.findByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
+        UserModel userModel = (UserModel) userRepo.findByUsername(
+                ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
 
-        if( userRepo.findByUuid(userModel.getUuid()) != null){
+        if (userRepo.findByUuid(userModel.getUuid()) != null) {
             userModel.setPhone(userUpdateDTO.getPhone());
             userModel.setWebsite(userUpdateDTO.getWebsite());
             userModel.setactiveProjectId(userUpdateDTO.getactiveProjectId());
-            userModel.setactiveProjectModel(userModel.getsavedProjectModels().get(userModel.getactiveProjectId()));
-    
+            userModel.setactiveProjectModel(userModel.getsavedProjectModels().stream()
+                    .filter(e -> e.getId() == Long.valueOf(userModel.getactiveProjectId()))
+                    .collect(Collectors.toList())
+                    .get(0));
+
             userRepo.save(userModel);
             logger.info("Update User..");
             return userModel;
@@ -107,12 +115,13 @@ public class UserService implements UserDetailsService {
         userRepo.save(userModel);
     }
 
-
     public void removeUser(String uuid) {
-        UserModel userModel = userRepo.findByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
+        UserModel userModel = userRepo.findByUsername(
+                ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
 
-        if( (userRepo.findByUuid(uuid) != null) && userModel.getUuid().equals(uuid) ){
+        if ((userRepo.findByUuid(uuid) != null) && userModel.getUuid().equals(uuid)) {
             userRepo.deleteByUuid(uuid);
-        } else throw new RuntimeException("No uuid found, or user dont have access to delete this uuid");
+        } else
+            throw new RuntimeException("No uuid found, or user dont have access to delete this uuid");
     }
 }

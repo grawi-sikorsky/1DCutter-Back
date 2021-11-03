@@ -47,8 +47,8 @@ public class ProjectController {
     }
 
     @PostMapping
-    public ProjectModel addNewProject(@RequestBody ProjectModel incomingProject){
-        return projectService.addNewProject(incomingProject);
+    public ProjectModel addNewProject(){
+        return projectService.addNewProject();
     }
 
     @PatchMapping("{orderId}")

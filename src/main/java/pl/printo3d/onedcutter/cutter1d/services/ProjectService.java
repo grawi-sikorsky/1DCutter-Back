@@ -1,13 +1,18 @@
 package pl.printo3d.onedcutter.cutter1d.services;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import pl.printo3d.onedcutter.cutter1d.models.project.CutModel;
+import pl.printo3d.onedcutter.cutter1d.models.project.CutOptions;
 import pl.printo3d.onedcutter.cutter1d.models.project.ProjectModel;
+import pl.printo3d.onedcutter.cutter1d.models.project.StockModel;
 import pl.printo3d.onedcutter.cutter1d.models.user.UserModel;
 import pl.printo3d.onedcutter.cutter1d.repo.ProjectRepository;
 
@@ -77,10 +82,18 @@ public class ProjectService {
     }
 
 
-    public ProjectModel addNewProject(ProjectModel incomingProject){
+    public ProjectModel addNewProject(){
         UserModel userModel = (UserModel) userService.loadUserByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
+        ProjectModel incomingProject = new ProjectModel();
 
         if(userModel.getNumberOfSavedItems() < 5){
+            incomingProject.setCutList(Arrays.asList(new CutModel("220", "5"), new CutModel("260", "5")));
+            incomingProject.setStockList(Arrays.asList(new StockModel("0", "1000", "6", "0"), new StockModel("1", "1000", "5", "0")));
+            incomingProject.setCutOptions(new CutOptions(false, 0d, false, false, 1000));
+            incomingProject.setProjectName("New project name");
+            incomingProject.setProjectCreated(LocalDateTime.now());
+            incomingProject.setProjectModified(LocalDateTime.now());
+    
             userModel.getsavedProjectModels().add(incomingProject);
             userModel.setactiveProjectModel(incomingProject);
             userModel.setNumberOfSavedItems(userModel.getsavedProjectModels().size());
@@ -117,12 +130,22 @@ public class ProjectService {
 
     public void removeOrderModel(Long id){
         UserModel userModel = (UserModel) userService.loadUserByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
-        if(projectRepository.findByIdAndUserId(id, userModel.getId()) != null){
-            projectRepository.deleteById(id);
+        if(projectRepository.findByIdAndUserId(id, userModel.getId()) != null){        
+            userModel.setactiveProjectId( null );  //userModel.getsavedProjectModels().get(index).getId().intValue() );
+            userModel.setactiveProjectModel( null );  //userModel.getsavedProjectModels().get(userModel.getactiveProjectId()));
             
-            userModel.setNumberOfSavedItems(userModel.getsavedProjectModels().size());
-            userModel.setactiveProjectId(userModel.getsavedProjectModels().size()-1);
-            userService.saveUserEntity(userModel);
+            //if(userModel.getsavedProjectModels().size() < 1) throw new RuntimeException("Can't remove all projects, must be at least one!");
+            
+            projectRepository.deleteById(id);
+
+            // int index = userModel.getsavedProjectModels().size()-1;
+            // if(index<0) index = 0;
+
+            // userModel.setactiveProjectId( userModel.getsavedProjectModels().get(index).getId().intValue() );
+            // userModel.setactiveProjectModel( userModel.getsavedProjectModels().get(index) );
+            // userModel.setNumberOfSavedItems(userModel.getsavedProjectModels().size());
+
+            // userService.saveUserEntity(userModel);
         } else throw new RuntimeException("No user or ordermodel");
         
     }
