@@ -130,22 +130,27 @@ public class ProjectService {
 
     public void removeOrderModel(Long id){
         UserModel userModel = (UserModel) userService.loadUserByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
-        if(projectRepository.findByIdAndUserId(id, userModel.getId()) != null){        
-            userModel.setactiveProjectId( null );  //userModel.getsavedProjectModels().get(index).getId().intValue() );
-            userModel.setactiveProjectModel( null );  //userModel.getsavedProjectModels().get(userModel.getactiveProjectId()));
-            
-            //if(userModel.getsavedProjectModels().size() < 1) throw new RuntimeException("Can't remove all projects, must be at least one!");
-            
-            projectRepository.deleteById(id);
+        if(projectRepository.findByIdAndUserId(id, userModel.getId()) != null){
+            if(userModel.getsavedProjectModels().size() > 1){
+                userModel.setactiveProjectId( null );
+                userModel.setactiveProjectModel( null );
 
-            // int index = userModel.getsavedProjectModels().size()-1;
-            // if(index<0) index = 0;
-
-            // userModel.setactiveProjectId( userModel.getsavedProjectModels().get(index).getId().intValue() );
-            // userModel.setactiveProjectModel( userModel.getsavedProjectModels().get(index) );
-            // userModel.setNumberOfSavedItems(userModel.getsavedProjectModels().size());
-
-            // userService.saveUserEntity(userModel);
+                userModel.getsavedProjectModels().remove(userModel.getsavedProjectModels().stream()
+                    .filter(e -> e.getId() == Long.valueOf(id))
+                    .collect(Collectors.toList())
+                    .get(0));
+                
+                projectRepository.deleteById(id);
+    
+                int index = userModel.getsavedProjectModels().size()-1;
+                if(index<0) index = 0;
+    
+                userModel.setactiveProjectId( userModel.getsavedProjectModels().get(index).getId().intValue() );
+                userModel.setactiveProjectModel( userModel.getsavedProjectModels().get(index) );
+                userModel.setNumberOfSavedItems(userModel.getsavedProjectModels().size());
+    
+                userService.saveUserEntity(userModel);
+            } else throw new RuntimeException("Can't remove all projects, must be at least one!");
         } else throw new RuntimeException("No user or ordermodel");
         
     }

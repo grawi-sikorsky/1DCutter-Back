@@ -92,8 +92,7 @@ public class UserService implements UserDetailsService {
     }
 
     public UserModel updateUser(UserUpdateDTO userUpdateDTO) {
-        UserModel userModel = (UserModel) userRepo.findByUsername(
-                ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
+        UserModel userModel = (UserModel) userRepo.findByUsername(((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
 
         if (userRepo.findByUuid(userModel.getUuid()) != null) {
             userModel.setPhone(userUpdateDTO.getPhone());
