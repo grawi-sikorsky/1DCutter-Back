@@ -99,8 +99,7 @@ public class UserService implements UserDetailsService {
             userModel.setWebsite(userUpdateDTO.getWebsite());
             userModel.setactiveProjectId(userUpdateDTO.getactiveProjectId());
             userModel.setactiveProjectModel(userModel.getsavedProjectModels().stream()
-                    .filter(e -> e.getId() == Long.valueOf(userModel.getactiveProjectId()))
-                    .collect(Collectors.toList())
+                    .filter(e -> e.getId() == Long.valueOf(userModel.getactiveProjectId())).collect(Collectors.toList())
                     .get(0));
 
             userRepo.save(userModel);
