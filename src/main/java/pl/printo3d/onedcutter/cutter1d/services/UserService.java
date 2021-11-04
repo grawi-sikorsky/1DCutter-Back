@@ -1,6 +1,5 @@
 package pl.printo3d.onedcutter.cutter1d.services;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -16,10 +15,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import pl.printo3d.onedcutter.cutter1d.dto.UserUpdateDTO;
-import pl.printo3d.onedcutter.cutter1d.models.project.ProjectModel;
 import pl.printo3d.onedcutter.cutter1d.models.user.AuthRequest;
 import pl.printo3d.onedcutter.cutter1d.models.user.UserModel;
-import pl.printo3d.onedcutter.cutter1d.repo.ProjectRepository;
 import pl.printo3d.onedcutter.cutter1d.repo.UserRepo;
 
 @Service
@@ -74,12 +71,12 @@ public class UserService implements UserDetailsService {
         if (userModel.getUsername() != "" && userModel.getPassword() != "" && userModel.getEmail() != ""
                 && userModel.getUsername() != null && userModel.getPassword() != null && userModel.getEmail() != null) {
 
-            if (!userRepo.existsByUsername(userModel.getUsername())) {
-
+            if (!userRepo.existsByUsername(userModel.getUsername())) { // todo: check fo email
                 userModel.setPassword(pEncoder.encode(userModel.getPassword()));
                 userRepo.save(userModel);
+                userModel.setactiveProjectId( userModel.getsavedProjectModels().get(0).getId().intValue());
+                userRepo.save(userModel);
                 logger.info("Dodajemy Usera..");
-
                 return true;
             } else {
                 logger.info("User exists!");
