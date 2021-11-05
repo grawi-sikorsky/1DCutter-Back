@@ -4,15 +4,21 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 
 /**
- * Model zawierajacy zadeklarowana przez usera dlugosc surowca oraz ilosc takich samych odcinkow <p>
- * {@code String idFront} - ID na froncie <p>
- * {@code String stockLength} - Dlugosc surowca <p>
- * {@code String stockPcs} - Ilosc surowca danej dlugosci <p>
- * {@code String stockPrice} - Cena surowca <p>
- * {@code String name} - NOT YET.... <p>
+ * Model zawierajacy zadeklarowana przez usera dlugosc surowca oraz ilosc takich
+ * samych odcinkow
+ * <p>
+ * {@code String idFront} - ID na froncie
+ * <p>
+ * {@code String stockLength} - Dlugosc surowca
+ * <p>
+ * {@code String stockPcs} - Ilosc surowca danej dlugosci
+ * <p>
+ * {@code String stockPrice} - Cena surowca
+ * <p>
+ * {@code String name} - NOT YET....
+ * <p>
  */
 @Entity
 public class StockModel {
@@ -26,12 +32,8 @@ public class StockModel {
     private String stockPrice;
     private String name;
 
-    @ManyToOne
-    private ProjectModel orderModel;
-
     public StockModel() {
     }
-
 
     public StockModel(String idFront, String stockLength, String stockPcs, String stockPrice) {
         this.idFront = idFront;
@@ -72,14 +74,6 @@ public class StockModel {
         this.id = id;
     }
 
-    public ProjectModel getOrderModel() {
-        return orderModel;
-    }
-
-    public void setOrderModel(ProjectModel orderModel) {
-        this.orderModel = orderModel;
-    }
-
     public String getStockPrice() {
         return stockPrice;
     }
@@ -95,6 +89,5 @@ public class StockModel {
     public void setIdFront(String idFront) {
         this.idFront = idFront;
     }
-
 
 }

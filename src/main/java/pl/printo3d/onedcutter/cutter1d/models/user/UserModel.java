@@ -63,15 +63,15 @@ public class UserModel implements UserDetails {
 
         // 1 domyslne formatki
         ProjectModel ord = new ProjectModel();
-        ord.setCutList(Arrays.asList(new CutModel("220", "5"), new CutModel("260", "5")));
-        ord.setStockList(Arrays.asList(new StockModel("0", "1000", "6", "0"), new StockModel("1", "1000", "5", "0")));
+        ord.setCutList(new ArrayList<>(Arrays.asList(new CutModel("220", "5"), new CutModel("260", "5"))));
+        ord.setStockList(new ArrayList<>(Arrays.asList(new StockModel("0", "1000", "6", "0"), new StockModel("1", "1000", "5", "0"))));
         ord.setCutOptions(new CutOptions(false, 0d, false, false, 1000));
         ord.setProjectName("Default project");
         ord.setProjectCreated(LocalDateTime.now());
         ord.setProjectModified(LocalDateTime.now());
 
         this.setactiveProjectModel(ord);
-        this.setsavedProjectModels(Arrays.asList(ord));
+        this.setsavedProjectModels(new ArrayList<>(Arrays.asList(ord)));
         this.setactiveProjectId(0); // default
         this.setNumberOfSavedItems(this.getsavedProjectModels().size());
 

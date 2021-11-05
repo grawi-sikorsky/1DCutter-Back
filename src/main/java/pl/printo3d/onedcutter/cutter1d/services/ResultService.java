@@ -154,7 +154,7 @@ public class ResultService {
         fullResults.setResultWaste(resWasteProc);
         fullResults.setResultCostOveral(this.calculatePrice(cutterProduct.getWorkPiecesList(),incominOrderModel));
         fullResults.setResultRemainingPieces(this.getRemainBars(cutterProduct.getNotFittedPieces()));
-
+        
         return fullResults;
     }
 }

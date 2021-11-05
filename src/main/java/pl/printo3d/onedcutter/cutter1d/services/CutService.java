@@ -32,8 +32,7 @@ public class CutService {
         /** END ZAPIS DO BAZY [ACTIVE ORDER] */
 
         if (orderModel.getCutOptions().isOptionAlgo()) {
-            return resultService.makeFullResults(
-                    this.resolveService.newAlgo(resolveService.firstFit(orderModel), orderModel), orderModel);
+            return resultService.makeFullResults(this.resolveService.newAlgo(resolveService.firstFit(orderModel), orderModel), orderModel);
         } else {
             return resultService.makeFullResults(resolveService.firstFit(orderModel), orderModel);
         }

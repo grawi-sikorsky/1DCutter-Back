@@ -76,6 +76,8 @@ public class ProjectService {
         userModel.getactiveProjectModel().setProjectName(incomingProject.getProjectName());
         userModel.getactiveProjectModel().setProjectModified(LocalDateTime.now());
 
+        userModel.getactiveProjectModel().setProjectResults(incomingProject.getProjectResults());
+
         userService.saveUserEntity(userModel);
         /** END ZAPIS DO BAZY */
         return userModel.getactiveProjectModel();

@@ -4,13 +4,17 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 
 /**
- * Model zawierajacy zadeklarowana przez usera dlugosc ciecia oraz ilosc takich samych odcinkow<p>
- * {@code String cutLength} - dlugosc odcinka <p>
- * {@code String cutPcs} - ilosc odcinkow danej dlugosci <p>
- * {@code String name} - not yet.. nazwy <p>
+ * Model zawierajacy zadeklarowana przez usera dlugosc ciecia oraz ilosc takich
+ * samych odcinkow
+ * <p>
+ * {@code String cutLength} - dlugosc odcinka
+ * <p>
+ * {@code String cutPcs} - ilosc odcinkow danej dlugosci
+ * <p>
+ * {@code String name} - not yet.. nazwy
+ * <p>
  */
 @Entity
 public class CutModel {
@@ -23,12 +27,8 @@ public class CutModel {
     private String cutPcs;
     private String name; // byc moze nazwy kawalkow beda
 
-    @ManyToOne
-    private ProjectModel orderModel;
-
     public CutModel() {
     }
-
 
     public CutModel(String cutLength, String cutPcs) {
         this.cutLength = cutLength;
@@ -64,13 +64,4 @@ public class CutModel {
     public void setId(Long id) {
         this.id = id;
     }
-
-    public ProjectModel getOrderModel() {
-        return orderModel;
-    }
-
-    public void setOrderModel(ProjectModel orderModel) {
-        this.orderModel = orderModel;
-    }
-
 }
