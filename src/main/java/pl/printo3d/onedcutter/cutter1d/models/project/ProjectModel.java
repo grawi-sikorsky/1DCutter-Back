@@ -34,6 +34,9 @@ public class ProjectModel {
     private LocalDateTime projectCreated;
     private LocalDateTime projectModified;
 
+    @Column(columnDefinition = "TEXT")
+    private String projectResults;
+
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "project_id", referencedColumnName = "id", insertable = true, updatable = true)
     private List<CutModel> cutList = new ArrayList<CutModel>();
@@ -110,6 +113,14 @@ public class ProjectModel {
 
     public void setProjectModified(LocalDateTime projectModified) {
         this.projectModified = projectModified;
+    }
+
+    public String getProjectResults() {
+        return projectResults;
+    }
+
+    public void setProjectResults(String projectResults) {
+        this.projectResults = projectResults;
     }
 
     

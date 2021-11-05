@@ -186,7 +186,6 @@ public class ResolveService {
             duplicates = Collections.frequency(incomingSolution.getWorkPiecesList(), pattern);
             pattern.setPatternCount(duplicates);
         }
-
         resultSolution.setWorkPiecesList( incomingSolution.getWorkPiecesList().stream().distinct().collect(Collectors.toList()) );
 
         return resultSolution;
