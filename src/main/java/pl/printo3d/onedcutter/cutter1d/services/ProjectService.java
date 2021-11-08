@@ -123,6 +123,8 @@ public class ProjectService {
             project.setProjectName(incomingProject.getProjectName());
             project.setProjectModified(LocalDateTime.now());
 
+            project.setProjectResults(incomingProject.getProjectResults());
+
             projectRepository.save(project);
 
             return project;
