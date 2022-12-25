@@ -3,3 +3,13 @@ Application to cutting optimization. Java+SpringBoot. Have JWT user authorizatio
 
 ![1dcutter](https://user-images.githubusercontent.com/17216772/209470560-a651757f-14c1-4861-8134-fb1e686b36d7.png)
 
+# Deploy local
+
+1. Create file with your credentials localy inside ".docker/" folder:
+
+DB_NAME=name
+MYSQL_PASSWORD=pass
+MYSQL_USER=user
+
+2. Run docker-compose.yml
+3. Run application
