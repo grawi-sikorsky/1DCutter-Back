@@ -7,10 +7,5 @@ services:
     restart: always
     ports:
       - "3306:3306"
-    environment:
-      MYSQL_NAME: onedcutter
-      MYSQL_ROOT_USER: root
-      MYSQL_ROOT_PASSWORD: mysqlpass
-      MYSQL_DATABASE: onedcutter
-      MYSQL_USER: klops
-      MYSQL_PASSWORD: klops
+    env_file:
+      - .env

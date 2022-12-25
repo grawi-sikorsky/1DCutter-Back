@@ -7,9 +7,12 @@ Application to cutting optimization. Java+SpringBoot. Have JWT user authorizatio
 
 1. Create file with your credentials localy inside ".docker/" folder:
 
-DB_NAME=name
-MYSQL_PASSWORD=pass
+MYSQL_NAME=onedcutter
+MYSQL_ROOT_USER=root
+MYSQL_ROOT_PASSWORD=mysqlpass
+MYSQL_DATABASE=onedcutter
 MYSQL_USER=user
+MYSQL_PASSWORD=pass
 
 2. Run docker-compose.yml
 3. Run application
