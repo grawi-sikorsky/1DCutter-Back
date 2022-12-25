@@ -23,6 +23,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import pl.printo3d.onedcutter.cutter1d.dto.UserRegisterDTO;
 import pl.printo3d.onedcutter.cutter1d.models.project.CutModel;
 import pl.printo3d.onedcutter.cutter1d.models.project.CutOptions;
 import pl.printo3d.onedcutter.cutter1d.models.project.ProjectModel;
@@ -79,6 +80,12 @@ public class UserModel implements UserDetails {
     }
 
     public UserModel() {
+    }
+
+    public UserModel(UserRegisterDTO userRegisterDTO){
+        this.username = userRegisterDTO.getUsername();
+        this.password = userRegisterDTO.getPassword();
+        this.email = userRegisterDTO.getPassword();
     }
 
     public UserModel(String username, String password, String email) {

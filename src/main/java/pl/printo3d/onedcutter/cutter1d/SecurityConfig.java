@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scripting.support.StandardScriptFactory;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -49,9 +50,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         corsConfiguration.setExposedHeaders(Arrays.asList("Authorization"));
 
         http.authorizeRequests()
+            .antMatchers("/user/register", "/img/**", "/css/**").permitAll()  // refactored
+            .antMatchers("/user/auth").permitAll()
+
             .antMatchers("/login", "/img/**", "/css/**").permitAll()
-            .antMatchers("/auth/login").permitAll()
-            .antMatchers("/register", "/img/**", "/css/**").permitAll()
             .antMatchers("/1dcut").permitAll()
             .antMatchers("/cut").permitAll()
             .antMatchers("/cutfree").permitAll()
