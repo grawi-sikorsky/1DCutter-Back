@@ -10,7 +10,7 @@
             "request": "launch",
             "mainClass": "pl.printo3d.onedcutter.cutter1d.Cutter1dApplication",
             "projectName": "cutter1d",
-            "envFile": "${workspaceFolder}/docker/.env"
+            "envFile": "${workspaceFolder}/.docker/.env"
         }
     ]
 }
