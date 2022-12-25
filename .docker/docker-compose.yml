@@ -1,0 +1,16 @@
+version: "3"
+
+services:
+  mysql:
+    image: mysql:latest
+    container_name: onedcutter
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_NAME: onedcutter
+      MYSQL_ROOT_USER: root
+      MYSQL_ROOT_PASSWORD: mysqlpass
+      MYSQL_DATABASE: onedcutter
+      MYSQL_USER: klops
+      MYSQL_PASSWORD: klops
