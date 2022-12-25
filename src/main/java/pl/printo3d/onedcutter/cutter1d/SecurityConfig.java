@@ -33,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public SecurityConfig() {
     }
 
-    @Override
+    /*~~(Migrate manually based on https://spring.io/blog/2022/02/21/spring-security-without-the-websecurityconfigureradapter)~~>*/@Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(uService);
     }
@@ -70,8 +70,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-
-        //http.formLogin().permitAll().loginPage("/login").permitAll().and().logout().permitAll().deleteCookies("JSESSIONID");
 
         http.csrf().disable();
         http.cors().configurationSource(request -> corsConfiguration);

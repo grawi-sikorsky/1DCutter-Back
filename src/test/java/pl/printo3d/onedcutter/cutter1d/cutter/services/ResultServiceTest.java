@@ -17,13 +17,13 @@ import pl.printo3d.onedcutter.cutter1d.models.project.ResultBar;
 import pl.printo3d.onedcutter.cutter1d.models.project.WorkPiece;
 import pl.printo3d.onedcutter.cutter1d.services.ResultService;
 
-public class ResultServiceTest {
+class ResultServiceTest {
 
     // Przygotowanie listy czesci do testow
     private List<WorkPiece> prepareWorkPiece()
     {
         List<WorkPiece> workPieces = new ArrayList<WorkPiece>();
-  
+
         // 2 x 1000
         workPieces.add(new WorkPiece("1", 1000.0, 1));
         workPieces.add(new WorkPiece("2", 1000.0, 1));
@@ -40,7 +40,7 @@ public class ResultServiceTest {
     }
 
     @Test
-    public void getResultsBars_should_return_correct_amount_of_resultBars() {
+    void getResultsBars_should_return_correct_amount_of_resultBars() {
         // ResultService resultServiceTest = new ResultService();
         // List<ResultBar> wpTest;
 
@@ -51,7 +51,7 @@ public class ResultServiceTest {
     }
 
     @Test
-    public void getResultBars_should_return_correct_amount_of_resultBar_pieces() {
+    void getResultBars_should_return_correct_amount_of_resultBar_pieces() {
         // ResultService resultServiceTest = new ResultService();
         // List<ResultBar> wpTest;
         // Integer testCount = 0;
@@ -67,7 +67,7 @@ public class ResultServiceTest {
     }
 
     @Test
-    public void calculateWaste_should_return_correct_value()
+    void calculateWaste_should_return_correct_value()
     {
         // ResultService resultServiceTest = new ResultService();
       
@@ -77,7 +77,7 @@ public class ResultServiceTest {
     }
 
     @Test
-    public void calculateNeededStock_should_return_correct_value()
+    void calculateNeededStock_should_return_correct_value()
     {
         // ResultService resultServiceTest = new ResultService();
         // Map<Double, Integer> neededStockTest = new HashMap<Double, Integer>();
@@ -94,15 +94,12 @@ public class ResultServiceTest {
     }
 
     @Test
-    public void calculateCutCount_should_return_correct_count()
+    void calculateCutCount_should_return_correct_count()
     {
         // ResultService resultServiceTest = new ResultService();
 
         // assertEquals(resultServiceTest.calculateCutCount( prepareWorkPiece() ), 8);
     }
 
-    
-
-
-}
     //getRemainBars
+}

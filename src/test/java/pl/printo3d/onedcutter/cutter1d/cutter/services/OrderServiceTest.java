@@ -26,7 +26,7 @@ import pl.printo3d.onedcutter.cutter1d.services.ResultService;
 import pl.printo3d.onedcutter.cutter1d.services.UserService;
 
 @ExtendWith(MockitoExtension.class)
-public class OrderServiceTest {
+class OrderServiceTest {
 
     private static final String USERNAME = "username";
     private static final UserModel PRINCIPAL = new UserModel(
@@ -59,7 +59,7 @@ public class OrderServiceTest {
     }
 
     @Test
-    public void returnOrder_should_return_default_values() {
+    void returnOrder_should_return_default_values() {
         // //when
         // OrderModel orderModelTest = orderServiceTest.returnOrder();
 
@@ -80,7 +80,7 @@ public class OrderServiceTest {
     }
 
     @Test
-    public void makeOrder_should_return_default_values() {
+    void makeOrder_should_return_default_values() {
         //given
         ProjectModel orderModelTest = new ProjectModel();
         orderModelTest.setCutOptions(new CutOptions());
@@ -105,8 +105,8 @@ public class OrderServiceTest {
         verify(userService).loadUserByUsername(USERNAME);
     }
 
-    @Test 
-    public void makeFreeOrder_should_return_default_vals()
+    @Test
+    void makeFreeOrder_should_return_default_vals()
     {
         // given
         ProjectModel testOrder = new ProjectModel();
@@ -115,7 +115,7 @@ public class OrderServiceTest {
         when(resolveService.firstFit(testOrder)).thenReturn(cProduct);
 
         ResultModel rModel = new ResultModel();
-        when(resultService.makeFullResults( cProduct , testOrder )).thenReturn(rModel);
+        when(resultService.makeFullResults(cProduct, testOrder)).thenReturn(rModel);
 
         // when
         ResultModel testResult = cutService.makeOrderFree(testOrder);
@@ -126,20 +126,20 @@ public class OrderServiceTest {
         verify(resultService).makeFullResults(cProduct, testOrder);
     }
 
-    @Test 
-    public void saveActiveOrder_should_niewiemco() // toć void, wiec coz ma zwrocic? @_@
-    {
-        // given
-        ProjectModel testOrder = new ProjectModel();
+    @Test
+    void saveActiveOrder_should_niewiemco() // toć void, wiec coz ma zwrocic? @_@
+            {
+                // given
+                ProjectModel testOrder = new ProjectModel();
 
-        // when
-        //cutService.saveActiveOrder(testOrder);
+                // when
+                //cutService.saveActiveOrder(testOrder);
 
-        // then
-    }
+                // then
+            }
 
     @Test
-    public void costam() {
+    void costam() {
         System.out.println(cutService);
     }
 

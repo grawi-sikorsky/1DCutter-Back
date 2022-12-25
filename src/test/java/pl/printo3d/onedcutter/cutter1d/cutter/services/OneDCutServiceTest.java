@@ -18,7 +18,7 @@ import pl.printo3d.onedcutter.cutter1d.services.ResolveService;
 import pl.printo3d.onedcutter.cutter1d.services.ResultService;
 
 @ExtendWith(MockitoExtension.class)
-public class OneDCutServiceTest {
+class OneDCutServiceTest {
 
     @Mock
     ResultService resultService;
@@ -27,14 +27,14 @@ public class OneDCutServiceTest {
     ResolveService testOneDCutService;
 
     @Test
-    public void makePartList_should_return_ktoz_to_wie(){
+    void makePartList_should_return_ktoz_to_wie() {
         //given
         List<CutModel> testCutList = new ArrayList<CutModel>();
         testCutList.add(new CutModel("260", "5"));
 
         List<Double> partList = new ArrayList<Double>();
         for (CutModel c : testCutList) {
-            for (int i = 0; i < Integer.parseInt(c.getCutPcs()); ++ i) {
+            for (int i = 0; i < Integer.parseInt(c.getCutPcs()); ++i) {
                 partList.add(Double.parseDouble(c.getCutLength()));
             }
         }
@@ -50,23 +50,29 @@ public class OneDCutServiceTest {
     }
 
     @Test
-    public void countDuplicatePatterns_should_return_true_if_find_duplicate(){
+    void countDuplicatePatterns_should_return_true_if_find_duplicate() {
         CutterProduct dataForTest = new CutterProduct();
         CutterProduct result = new CutterProduct();
         WorkPiece wp = new WorkPiece("1", 1000.0, 1);
         WorkPiece wp2 = new WorkPiece("2", 1000.0, 1);
         WorkPiece wp3 = new WorkPiece("3", 1000.0, 1);
 
-        wp.cut(250.0);  wp.cut(250.0);
-        wp2.cut(250.0); wp2.cut(250.0);
-        wp3.cut(250.0); wp3.cut(400.0);
-        dataForTest.getWorkPiecesList().add( wp );
-        dataForTest.getWorkPiecesList().add( wp2 );
-        dataForTest.getWorkPiecesList().add( wp3 );
+        wp.cut(250.0);
+        wp.cut(250.0);
+        wp2.cut(250.0);
+        wp2.cut(250.0);
+        wp3.cut(250.0);
+        wp3.cut(400.0);
+        dataForTest.getWorkPiecesList().add(wp);
+        dataForTest.getWorkPiecesList().add(wp2);
+        dataForTest.getWorkPiecesList().add(wp3);
+        dataForTest.getWorkPiecesList().add(wp);
+        dataForTest.getWorkPiecesList().add(wp2);
+        dataForTest.getWorkPiecesList().add(wp3);
 
         result = testOneDCutService.countDuplicatePatterns(dataForTest);
 
         //assertTrue(result);
     }
-    
+
 }

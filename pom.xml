@@ -20,7 +20,7 @@
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<version>42.2.16</version>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -90,6 +90,12 @@
 			<version>2.9.2</version>
 		</dependency>
 
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>annotationProcessor</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
