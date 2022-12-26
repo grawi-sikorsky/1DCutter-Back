@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.authentication.UserServiceBeanDefinitionParser;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -141,6 +142,6 @@ public class UserService implements UserDetailsService {
         if ((userRepo.findByUuid(uuid) != null) && userModel.getUuid().equals(uuid)) {
             userRepo.deleteByUuid(uuid);
         } else
-            throw new RuntimeException("No uuid found, or user dont have access to delete this uuid");
+            throw new UserDoesntExistsException("No such user, or you don't have access to delete this user.");
     }
 }
