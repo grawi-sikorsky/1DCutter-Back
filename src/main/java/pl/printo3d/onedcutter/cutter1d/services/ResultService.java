@@ -60,7 +60,7 @@ public class ResultService {
             for (int i = 0; i < wp.getCuts().size(); ++ i) {
                 resultBar.addPiece(new ResultBarPieceModel((String.valueOf((wp.getCuts().get(i) / wp.getStockLenght()) * 100)), String.valueOf(wp.getCuts().get(i))));
             }
-            resultBars.add(new ResultBar(new ArrayList<ResultBarPieceModel>(resultBar.getResultBarPieces()), wp.getStockLenght(), wp.getPatternCount(), wp.freeSpace(userModel.getactiveProjectModel().getCutOptions().getOptionSzrank())));
+            resultBars.add(new ResultBar(new ArrayList<ResultBarPieceModel>(resultBar.getResultBarPieces()), wp.getStockLenght(), wp.getPatternCount(), wp.freeSpace(userModel.getActiveProjectModel().getCutOptions().getOptionSzrank())));
             resultBar.clear();
         }
         return resultBars;

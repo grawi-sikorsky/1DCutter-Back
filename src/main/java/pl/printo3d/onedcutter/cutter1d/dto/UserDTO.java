@@ -3,9 +3,13 @@ package pl.printo3d.onedcutter.cutter1d.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.Getter;
+import lombok.Setter;
 import pl.printo3d.onedcutter.cutter1d.models.project.ProjectModel;
 import pl.printo3d.onedcutter.cutter1d.models.user.UserModel;
 
+@Getter
+@Setter
 public class UserDTO {
 
     private String uuid;
@@ -31,9 +35,9 @@ public class UserDTO {
         this.phone      = userModel.getPhone();
         this.website    = userModel.getWebsite();
         this.numberOfSavedItems = userModel.getNumberOfSavedItems();
-        this.activeProjectId    = userModel.getactiveProjectId();
-        this.activeProjectModel = userModel.getactiveProjectModel();
-        this.savedProjectModels = userModel.getsavedProjectModels(); // todo: out!
+        this.activeProjectId    = userModel.getActiveProjectId();
+        this.activeProjectModel = userModel.getActiveProjectModel();
+        this.savedProjectModels = userModel.getSavedProjectModels(); // todo: out!
     }
 
     public UserModel toEntity(){
@@ -46,92 +50,10 @@ public class UserDTO {
         userModel.setPhone(this.phone);
         userModel.setWebsite(this.website);
         userModel.setNumberOfSavedItems(this.numberOfSavedItems);
-        userModel.setactiveProjectId(this.activeProjectId);
-        userModel.setactiveProjectModel(this.activeProjectModel);
-        userModel.setsavedProjectModels(this.savedProjectModels);
+        userModel.setActiveProjectId(this.activeProjectId);
+        userModel.setActiveProjectModel(this.activeProjectModel);
+        userModel.setSavedProjectModels(this.savedProjectModels);
 
         return userModel;
     }
-
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getWebsite() {
-        return website;
-    }
-
-    public void setWebsite(String website) {
-        this.website = website;
-    }
-
-    public Integer getNumberOfSavedItems() {
-        return numberOfSavedItems;
-    }
-
-    public void setNumberOfSavedItems(Integer numberOfSavedItems) {
-        this.numberOfSavedItems = numberOfSavedItems;
-    }
-
-    public Integer getactiveProjectId() {
-        return activeProjectId;
-    }
-
-    public void setactiveProjectId(Integer activeProjectId) {
-        this.activeProjectId = activeProjectId;
-    }
-
-    public ProjectModel getactiveProjectModel() {
-        return activeProjectModel;
-    }
-
-    public void setactiveProjectModel(ProjectModel activeProjectModel) {
-        this.activeProjectModel = activeProjectModel;
-    }
-
-    public List<ProjectModel> getsavedProjectModels() {
-        return savedProjectModels;
-    }
-
-    public void setsavedProjectModels(List<ProjectModel> savedProjectModels) {
-        this.savedProjectModels = savedProjectModels;
-    }
-
-    
 }

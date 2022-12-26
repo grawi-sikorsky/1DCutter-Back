@@ -83,7 +83,7 @@ public class UserService implements UserDetailsService {
                 userToSave.setPassword(pEncoder.encode(userRegisterDTO.getPassword()));
                 userRepo.save(userToSave);
 
-                userToSave.setactiveProjectId( userToSave.getsavedProjectModels().get(0).getId().intValue());
+                userToSave.setActiveProjectId( userToSave.getSavedProjectModels().get(0).getId().intValue());
                 userRepo.save(userToSave);
                 return new UserDTO(userToSave);
             } else {
@@ -110,11 +110,11 @@ public class UserService implements UserDetailsService {
             userModel.setWebsite(userUpdateDTO.getWebsite());
 
             if(userUpdateDTO.getactiveProjectId() != null) {
-                userModel.setactiveProjectId(userUpdateDTO.getactiveProjectId());
+                userModel.setActiveProjectId(userUpdateDTO.getactiveProjectId());
             }
             
-            userModel.setactiveProjectModel(userModel.getsavedProjectModels().stream()
-                    .filter(e -> e.getId() == Long.valueOf(userModel.getactiveProjectId())).collect(Collectors.toList())
+            userModel.setActiveProjectModel(userModel.getSavedProjectModels().stream()
+                    .filter(e -> e.getId() == Long.valueOf(userModel.getActiveProjectId())).collect(Collectors.toList())
                     .get(0));
 
             userRepo.save(userModel);

@@ -12,7 +12,7 @@ public class UserUpdateDTO {
     public UserUpdateDTO(UserModel userModel) {
         this.phone = userModel.getPhone();
         this.website = userModel.getWebsite();
-        this.activeProjectId = userModel.getactiveProjectId();
+        this.activeProjectId = userModel.getActiveProjectId();
     }
     
     public String getPhone() {

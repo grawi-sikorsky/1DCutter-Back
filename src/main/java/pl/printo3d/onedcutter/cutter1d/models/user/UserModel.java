@@ -23,6 +23,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import lombok.Getter;
+import lombok.Setter;
 import pl.printo3d.onedcutter.cutter1d.dto.UserRegisterDTO;
 import pl.printo3d.onedcutter.cutter1d.models.project.CutUnit;
 import pl.printo3d.onedcutter.cutter1d.models.project.CutOptions;
@@ -33,6 +35,8 @@ import pl.printo3d.onedcutter.cutter1d.models.project.StockUnit;
  * Model USERA implementacja UserDetails <p>
  */
 @Entity
+@Getter
+@Setter
 public class UserModel implements UserDetails {
 
     @Id
@@ -71,10 +75,10 @@ public class UserModel implements UserDetails {
         ord.setProjectCreated(LocalDateTime.now());
         ord.setProjectModified(LocalDateTime.now());
 
-        this.setactiveProjectModel(ord);
-        this.setsavedProjectModels(new ArrayList<>(Arrays.asList(ord)));
-        this.setactiveProjectId(0); // default
-        this.setNumberOfSavedItems(this.getsavedProjectModels().size());
+        this.setActiveProjectModel(ord);
+        this.setSavedProjectModels(new ArrayList<>(Arrays.asList(ord)));
+        this.setActiveProjectId(0); // default
+        this.setNumberOfSavedItems(this.getSavedProjectModels().size());
 
         this.setRole("VIP"); // role dynamicznie pasuje ustawiac.        
     }
@@ -140,93 +144,6 @@ public class UserModel implements UserDetails {
     public boolean isEnabled() {
         // TODO Auto-generated method stub
         return true;
-    }
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getWebsite() {
-        return website;
-    }
-
-    public void setWebsite(String website) {
-        this.website = website;
-    }
-
-    public Integer getNumberOfSavedItems() {
-        return numberOfSavedItems;
-    }
-
-    public void setNumberOfSavedItems(Integer numberOfSavedItems) {
-        this.numberOfSavedItems = numberOfSavedItems;
-    }
-
-    public Integer getactiveProjectId() {
-        return activeProjectId;
-    }
-
-    public void setactiveProjectId(Integer activeProjectId) {
-        this.activeProjectId = activeProjectId;
-    }
-
-    public ProjectModel getactiveProjectModel() {
-        return activeProjectModel;
-    }
-
-    public void setactiveProjectModel(ProjectModel activeProjectModel) {
-        this.activeProjectModel = activeProjectModel;
-    }
-
-    public List<ProjectModel> getsavedProjectModels() {
-        return savedProjectModels;
-    }
-
-    public void setsavedProjectModels(List<ProjectModel> savedProjectModels) {
-        this.savedProjectModels = savedProjectModels;
     }
 
 }

@@ -38,17 +38,17 @@ public class ProjectService {
 
         // najpierw czyscimy liste, aby w DB pozbyc sie osieroconych wpisow
         // dlatego getcutlist.addAll! zamiast setCutlist.add!
-        userModel.getsavedProjectModels().get(userModel.getactiveProjectId()).getCutList().clear();
-        userModel.getsavedProjectModels().get(userModel.getactiveProjectId()).getCutList().addAll(incomingProject.getCutList());
+        userModel.getSavedProjectModels().get(userModel.getActiveProjectId()).getCutList().clear();
+        userModel.getSavedProjectModels().get(userModel.getActiveProjectId()).getCutList().addAll(incomingProject.getCutList());
 
-        userModel.getsavedProjectModels().get(userModel.getactiveProjectId()).getStockList().clear();
-        userModel.getsavedProjectModels().get(userModel.getactiveProjectId()).getStockList().addAll(incomingProject.getStockList());
+        userModel.getSavedProjectModels().get(userModel.getActiveProjectId()).getStockList().clear();
+        userModel.getSavedProjectModels().get(userModel.getActiveProjectId()).getStockList().addAll(incomingProject.getStockList());
 
-        incomingProject.getCutOptions().setId(userModel.getsavedProjectModels().get(userModel.getactiveProjectId()).getCutOptions().getId());// ID odczytaj i przypisz, bo w orderModel jeszcze nie ma..
-        userModel.getsavedProjectModels().get(userModel.getactiveProjectId()).setCutOptions(incomingProject.getCutOptions());
+        incomingProject.getCutOptions().setId(userModel.getSavedProjectModels().get(userModel.getActiveProjectId()).getCutOptions().getId());// ID odczytaj i przypisz, bo w orderModel jeszcze nie ma..
+        userModel.getSavedProjectModels().get(userModel.getActiveProjectId()).setCutOptions(incomingProject.getCutOptions());
 
-        userModel.getsavedProjectModels().get(userModel.getactiveProjectId()).setProjectName(incomingProject.getProjectName());
-        userModel.getsavedProjectModels().get(userModel.getactiveProjectId()).setProjectModified(LocalDateTime.now());
+        userModel.getSavedProjectModels().get(userModel.getActiveProjectId()).setProjectName(incomingProject.getProjectName());
+        userModel.getSavedProjectModels().get(userModel.getActiveProjectId()).setProjectModified(LocalDateTime.now());
 
         userService.saveUserEntity(userModel);
         /** END ZAPIS DO BAZY */
@@ -64,23 +64,23 @@ public class ProjectService {
 
         // najpierw czyscimy liste, aby w DB pozbyc sie osieroconych wpisow
         // dlatego getcutlist.addAll! zamiast setCutlist.add!
-        userModel.getactiveProjectModel().getCutList().clear();
-        userModel.getactiveProjectModel().getCutList().addAll(incomingProject.getCutList());
+        userModel.getActiveProjectModel().getCutList().clear();
+        userModel.getActiveProjectModel().getCutList().addAll(incomingProject.getCutList());
 
-        userModel.getactiveProjectModel().getStockList().clear();
-        userModel.getactiveProjectModel().getStockList().addAll(incomingProject.getStockList());
+        userModel.getActiveProjectModel().getStockList().clear();
+        userModel.getActiveProjectModel().getStockList().addAll(incomingProject.getStockList());
 
-        incomingProject.getCutOptions().setId(userModel.getactiveProjectModel().getCutOptions().getId());// ID odczytaj i przypisz, bo w orderModel jeszcze nie ma..
-        userModel.getactiveProjectModel().setCutOptions(incomingProject.getCutOptions());
+        incomingProject.getCutOptions().setId(userModel.getActiveProjectModel().getCutOptions().getId());// ID odczytaj i przypisz, bo w orderModel jeszcze nie ma..
+        userModel.getActiveProjectModel().setCutOptions(incomingProject.getCutOptions());
 
-        userModel.getactiveProjectModel().setProjectName(incomingProject.getProjectName());
-        userModel.getactiveProjectModel().setProjectModified(LocalDateTime.now());
+        userModel.getActiveProjectModel().setProjectName(incomingProject.getProjectName());
+        userModel.getActiveProjectModel().setProjectModified(LocalDateTime.now());
 
-        userModel.getactiveProjectModel().setProjectResults(incomingProject.getProjectResults());
+        userModel.getActiveProjectModel().setProjectResults(incomingProject.getProjectResults());
 
         userService.saveUserEntity(userModel);
         /** END ZAPIS DO BAZY */
-        return userModel.getactiveProjectModel();
+        return userModel.getActiveProjectModel();
     }
 
 
@@ -96,13 +96,13 @@ public class ProjectService {
             incomingProject.setProjectCreated(LocalDateTime.now());
             incomingProject.setProjectModified(LocalDateTime.now());
     
-            userModel.getsavedProjectModels().add(incomingProject);
-            userModel.setactiveProjectModel(incomingProject);
-            userModel.setNumberOfSavedItems(userModel.getsavedProjectModels().size());
+            userModel.getSavedProjectModels().add(incomingProject);
+            userModel.setActiveProjectModel(incomingProject);
+            userModel.setNumberOfSavedItems(userModel.getSavedProjectModels().size());
 
             userService.saveUserEntity(userModel);
 
-            return userModel.getactiveProjectModel();
+            return userModel.getActiveProjectModel();
         }
         else throw new RuntimeException("There's no more space for this user");
     }
@@ -135,23 +135,23 @@ public class ProjectService {
     public void removeOrderModel(Long id){
         UserModel userModel = (UserModel) userService.loadUserByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
         if(projectRepository.findByIdAndUserId(id, userModel.getId()) != null){
-            if(userModel.getsavedProjectModels().size() > 1){
-                userModel.setactiveProjectId( null );
-                userModel.setactiveProjectModel( null );
+            if(userModel.getSavedProjectModels().size() > 1){
+                userModel.setActiveProjectId( null );
+                userModel.setActiveProjectModel( null );
 
-                userModel.getsavedProjectModels().remove(userModel.getsavedProjectModels().stream()
+                userModel.getSavedProjectModels().remove(userModel.getSavedProjectModels().stream()
                     .filter(e -> e.getId() == Long.valueOf(id))
                     .collect(Collectors.toList())
                     .get(0));
                 
                 projectRepository.deleteById(id);
     
-                int index = userModel.getsavedProjectModels().size()-1;
+                int index = userModel.getSavedProjectModels().size()-1;
                 if(index<0) index = 0;
     
-                userModel.setactiveProjectId( userModel.getsavedProjectModels().get(index).getId().intValue() );
-                userModel.setactiveProjectModel( userModel.getsavedProjectModels().get(index) );
-                userModel.setNumberOfSavedItems(userModel.getsavedProjectModels().size());
+                userModel.setActiveProjectId( userModel.getSavedProjectModels().get(index).getId().intValue() );
+                userModel.setActiveProjectModel( userModel.getSavedProjectModels().get(index) );
+                userModel.setNumberOfSavedItems(userModel.getSavedProjectModels().size());
     
                 userService.saveUserEntity(userModel);
             } else throw new RuntimeException("Can't remove all projects, must be at least one!");
@@ -169,6 +169,6 @@ public class ProjectService {
 
     public List<ProjectModel> getAllUserProjects() {
         UserModel userModel = (UserModel) userService.loadUserByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
-        return userModel.getsavedProjectModels();
+        return userModel.getSavedProjectModels();
     }
 }
