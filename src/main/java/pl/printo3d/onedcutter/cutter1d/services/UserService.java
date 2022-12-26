@@ -30,8 +30,6 @@ import pl.printo3d.onedcutter.cutter1d.utility.JWTUtil;
 @Service
 public class UserService implements UserDetailsService {
 
-    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
-
     private final UserRepo userRepo;
     private final JWTUtil jwtUtil;
 
@@ -90,8 +88,6 @@ public class UserService implements UserDetailsService {
 
                 userToSave.setactiveProjectId( userToSave.getsavedProjectModels().get(0).getId().intValue());
                 userRepo.save(userToSave);
-
-                logger.info("Dodajemy Usera..");
                 return new UserDTO(userToSave);
             } else {
                 throw new UserExistsException("User already exists!");
@@ -131,10 +127,6 @@ public class UserService implements UserDetailsService {
     }
 
 
-    public void saveUserEntity(UserModel userModel) {
-        userRepo.save(userModel);
-    }
-
     public void removeUser(String uuid) {
         UserModel userModel = userRepo.findByUsername(
                 ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
@@ -143,5 +135,10 @@ public class UserService implements UserDetailsService {
             userRepo.deleteByUuid(uuid);
         } else
             throw new UserDoesntExistsException("No such user, or you don't have access to delete this user.");
+    }
+
+
+    public void saveUserEntity(UserModel userModel) {
+        userRepo.save(userModel);
     }
 }

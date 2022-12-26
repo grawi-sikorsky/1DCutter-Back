@@ -33,12 +33,4 @@ public class CutController {
     public ResultModel processOrderFree(@RequestBody ProjectModel orderModel) {
         return cutService.makeOrderFree(orderModel);
     }
-
-    // Zapisuje bierzacy orderModel do bazy (debounced save na froncie)
-    @PostMapping("/setorder")
-    public ProjectModel setOptions(@RequestBody ProjectModel orderModel) {
-        projectService.saveActiveOrder(orderModel);
-
-        return orderModel;
-    }
 }
