@@ -9,10 +9,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import pl.printo3d.onedcutter.cutter1d.models.project.CutModel;
+import pl.printo3d.onedcutter.cutter1d.models.project.CutUnit;
 import pl.printo3d.onedcutter.cutter1d.models.project.CutOptions;
 import pl.printo3d.onedcutter.cutter1d.models.project.ProjectModel;
-import pl.printo3d.onedcutter.cutter1d.models.project.StockModel;
+import pl.printo3d.onedcutter.cutter1d.models.project.StockUnit;
 import pl.printo3d.onedcutter.cutter1d.models.user.UserModel;
 import pl.printo3d.onedcutter.cutter1d.repo.ProjectRepository;
 
@@ -89,8 +89,8 @@ public class ProjectService {
         ProjectModel incomingProject = new ProjectModel();
 
         if(userModel.getNumberOfSavedItems() < 5){
-            incomingProject.setCutList(Arrays.asList(new CutModel("220", "5"), new CutModel("260", "5")));
-            incomingProject.setStockList(Arrays.asList(new StockModel("0", "1000", "6", "0"), new StockModel("1", "1000", "5", "0")));
+            incomingProject.setCutList(Arrays.asList(new CutUnit("220", "5"), new CutUnit("260", "5")));
+            incomingProject.setStockList(Arrays.asList(new StockUnit("0", "1000", "6", "0"), new StockUnit("1", "1000", "5", "0")));
             incomingProject.setCutOptions(new CutOptions(false, 0d, false, false, 1000));
             incomingProject.setProjectName("New project name");
             incomingProject.setProjectCreated(LocalDateTime.now());

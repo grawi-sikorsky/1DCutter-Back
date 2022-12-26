@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import lombok.Getter;
+import lombok.Setter;
+
 
 /**
  * Model zawierajacy pojedynczy surowiec o okreslonej dlugosci
@@ -12,6 +15,8 @@ import java.util.Map;
  * - freeSpace() - zwraca ilosc wolnego miejsca na surowcu<p>
  * - cut() - odcina okreslony kawalek z surowca dodajac go do listy cięć<p>
  */
+@Getter
+@Setter
 public class WorkPiece {
 
     private String frontID;
@@ -63,43 +68,5 @@ public class WorkPiece {
         result=31*result + stockLenght.intValue();
         result=31*result+(cuts!=null ? cuts.hashCode():0);
         return result;
-    }
-
-
-    public Double getStockLenght() {
-        return stockLenght;
-    }
-
-    public void setStockLenght(Double stockLenght) {
-        this.stockLenght = stockLenght;
-    }
-
-    public String getFrontID() {
-        return frontID;
-    }
-
-    public void setFrontID(String frontID) {
-        this.frontID = frontID;
-    }
-
-    public List<Double> getCuts() {
-        return cuts;
-    }
-
-    public Map<Double, Integer> getSatisfiedDemands() {
-        return satisfiedDemands;
-    }
-
-    public void setSatisfiedDemands(Map<Double, Integer> satisfiedDemands) {
-        this.satisfiedDemands = satisfiedDemands;
-    }
-
-    public Integer getPatternCount() {
-        return patternCount;
-    }
-
-    public void setPatternCount(Integer patternCount) {
-        this.patternCount = patternCount;
-    }
-    
+    }    
 }

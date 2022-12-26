@@ -5,6 +5,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * Model zawierajacy zadeklarowana przez usera dlugosc surowca oraz ilosc takich
  * samych odcinkow
@@ -20,8 +23,11 @@ import javax.persistence.Id;
  * {@code String name} - NOT YET....
  * <p>
  */
+
 @Entity
-public class StockModel {
+@Getter
+@Setter
+public class StockUnit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,62 +38,21 @@ public class StockModel {
     private String stockPrice;
     private String name;
 
-    public StockModel() {
+    public StockUnit() {
     }
 
-    public StockModel(String idFront, String stockLength, String stockPcs, String stockPrice) {
+    public StockUnit(String idFront, String stockLength, String stockPcs, String stockPrice) {
         this.idFront = idFront;
         this.stockLength = stockLength;
         this.stockPcs = stockPcs;
         this.stockPrice = stockPrice;
     }
 
-    public StockModel(String idFront, String stockLength, String stockPcs, String stockPrice, String name) {
+    public StockUnit(String idFront, String stockLength, String stockPcs, String stockPrice, String name) {
         this.idFront = idFront;
         this.stockLength = stockLength;
         this.stockPcs = stockPcs;
         this.stockPrice = stockPrice;
         this.name = name;
     }
-
-    public String getStockLength() {
-        return stockLength;
-    }
-
-    public void setStockLength(String stockLength) {
-        this.stockLength = stockLength;
-    }
-
-    public String getStockPcs() {
-        return stockPcs;
-    }
-
-    public void setStockPcs(String stockPcs) {
-        this.stockPcs = stockPcs;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getStockPrice() {
-        return stockPrice;
-    }
-
-    public void setStockPrice(String stockPrice) {
-        this.stockPrice = stockPrice;
-    }
-
-    public String getIdFront() {
-        return idFront;
-    }
-
-    public void setIdFront(String idFront) {
-        this.idFront = idFront;
-    }
-
 }

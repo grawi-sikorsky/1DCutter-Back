@@ -11,6 +11,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +28,8 @@ import java.util.List;
  * {@code CutOptions cutOptions} - Opcje projektu <p>
  */
 @Entity
+@Getter
+@Setter
 public class ProjectModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,11 +44,11 @@ public class ProjectModel {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "project_id", referencedColumnName = "id", insertable = true, updatable = true)
-    private List<CutModel> cutList = new ArrayList<CutModel>();
+    private List<CutUnit> cutList = new ArrayList<CutUnit>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "project_id", referencedColumnName = "id", insertable = true, updatable = true)
-    private List<StockModel> stockList = new ArrayList<StockModel>();
+    private List<StockUnit> stockList = new ArrayList<StockUnit>();
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "cut_options_id", referencedColumnName = "id", unique = true, insertable = true, updatable = true)
@@ -58,70 +63,5 @@ public class ProjectModel {
     }
 
     public ProjectModel() {
-    }
-
-    public List<CutModel> getCutList() {
-        return cutList;
-    }
-
-    public void setCutList(List<CutModel> cutList) {
-        this.cutList = cutList;
-    }
-
-    public List<StockModel> getStockList() {
-        return stockList;
-    }
-
-    public void setStockList(List<StockModel> stockList) {
-        this.stockList = stockList;
-    }
-
-    public CutOptions getCutOptions() {
-        return cutOptions;
-    }
-
-    public void setCutOptions(CutOptions cutOptions) {
-        this.cutOptions = cutOptions;
-    }
-
-    public Long getId() {
-        return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getProjectName() {
-        return projectName;
-    }
-
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
-    }
-
-    public LocalDateTime getProjectCreated() {
-        return projectCreated;
-    }
-
-    public void setProjectCreated(LocalDateTime projectCreated) {
-        this.projectCreated = projectCreated;
-    }
-
-    public LocalDateTime getProjectModified() {
-        return projectModified;
-    }
-
-    public void setProjectModified(LocalDateTime projectModified) {
-        this.projectModified = projectModified;
-    }
-
-    public String getProjectResults() {
-        return projectResults;
-    }
-
-    public void setProjectResults(String projectResults) {
-        this.projectResults = projectResults;
-    }
-
-    
+    }    
 }

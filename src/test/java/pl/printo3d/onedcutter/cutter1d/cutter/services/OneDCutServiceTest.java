@@ -11,7 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import pl.printo3d.onedcutter.cutter1d.models.project.CutModel;
+import pl.printo3d.onedcutter.cutter1d.models.project.CutUnit;
 import pl.printo3d.onedcutter.cutter1d.models.project.CutterProduct;
 import pl.printo3d.onedcutter.cutter1d.models.project.WorkPiece;
 import pl.printo3d.onedcutter.cutter1d.services.ResolveService;
@@ -29,11 +29,11 @@ class OneDCutServiceTest {
     @Test
     void makePartList_should_return_ktoz_to_wie() {
         //given
-        List<CutModel> testCutList = new ArrayList<CutModel>();
-        testCutList.add(new CutModel("260", "5"));
+        List<CutUnit> testCutList = new ArrayList<CutUnit>();
+        testCutList.add(new CutUnit("260", "5"));
 
         List<Double> partList = new ArrayList<Double>();
-        for (CutModel c : testCutList) {
+        for (CutUnit c : testCutList) {
             for (int i = 0; i < Integer.parseInt(c.getCutPcs()); ++i) {
                 partList.add(Double.parseDouble(c.getCutLength()));
             }

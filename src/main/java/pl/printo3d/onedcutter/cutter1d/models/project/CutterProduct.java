@@ -5,12 +5,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * Klasa wynikowa dla CutterService->FirstFit..  Zawiera: <p>
  * 
  * {@code List<WorkPiece> workPiecesList} - czyli zoptymalizowane kawalki na stocku <p>
  * {@code List<Double> nofittedPieces} - czyli odcinki ktorych nie udalo sie zoptymalizowac [brak materialu]<p>
  */
+@Getter
+@Setter
 public class CutterProduct {
 
     List<WorkPiece> workPiecesList = new ArrayList<WorkPiece>();
@@ -26,26 +31,5 @@ public class CutterProduct {
     }
     public Integer getSolutionVariants(){
         return workPiecesList.size();
-    }
-
-    // getters setters
-    public List<WorkPiece> getWorkPiecesList() {
-        return workPiecesList;
-    }
-    public void setWorkPiecesList(List<WorkPiece> workPiecesList) {
-        this.workPiecesList = workPiecesList;
-    }
-    public List<Double> getNotFittedPieces() {
-        return notFittedPieces;
-    }
-    public void setNotFittedPieces(List<Double> notFittedPieces) {
-        this.notFittedPieces = notFittedPieces;
-    }
-    public Map<Double, Double> getDemandsSatisfa() {
-        return demandsSatisfa;
-    }
-    public void setDemandsSatisfa(Map<Double, Double> demandsSatisfa) {
-        this.demandsSatisfa = demandsSatisfa;
-    }
-    
+    }    
 }

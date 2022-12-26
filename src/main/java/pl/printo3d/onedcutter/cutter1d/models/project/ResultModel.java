@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * Model zawierajacy pełny wynik optymalizacji <p>
  * {@code Double resultWaste} - Liczbowy odpad z ciecia <p>
@@ -19,6 +22,8 @@ import java.util.Map;
  * {@code List<ResultBar> remainBars} - WTF? DO WYWALENIA? <p>
  * {@code List<ResultBar> resultRemainingPieces} - Niezoptymalizowane odcinki <p>
  */
+@Getter
+@Setter
 public class ResultModel {
 
     private Double resultWaste = 0.0;
@@ -36,95 +41,5 @@ public class ResultModel {
 
     public ResultModel() {
     }
-
-
-    public Double getResultUsedProcent() {
-        return resultUsedProcent;
-    }
-
-    public void setResultUsedProcent(Double resultUsedProcent) {
-        this.resultUsedProcent = resultUsedProcent;
-    }
-
-    public Double getResultUsed() {
-        return resultUsed;
-    }
-
-    public void setResultUsed(Double resultUsed) {
-        this.resultUsed = resultUsed;
-    }
-
-    public Double getResultWasteProcent() {
-        return resultWasteProcent;
-    }
-
-    public void setResultWasteProcent(Double resultWasteProcent) {
-        this.resultWasteProcent = resultWasteProcent;
-    }
-
-    public Map<Double, Integer> getResultNeededStock() {
-        return resultNeededStock;
-    }
-
-    public void setResultNeededStock(Map<Double, Integer> resultNeededStock) {
-        this.resultNeededStock = resultNeededStock;
-    }
-
-    public Double getResultWaste() {
-        return resultWaste;
-    }
-
-    public void setResultWaste(Double resultWaste) {
-        this.resultWaste = resultWaste;
-    }
-
-    public List<ResultBar> getResultBars() {
-        return resultBars;
-    }
-
-    public void setResultBars(List<ResultBar> resultBars) {
-        this.resultBars = resultBars;
-    }
-
-    public List<ResultBar> getResultRemainingPieces() {
-        return resultRemainingPieces;
-    }
-
-    public void setResultRemainingPieces(List<ResultBar> resultRemainingPieces) {
-        this.resultRemainingPieces = resultRemainingPieces;
-    }
-
-    public List<ResultBar> getRemainBars() {
-        return remainBars;
-    }
-
-    public void setRemainBars(List<ResultBar> remainBars) {
-        this.remainBars = remainBars;
-    }
-
-    public Integer getResultCutCount() {
-        return resultCutCount;
-    }
-
-    public void setResultCutCount(Integer resultCutCount) {
-        this.resultCutCount = resultCutCount;
-    }
-
-    public Double getResultCostOveral() {
-        return resultCostOveral;
-    }
-
-    public void setResultCostOveral(Double resultCostOveral) {
-        this.resultCostOveral = resultCostOveral;
-    }
-
-    public Double getResultCostPrecise() {
-        return resultCostPrecise;
-    }
-
-    public void setResultCostPrecise(Double resultCostPrecise) {
-        this.resultCostPrecise = resultCostPrecise;
-    }
-
 
 }

@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import pl.printo3d.onedcutter.cutter1d.models.project.CutModel;
+import pl.printo3d.onedcutter.cutter1d.models.project.CutUnit;
 import pl.printo3d.onedcutter.cutter1d.models.project.CutterProduct;
 import pl.printo3d.onedcutter.cutter1d.models.project.ProjectModel;
 import pl.printo3d.onedcutter.cutter1d.models.project.WorkPiece;
@@ -24,10 +24,10 @@ public class ResolveService {
     }
 
     // Tworzy liste elementow do ciecia na podstawie wpisanych danych
-    public List<Double> makePartList(List<CutModel> cutList) {
+    public List<Double> makePartList(List<CutUnit> cutList) {
         List<Double> partsList = new ArrayList<Double>();
  
-        for (CutModel c : cutList) {
+        for (CutUnit c : cutList) {
             for (int i = 0; i < Integer.parseInt(c.getCutPcs()); ++ i) {
                 partsList.add(Double.parseDouble(c.getCutLength()));
             }
@@ -36,7 +36,7 @@ public class ResolveService {
     }
 
     // Sortowanie odwrotne
-    public List<Double> sortReverse(List<CutModel> cutList) {
+    public List<Double> sortReverse(List<CutUnit> cutList) {
         List<Double> partsList = new ArrayList<Double>();
         partsList = makePartList(cutList);
         Collections.sort(partsList);

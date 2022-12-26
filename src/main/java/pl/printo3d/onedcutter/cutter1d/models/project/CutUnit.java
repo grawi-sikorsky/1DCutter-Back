@@ -5,6 +5,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * Model zawierajacy zadeklarowana przez usera dlugosc ciecia oraz ilosc takich
  * samych odcinkow
@@ -17,7 +20,9 @@ import javax.persistence.Id;
  * <p>
  */
 @Entity
-public class CutModel {
+@Getter
+@Setter
+public class CutUnit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,41 +32,17 @@ public class CutModel {
     private String cutPcs;
     private String name; // byc moze nazwy kawalkow beda
 
-    public CutModel() {
+    public CutUnit() {
     }
 
-    public CutModel(String cutLength, String cutPcs) {
+    public CutUnit(String cutLength, String cutPcs) {
         this.cutLength = cutLength;
         this.cutPcs = cutPcs;
     }
 
-    public CutModel(String cutLength, String cutPcs, String name) {
+    public CutUnit(String cutLength, String cutPcs, String name) {
         this.cutLength = cutLength;
         this.cutPcs = cutPcs;
         this.name = name;
-    }
-
-    public String getCutLength() {
-        return cutLength;
-    }
-
-    public void setCutLength(String cutLength) {
-        this.cutLength = cutLength;
-    }
-
-    public String getCutPcs() {
-        return cutPcs;
-    }
-
-    public void setCutPcs(String cutPcs) {
-        this.cutPcs = cutPcs;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 }
