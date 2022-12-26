@@ -3,11 +3,9 @@ package pl.printo3d.onedcutter.cutter1d.repo;
 import javax.transaction.Transactional;
 
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
 
 import pl.printo3d.onedcutter.cutter1d.models.project.ProjectModel;
 
-@Repository
 public interface ProjectRepository extends CrudRepository<ProjectModel, Long>{
 
     ProjectModel findProjectModelById(Long id);
