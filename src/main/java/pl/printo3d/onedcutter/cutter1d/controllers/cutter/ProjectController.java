@@ -24,7 +24,7 @@ import pl.printo3d.onedcutter.cutter1d.services.UserService;
 @ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
 @CrossOrigin(origins = {"http://localhost:4200","http://10.0.2.2:8080"})
 @RestController
-@RequestMapping("/users/orders")
+@RequestMapping("/user/orders")
 public class ProjectController {
 
     private final static Logger logger = LoggerFactory.getLogger(ProjectController.class);

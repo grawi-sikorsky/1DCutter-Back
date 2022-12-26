@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -101,23 +100,35 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public UserModel updateUser(UserUpdateDTO userUpdateDTO) {
-        UserModel userModel = (UserModel) userRepo.findByUsername(((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
+
+    public UserDTO getUser(){
+        UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return new UserDTO( (UserModel)userRepo.findByUsername(userDetails.getUsername()));
+    }
+
+
+    public UserDTO updateUser(UserUpdateDTO userUpdateDTO) {
+        UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserModel userModel = (UserModel)userRepo.findByUsername(userDetails.getUsername());
 
         if (userRepo.findByUuid(userModel.getUuid()) != null) {
             userModel.setPhone(userUpdateDTO.getPhone());
             userModel.setWebsite(userUpdateDTO.getWebsite());
-            userModel.setactiveProjectId(userUpdateDTO.getactiveProjectId());
+
+            if(userUpdateDTO.getactiveProjectId() != null) {
+                userModel.setactiveProjectId(userUpdateDTO.getactiveProjectId());
+            }
+            
             userModel.setactiveProjectModel(userModel.getsavedProjectModels().stream()
                     .filter(e -> e.getId() == Long.valueOf(userModel.getactiveProjectId())).collect(Collectors.toList())
                     .get(0));
 
             userRepo.save(userModel);
-            logger.info("Update User..");
-            return userModel;
+            return new UserDTO(userModel);
         }
-        throw new RuntimeException("No such user for update!");
+        throw new UserDoesntExistsException("Cannot update, user doesn't exist.");
     }
+
 
     public void saveUserEntity(UserModel userModel) {
         userRepo.save(userModel);

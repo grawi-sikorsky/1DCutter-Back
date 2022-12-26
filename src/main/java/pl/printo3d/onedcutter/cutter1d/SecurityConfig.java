@@ -52,7 +52,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
             .antMatchers("/user/register", "/img/**", "/css/**").permitAll()  // refactored
             .antMatchers("/user/auth").permitAll()
-
+            .antMatchers("/user").permitAll()
+            
             .antMatchers("/login", "/img/**", "/css/**").permitAll()
             .antMatchers("/1dcut").permitAll()
             .antMatchers("/cut").permitAll()
@@ -61,7 +62,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/result").permitAll()
             .antMatchers("/profile").permitAll()
             .antMatchers("/test").permitAll()
-            .antMatchers("/user").permitAll()
+
             .antMatchers("/v2/api-docs",
                             "/configuration/ui",
                             "/swagger-resources/**",
