@@ -22,7 +22,7 @@ import pl.printo3d.onedcutter.cutter1d.services.ProjectService;
 @ApiOperation(value = "", authorizations = { @Authorization(value = "jwtToken") })
 @CrossOrigin(origins = { "http://localhost:4200", "http://10.0.2.2:8080" })
 @RestController
-@RequestMapping("/user/orders")
+@RequestMapping("/user/project")
 public class ProjectController {
 
     private final ProjectService projectService;
@@ -47,8 +47,8 @@ public class ProjectController {
     }
 
     @PatchMapping("{orderId}")
-    public ResponseEntity<ProjectModel> editProject(@PathVariable Long orderId, @RequestBody ProjectModel incomingProject) {
-        return ResponseEntity.status(HttpStatus.OK).body(projectService.editProject(orderId, incomingProject));
+    public ResponseEntity<ProjectModel> editProject(@PathVariable Long projectId, @RequestBody ProjectModel incomingProject) {
+        return ResponseEntity.status(HttpStatus.OK).body(projectService.editProject(projectId, incomingProject));
     }
 
     @DeleteMapping("{id}")

@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import pl.printo3d.onedcutter.cutter1d.models.project.CutUnit;
+import pl.printo3d.onedcutter.cutter1d.exceptions.project.ProjectDoesntExistException;
 import pl.printo3d.onedcutter.cutter1d.models.project.CutOptions;
 import pl.printo3d.onedcutter.cutter1d.models.project.ProjectModel;
 import pl.printo3d.onedcutter.cutter1d.models.project.StockUnit;
@@ -107,11 +108,11 @@ public class ProjectService {
     }
 
 
-    public ProjectModel editProject(Long id, ProjectModel incomingProject) {
+    public ProjectModel editProject(Long projectId, ProjectModel incomingProject) {
         UserModel userModel = (UserModel) userService.loadUserByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
 
-        if( projectRepository.getByIdAndUserId(id, userModel.getId()) != null ){
-            ProjectModel project = projectRepository.getByIdAndUserId(id, userModel.getId());
+        if( projectRepository.getByIdAndUserId(projectId, userModel.getId()) != null ){
+            ProjectModel project = projectRepository.getByIdAndUserId(projectId, userModel.getId());
             project.getCutList().clear();
             project.getCutList().addAll(incomingProject.getCutList());
 
@@ -133,19 +134,19 @@ public class ProjectService {
     }
 
 
-    public void removeOrderModel(Long id){
+    public void removeOrderModel(Long projectId){
         UserModel userModel = (UserModel) userService.loadUserByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
-        if(projectRepository.findByIdAndUserId(id, userModel.getId()) != null){
+        if(projectRepository.findByIdAndUserId(projectId, userModel.getId()) != null){
             if(userModel.getSavedProjectModels().size() > 1){
                 userModel.setActiveProjectId( null );
                 userModel.setActiveProjectModel( null );
 
                 userModel.getSavedProjectModels().remove(userModel.getSavedProjectModels().stream()
-                    .filter(e -> e.getId() == Long.valueOf(id))
+                    .filter(e -> e.getId() == Long.valueOf(projectId))
                     .collect(Collectors.toList())
                     .get(0));
                 
-                projectRepository.deleteById(id);
+                projectRepository.deleteById(projectId);
     
                 int index = userModel.getSavedProjectModels().size()-1;
                 if(index<0) index = 0;
@@ -160,12 +161,12 @@ public class ProjectService {
         
     }
 
-    
+
     public ProjectModel getProject(Long projectId) {
         UserModel userModel = (UserModel) userService.loadUserByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
         if(projectRepository.findProjectModelByIdAndUserId(projectId, userModel.getId()) != null){
             return projectRepository.findProjectModelById(projectId);
-        } else throw new RuntimeException("No project or user found with this ID!");
+        } else throw new ProjectDoesntExistException("No project found for this user!");
     }
 
 
