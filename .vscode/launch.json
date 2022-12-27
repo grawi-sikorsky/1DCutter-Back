@@ -1,0 +1,16 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Launch Cutter1dApplication",
+            "request": "launch",
+            "mainClass": "pl.printo3d.onedcutter.cutter1d.Cutter1dApplication",
+            "projectName": "cutter1d",
+            "envFile": "${workspaceFolder}/.docker/.env"
+        }
+    ]
+}
