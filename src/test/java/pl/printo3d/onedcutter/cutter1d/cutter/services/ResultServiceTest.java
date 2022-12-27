@@ -13,8 +13,8 @@ import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
-import pl.printo3d.onedcutter.cutter1d.models.project.ResultBar;
-import pl.printo3d.onedcutter.cutter1d.models.project.WorkPiece;
+import pl.printo3d.onedcutter.cutter1d.models.WorkPiece;
+import pl.printo3d.onedcutter.cutter1d.models.results.ResultBar;
 import pl.printo3d.onedcutter.cutter1d.services.ResultService;
 
 class ResultServiceTest {

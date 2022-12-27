@@ -3,7 +3,7 @@ package pl.printo3d.onedcutter.cutter1d.services;
 import org.springframework.stereotype.Service;
 
 import pl.printo3d.onedcutter.cutter1d.models.project.ProjectModel;
-import pl.printo3d.onedcutter.cutter1d.models.project.ResultModel;
+import pl.printo3d.onedcutter.cutter1d.models.results.ResultModel;
 
 @Service
 public class CutService {

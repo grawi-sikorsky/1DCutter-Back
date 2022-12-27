@@ -1,4 +1,4 @@
-package pl.printo3d.onedcutter.cutter1d.models.project;
+package pl.printo3d.onedcutter.cutter1d.models.results;
 
 import lombok.Getter;
 import lombok.Setter;

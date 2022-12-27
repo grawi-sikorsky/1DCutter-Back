@@ -33,7 +33,7 @@ public class ProjectService {
      * @param ProjectModel
      */
     public void saveUserOrders(ProjectModel incomingProject) {
-        /** ZAPIS DO BAZY */
+
         UserModel userModel = (UserModel) userService.loadUserByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
 
         // najpierw czyscimy liste, aby w DB pozbyc sie osieroconych wpisow
@@ -51,7 +51,6 @@ public class ProjectService {
         userModel.getSavedProjectModels().get(userModel.getActiveProjectId()).setProjectModified(LocalDateTime.now());
 
         userService.saveUserEntity(userModel);
-        /** END ZAPIS DO BAZY */
     }
 
     /**
@@ -59,7 +58,7 @@ public class ProjectService {
      * @param ProjectModel
      */
     public ProjectModel saveActiveOrder(ProjectModel incomingProject) {
-        /** ZAPIS DO BAZY */
+
         UserModel userModel = (UserModel) userService.loadUserByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
 
         // najpierw czyscimy liste, aby w DB pozbyc sie osieroconych wpisow
@@ -79,7 +78,7 @@ public class ProjectService {
         userModel.getActiveProjectModel().setProjectResults(incomingProject.getProjectResults());
 
         userService.saveUserEntity(userModel);
-        /** END ZAPIS DO BAZY */
+
         return userModel.getActiveProjectModel();
     }
 
@@ -107,6 +106,7 @@ public class ProjectService {
         else throw new RuntimeException("There's no more space for this user");
     }
 
+
     public ProjectModel editProject(Long id, ProjectModel incomingProject) {
         UserModel userModel = (UserModel) userService.loadUserByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
 
@@ -131,6 +131,7 @@ public class ProjectService {
         }
         else throw new RuntimeException("User or model not found!");
     }
+
 
     public void removeOrderModel(Long id){
         UserModel userModel = (UserModel) userService.loadUserByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
@@ -159,6 +160,7 @@ public class ProjectService {
         
     }
 
+    
     public ProjectModel getProject(Long projectId) {
         UserModel userModel = (UserModel) userService.loadUserByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
         if(projectRepository.findProjectModelByIdAndUserId(projectId, userModel.getId()) != null){

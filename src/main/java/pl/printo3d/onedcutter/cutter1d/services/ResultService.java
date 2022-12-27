@@ -9,12 +9,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import pl.printo3d.onedcutter.cutter1d.models.project.CutterProduct;
+import pl.printo3d.onedcutter.cutter1d.models.WorkPiece;
 import pl.printo3d.onedcutter.cutter1d.models.project.ProjectModel;
-import pl.printo3d.onedcutter.cutter1d.models.project.ResultBar;
-import pl.printo3d.onedcutter.cutter1d.models.project.ResultBarPieceModel;
-import pl.printo3d.onedcutter.cutter1d.models.project.ResultModel;
-import pl.printo3d.onedcutter.cutter1d.models.project.WorkPiece;
+import pl.printo3d.onedcutter.cutter1d.models.results.CutterProduct;
+import pl.printo3d.onedcutter.cutter1d.models.results.ResultBar;
+import pl.printo3d.onedcutter.cutter1d.models.results.ResultBarPieceModel;
+import pl.printo3d.onedcutter.cutter1d.models.results.ResultModel;
 import pl.printo3d.onedcutter.cutter1d.models.user.UserModel;
 
 @Service

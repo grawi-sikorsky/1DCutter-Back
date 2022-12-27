@@ -8,10 +8,10 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import pl.printo3d.onedcutter.cutter1d.models.WorkPiece;
 import pl.printo3d.onedcutter.cutter1d.models.project.CutUnit;
-import pl.printo3d.onedcutter.cutter1d.models.project.CutterProduct;
 import pl.printo3d.onedcutter.cutter1d.models.project.ProjectModel;
-import pl.printo3d.onedcutter.cutter1d.models.project.WorkPiece;
+import pl.printo3d.onedcutter.cutter1d.models.results.CutterProduct;
 
 @Service
 public class ResolveService {

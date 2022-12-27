@@ -15,9 +15,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
 
 import pl.printo3d.onedcutter.cutter1d.models.project.CutOptions;
-import pl.printo3d.onedcutter.cutter1d.models.project.CutterProduct;
 import pl.printo3d.onedcutter.cutter1d.models.project.ProjectModel;
-import pl.printo3d.onedcutter.cutter1d.models.project.ResultModel;
+import pl.printo3d.onedcutter.cutter1d.models.results.CutterProduct;
+import pl.printo3d.onedcutter.cutter1d.models.results.ResultModel;
 import pl.printo3d.onedcutter.cutter1d.models.user.UserModel;
 import pl.printo3d.onedcutter.cutter1d.services.ResolveService;
 import pl.printo3d.onedcutter.cutter1d.services.CutService;

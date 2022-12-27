@@ -11,9 +11,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import pl.printo3d.onedcutter.cutter1d.models.WorkPiece;
 import pl.printo3d.onedcutter.cutter1d.models.project.CutUnit;
-import pl.printo3d.onedcutter.cutter1d.models.project.CutterProduct;
-import pl.printo3d.onedcutter.cutter1d.models.project.WorkPiece;
+import pl.printo3d.onedcutter.cutter1d.models.results.CutterProduct;
 import pl.printo3d.onedcutter.cutter1d.services.ResolveService;
 import pl.printo3d.onedcutter.cutter1d.services.ResultService;
 

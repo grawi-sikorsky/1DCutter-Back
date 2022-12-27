@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import pl.printo3d.onedcutter.cutter1d.models.project.ProjectModel;
-import pl.printo3d.onedcutter.cutter1d.models.project.ResultModel;
+import pl.printo3d.onedcutter.cutter1d.models.results.ResultModel;
 import pl.printo3d.onedcutter.cutter1d.services.CutService;
 import pl.printo3d.onedcutter.cutter1d.services.ProjectService;
 
