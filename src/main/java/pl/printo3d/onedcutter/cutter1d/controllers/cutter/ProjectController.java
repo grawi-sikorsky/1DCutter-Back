@@ -46,14 +46,14 @@ public class ProjectController {
         return ResponseEntity.status(HttpStatus.OK).body(projectService.addNewProject());
     }
 
-    @PatchMapping("{orderId}")
+    @PatchMapping("{projectId}")
     public ResponseEntity<ProjectModel> editProject(@PathVariable Long projectId, @RequestBody ProjectModel incomingProject) {
         return ResponseEntity.status(HttpStatus.OK).body(projectService.editProject(projectId, incomingProject));
     }
 
-    @DeleteMapping("{id}")
-    public ResponseEntity<Void> removeOrder(@PathVariable String id) {
-        projectService.removeOrderModel(Long.valueOf(id));
+    @DeleteMapping("{projectId}")
+    public ResponseEntity<Void> removeOrder(@PathVariable Long projectId) {
+        projectService.removeOrderModel(projectId);
         return ResponseEntity.noContent().build();
     }
 }
