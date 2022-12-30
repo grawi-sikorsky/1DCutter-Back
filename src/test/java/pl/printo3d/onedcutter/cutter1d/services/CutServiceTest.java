@@ -41,22 +41,22 @@ public class CutServiceTest {
     private CutService cutService;
 
     @Test
-    void calculateProject_should_save_active_order() {
+    void calculateProject_should_return_results() {
         ProjectModel testModel = setupProjectModel();
+        ResultModel result = setupFirstFitResults();
 
         cutService.calculateProject(testModel);
 
         verify(projectService, times(1)).saveActiveOrder(testModel);
+        assertEquals(result, cutService.calculateProject(testModel));
     }
 
     @Test
-    void makeOrder_should_save_active_order() {
+    void calculateProjectFree_should_return_results() {
         ProjectModel testModel = setupProjectModel();
         ResultModel result = setupFirstFitResults();
 
-        assertEquals(result, cutService.calculateProject(testModel));
-
-        //verify(projectService, times(1)).saveActiveOrder(testModel);
+        assertEquals(result, cutService.calculateProjectFree(testModel));
     }
 
     ProjectModel setupProjectModel() {
@@ -65,7 +65,7 @@ public class CutServiceTest {
         projectModel.setCutList(new ArrayList<>(Arrays.asList(new CutUnit("220", "5"), new CutUnit("260", "5"))));
         projectModel.setStockList(new ArrayList<>(
                 Arrays.asList(new StockUnit("0", "1000", "6", "0"), new StockUnit("1", "1000", "5", "0"))));
-        projectModel.setCutOptions(new CutOptions(false, 0d, false, false, 1000));
+        projectModel.setCutOptions(new CutOptions(false, 0d, false, true, 1000));
         projectModel.setProjectName("Default project");
         projectModel.setProjectCreated(LocalDateTime.now());
         projectModel.setProjectModified(LocalDateTime.now());

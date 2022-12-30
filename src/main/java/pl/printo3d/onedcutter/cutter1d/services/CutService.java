@@ -26,33 +26,21 @@ public class CutService {
      * @return ResultModel
      */
     public ResultModel calculateProject(ProjectModel projectModel) {
-
         projectService.saveActiveOrder(projectModel);
-
         CutterProduct cutterProduct = resolveService.firstFit(projectModel);
-
         if( projectModel.getCutOptions().isOptionAlgo() ){
             cutterProduct = resolveService.newAlgo(cutterProduct, projectModel);
         }
-
         return resultService.makeFullResults(cutterProduct, projectModel);
     }
 
     /**
      * Wykonuje obliczenia dla usera niezalogowanego
      * 
-     * @param orderModel
+     * @param projectModel
      * @return ResultModel
      */
-    public ResultModel calculateProjectFree(ProjectModel orderModel) {
-
-        System.out.println("Make FREE Order:");
-        orderModel.getStockList()
-                .forEach(e -> System.out.println("ID: " + e.getId() + ", frontID: " + e.getIdFront() + ", Len: "
-                        + e.getStockLength() + ", Pcs: " + e.getStockPcs() + ", price: " + e.getStockPrice() + " $"));
-        orderModel.getCutList().forEach(e -> System.out.println(e.getCutLength() + " " + e.getCutPcs()));
-
-        return resultService.makeFullResults(resolveService.firstFit(orderModel), orderModel);
+    public ResultModel calculateProjectFree(ProjectModel projectModel) {
+        return resultService.makeFullResults(resolveService.firstFit(projectModel), projectModel);
     }
-
 }
