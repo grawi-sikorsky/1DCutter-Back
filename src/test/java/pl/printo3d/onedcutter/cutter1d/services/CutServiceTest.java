@@ -1,5 +1,6 @@
-package pl.printo3d.onedcutter.cutter1d.cutter.services;
+package pl.printo3d.onedcutter.cutter1d.services;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -17,6 +18,8 @@ import pl.printo3d.onedcutter.cutter1d.models.project.CutOptions;
 import pl.printo3d.onedcutter.cutter1d.models.project.CutUnit;
 import pl.printo3d.onedcutter.cutter1d.models.project.ProjectModel;
 import pl.printo3d.onedcutter.cutter1d.models.project.StockUnit;
+import pl.printo3d.onedcutter.cutter1d.models.results.CutterProduct;
+import pl.printo3d.onedcutter.cutter1d.models.results.ResultModel;
 import pl.printo3d.onedcutter.cutter1d.services.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -38,12 +41,22 @@ public class CutServiceTest {
     private CutService cutService;
 
     @Test
-    void makeOrder_should_save_active_order() {
+    void calculateProject_should_save_active_order() {
         ProjectModel testModel = setupProjectModel();
 
         cutService.calculateProject(testModel);
 
         verify(projectService, times(1)).saveActiveOrder(testModel);
+    }
+
+    @Test
+    void makeOrder_should_save_active_order() {
+        ProjectModel testModel = setupProjectModel();
+        ResultModel result = setupFirstFitResults();
+
+        assertEquals(result, cutService.calculateProject(testModel));
+
+        //verify(projectService, times(1)).saveActiveOrder(testModel);
     }
 
     ProjectModel setupProjectModel() {
@@ -58,6 +71,13 @@ public class CutServiceTest {
         projectModel.setProjectModified(LocalDateTime.now());
 
         return projectModel;
+    }
+
+    ResultModel setupFirstFitResults(){
+        ProjectModel projectModel = setupProjectModel();
+        CutterProduct cutterProduct = resolveService.firstFit(projectModel);
+        
+        return resultService.makeFullResults(cutterProduct, projectModel);
     }
 
 }

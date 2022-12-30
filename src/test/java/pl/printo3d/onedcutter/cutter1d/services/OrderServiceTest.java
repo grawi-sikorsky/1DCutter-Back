@@ -1,4 +1,4 @@
-package pl.printo3d.onedcutter.cutter1d.cutter.services;
+package pl.printo3d.onedcutter.cutter1d.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
