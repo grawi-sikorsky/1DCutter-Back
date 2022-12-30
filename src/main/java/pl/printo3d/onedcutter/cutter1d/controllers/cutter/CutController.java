@@ -24,12 +24,12 @@ public class CutController {
     // OBLICZ LOGGED
     @PostMapping("/cut")
     public ResponseEntity<ResultModel> resolveCutting(@RequestBody ProjectModel projectModel) {
-        return ResponseEntity.status(HttpStatus.OK).body(cutService.makeOrder(projectModel));
+        return ResponseEntity.status(HttpStatus.OK).body(cutService.calculateProject(projectModel));
     }
 
     // Oblicz nie Logged
     @PostMapping("/cutfree")
     public ResponseEntity<ResultModel> processOrderFree(@RequestBody ProjectModel projectModel) {
-        return ResponseEntity.status(HttpStatus.OK).body( cutService.makeOrderFree(projectModel) );
+        return ResponseEntity.status(HttpStatus.OK).body( cutService.calculateProjectFree(projectModel) );
     }
 }

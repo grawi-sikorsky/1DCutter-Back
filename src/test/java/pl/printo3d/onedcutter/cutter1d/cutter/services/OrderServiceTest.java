@@ -95,7 +95,7 @@ class OrderServiceTest {
                 .thenReturn(PRINCIPAL);
 
         //when
-        ResultModel model = cutService.makeOrder(orderModelTest);
+        ResultModel model = cutService.calculateProject(orderModelTest);
 
 
         //then
@@ -118,7 +118,7 @@ class OrderServiceTest {
         when(resultService.makeFullResults(cProduct, testOrder)).thenReturn(rModel);
 
         // when
-        ResultModel testResult = cutService.makeOrderFree(testOrder);
+        ResultModel testResult = cutService.calculateProjectFree(testOrder);
 
         // them
         assertEquals(testResult, rModel);

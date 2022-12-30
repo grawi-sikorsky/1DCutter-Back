@@ -3,6 +3,7 @@ package pl.printo3d.onedcutter.cutter1d.services;
 import org.springframework.stereotype.Service;
 
 import pl.printo3d.onedcutter.cutter1d.models.project.ProjectModel;
+import pl.printo3d.onedcutter.cutter1d.models.results.CutterProduct;
 import pl.printo3d.onedcutter.cutter1d.models.results.ResultModel;
 
 @Service
@@ -21,18 +22,20 @@ public class CutService {
     /**
      * Wykonuje obliczenia dla zalogowanego Usera
      * 
-     * @param orderModel
+     * @param projectModel
      * @return ResultModel
      */
-    public ResultModel makeOrder(ProjectModel orderModel) {
+    public ResultModel calculateProject(ProjectModel projectModel) {
 
-        projectService.saveActiveOrder(orderModel);
+        projectService.saveActiveOrder(projectModel);
 
-        if (orderModel.getCutOptions().isOptionAlgo()) {
-            return resultService.makeFullResults(this.resolveService.newAlgo(resolveService.firstFit(orderModel), orderModel), orderModel);
-        } else {
-            return resultService.makeFullResults(resolveService.firstFit(orderModel), orderModel);
+        CutterProduct cutterProduct = resolveService.firstFit(projectModel);
+
+        if( projectModel.getCutOptions().isOptionAlgo() ){
+            cutterProduct = resolveService.newAlgo(cutterProduct, projectModel);
         }
+
+        return resultService.makeFullResults(cutterProduct, projectModel);
     }
 
     /**
@@ -41,7 +44,7 @@ public class CutService {
      * @param orderModel
      * @return ResultModel
      */
-    public ResultModel makeOrderFree(ProjectModel orderModel) {
+    public ResultModel calculateProjectFree(ProjectModel orderModel) {
 
         System.out.println("Make FREE Order:");
         orderModel.getStockList()

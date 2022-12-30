@@ -17,10 +17,7 @@ import pl.printo3d.onedcutter.cutter1d.models.project.CutOptions;
 import pl.printo3d.onedcutter.cutter1d.models.project.CutUnit;
 import pl.printo3d.onedcutter.cutter1d.models.project.ProjectModel;
 import pl.printo3d.onedcutter.cutter1d.models.project.StockUnit;
-import pl.printo3d.onedcutter.cutter1d.services.CutService;
-import pl.printo3d.onedcutter.cutter1d.services.ProjectService;
-import pl.printo3d.onedcutter.cutter1d.services.ResolveService;
-import pl.printo3d.onedcutter.cutter1d.services.ResultService;
+import pl.printo3d.onedcutter.cutter1d.services.*;
 
 @ExtendWith(MockitoExtension.class)
 public class CutServiceTest {
@@ -34,6 +31,9 @@ public class CutServiceTest {
     @Mock
     private ResolveService resolveService;
 
+    @Mock
+    private UserService userService;
+
     @InjectMocks
     private CutService cutService;
 
@@ -41,7 +41,7 @@ public class CutServiceTest {
     void makeOrder_should_save_active_order() {
         ProjectModel testModel = setupProjectModel();
 
-        cutService.makeOrder(testModel);
+        cutService.calculateProject(testModel);
 
         verify(projectService, times(1)).saveActiveOrder(testModel);
     }

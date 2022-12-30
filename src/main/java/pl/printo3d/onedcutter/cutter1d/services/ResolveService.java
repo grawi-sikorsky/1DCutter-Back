@@ -273,8 +273,6 @@ public class ResolveService {
 
     }
 
-
-
     private void permutacja(List<Double> incCuts, int l, int r, int length)
     {
         if (l == r){

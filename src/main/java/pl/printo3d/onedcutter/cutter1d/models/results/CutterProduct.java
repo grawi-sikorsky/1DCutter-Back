@@ -30,6 +30,7 @@ public class CutterProduct {
         }
         return solutionQuality;
     }
+    
     public Integer getSolutionVariants(){
         return workPiecesList.size();
     }    
