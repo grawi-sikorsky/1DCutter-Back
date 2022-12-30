@@ -36,7 +36,7 @@ public class ResultModel {
     private Map<Double, Integer> resultNeededStock = new HashMap<Double, Integer>();
 
     private List<ResultBar> resultBars = new ArrayList<ResultBar>();
-    private List<ResultBar> remainBars = new ArrayList<ResultBar>();          // TODO wtf? 2x to samo
+    private List<ResultBar> remainBars = new ArrayList<ResultBar>();
     private List<ResultBar> resultRemainingPieces = new ArrayList<ResultBar>();
 
     public ResultModel() {

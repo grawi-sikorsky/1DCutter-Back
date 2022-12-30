@@ -19,17 +19,14 @@ public class CutService {
     }
 
     /**
-     * Wykonuje obliczenia dla zalogowanego Usera -> TODO: roznica jest tylko w
-     * zapisie do bazy -> scalić w jedno.
+     * Wykonuje obliczenia dla zalogowanego Usera
      * 
      * @param orderModel
      * @return ResultModel
      */
     public ResultModel makeOrder(ProjectModel orderModel) {
 
-        /** ZAPIS DO BAZY [ACTIVE ORDER] */
         projectService.saveActiveOrder(orderModel);
-        /** END ZAPIS DO BAZY [ACTIVE ORDER] */
 
         if (orderModel.getCutOptions().isOptionAlgo()) {
             return resultService.makeFullResults(this.resolveService.newAlgo(resolveService.firstFit(orderModel), orderModel), orderModel);

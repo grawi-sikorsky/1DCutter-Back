@@ -55,7 +55,7 @@ class OrderServiceTest {
         );
         ProjectModel activeProjectModel = new ProjectModel();
         activeProjectModel.setCutOptions(new CutOptions());
-        PRINCIPAL.setactiveProjectModel(activeProjectModel);
+        PRINCIPAL.setActiveProjectModel(activeProjectModel);
     }
 
     @Test
