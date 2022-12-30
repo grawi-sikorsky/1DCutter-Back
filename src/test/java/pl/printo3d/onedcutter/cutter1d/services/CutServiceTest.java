@@ -20,7 +20,6 @@ import pl.printo3d.onedcutter.cutter1d.models.project.ProjectModel;
 import pl.printo3d.onedcutter.cutter1d.models.project.StockUnit;
 import pl.printo3d.onedcutter.cutter1d.models.results.CutterProduct;
 import pl.printo3d.onedcutter.cutter1d.models.results.ResultModel;
-import pl.printo3d.onedcutter.cutter1d.services.*;
 
 @ExtendWith(MockitoExtension.class)
 public class CutServiceTest {
@@ -62,21 +61,24 @@ public class CutServiceTest {
     ProjectModel setupProjectModel() {
         ProjectModel projectModel = new ProjectModel();
 
-        projectModel.setCutList(new ArrayList<>(Arrays.asList(new CutUnit("220", "5"), new CutUnit("260", "5"))));
-        projectModel.setStockList(new ArrayList<>(
-                Arrays.asList(new StockUnit("0", "1000", "6", "0"), new StockUnit("1", "1000", "5", "0"))));
+        projectModel.setCutList(new ArrayList<>(Arrays.asList(
+            new CutUnit("220", "5"), 
+            new CutUnit("260", "5"))));
+        projectModel.setStockList(new ArrayList<>(Arrays.asList(
+            new StockUnit("0", "1000", "6", "0"), 
+            new StockUnit("1", "1000", "5", "0"))));
         projectModel.setCutOptions(new CutOptions(false, 0d, false, true, 1000));
-        projectModel.setProjectName("Default project");
+        projectModel.setProjectName("Test project");
         projectModel.setProjectCreated(LocalDateTime.now());
         projectModel.setProjectModified(LocalDateTime.now());
 
         return projectModel;
     }
 
-    ResultModel setupFirstFitResults(){
+    ResultModel setupFirstFitResults() {
         ProjectModel projectModel = setupProjectModel();
         CutterProduct cutterProduct = resolveService.firstFit(projectModel);
-        
+
         return resultService.makeFullResults(cutterProduct, projectModel);
     }
 

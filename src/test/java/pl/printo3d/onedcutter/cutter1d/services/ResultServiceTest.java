@@ -3,6 +3,7 @@ package pl.printo3d.onedcutter.cutter1d.services;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -13,93 +14,65 @@ import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
+import com.mysql.cj.xdevapi.Result;
+
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import pl.printo3d.onedcutter.cutter1d.models.WorkPiece;
+import pl.printo3d.onedcutter.cutter1d.models.project.CutOptions;
+import pl.printo3d.onedcutter.cutter1d.models.project.CutUnit;
+import pl.printo3d.onedcutter.cutter1d.models.project.ProjectModel;
+import pl.printo3d.onedcutter.cutter1d.models.project.StockUnit;
+import pl.printo3d.onedcutter.cutter1d.models.results.CutterProduct;
 import pl.printo3d.onedcutter.cutter1d.models.results.ResultBar;
+import pl.printo3d.onedcutter.cutter1d.models.results.ResultModel;
 import pl.printo3d.onedcutter.cutter1d.services.ResultService;
 
+@ExtendWith(MockitoExtension.class)
 class ResultServiceTest {
 
-    // Przygotowanie listy czesci do testow
-    private List<WorkPiece> prepareWorkPiece()
-    {
-        List<WorkPiece> workPieces = new ArrayList<WorkPiece>();
+    @Mock
+    private CutService cutService;
 
-        // 2 x 1000
-        workPieces.add(new WorkPiece("1", 1000.0, 1));
-        workPieces.add(new WorkPiece("2", 1000.0, 1));
-        // 2 x 2000
-        workPieces.add(new WorkPiece("3", 1000.0, 1));
-        workPieces.add(new WorkPiece("4", 1000.0, 1));
+    @Mock
+    private ResolveService resolveService;
 
-        for (WorkPiece wp : workPieces) {
-            wp.cut(500.0);
-            wp.cut(500.0);
-        }
-
-        return workPieces;
-    }
+    @InjectMocks
+    private ResultService resultService;
 
     @Test
-    void getResultsBars_should_return_correct_amount_of_resultBars() {
-        // ResultService resultServiceTest = new ResultService();
-        // List<ResultBar> wpTest;
+    void makeFullResults_should_return_return_results(){
+        ProjectModel projectModel = setupProject();
+        CutterProduct testCutterProduct = setupFirstFitCutterProduct();
+        ResultModel testResults = new ResultModel();
 
-        // wpTest = resultServiceTest.getResultsBars( prepareWorkPiece() );
-
-        // assertEquals(wpTest.size(), 4);
-        // assertNotEquals(wpTest.size(), 0);
+        assertEquals(testResults, resultService.makeFullResults(testCutterProduct, projectModel));
     }
 
-    @Test
-    void getResultBars_should_return_correct_amount_of_resultBar_pieces() {
-        // ResultService resultServiceTest = new ResultService();
-        // List<ResultBar> wpTest;
-        // Integer testCount = 0;
 
-        // wpTest = resultServiceTest.getResultsBars( prepareWorkPiece() );
 
-        // for (ResultBar resultBar : wpTest) {
-        //     testCount += resultBar.getResultBarPieces().size();
-        // }
+    ProjectModel setupProject() {
+        ProjectModel projectModel = new ProjectModel();
 
-        // assertEquals(testCount, 8);
-        // assertNotEquals(wpTest.size(), 0);
+        projectModel.setCutList(new ArrayList<>(Arrays.asList(
+                new CutUnit("200", "2"),
+                new CutUnit("300", "2"))));
+        projectModel.setStockList(new ArrayList<>(Arrays.asList(
+                new StockUnit("0", "1000", "1", "0"),
+                new StockUnit("1", "1000", "2", "0"))));
+        projectModel.setCutOptions(new CutOptions(false, 0d, false, false, 1000));
+        projectModel.setProjectName("Test project");
+        projectModel.setProjectCreated(LocalDateTime.now());
+        projectModel.setProjectModified(LocalDateTime.now());
+
+        return projectModel;
     }
 
-    @Test
-    void calculateWaste_should_return_correct_value()
-    {
-        // ResultService resultServiceTest = new ResultService();
-      
-        //Double wasteTest = resultServiceTest.calculateWaste( prepareWorkPiece() );
-
-        //assertEquals(wasteTest, 0); // 0% from prepared data
+    CutterProduct setupFirstFitCutterProduct() {
+        ProjectModel projectModel = setupProject();
+        return resolveService.firstFit(projectModel);
     }
 
-    @Test
-    void calculateNeededStock_should_return_correct_value()
-    {
-        // ResultService resultServiceTest = new ResultService();
-        // Map<Double, Integer> neededStockTest = new HashMap<Double, Integer>();
-        // Integer needCountTest = 0;
-        // Set<Double> needStockKeys;
-
-        // neededStockTest = resultServiceTest.calculateNeededStock( prepareWorkPiece() );
-
-        // needCountTest = neededStockTest.values().stream().reduce(0, Integer::sum);
-        // needStockKeys = neededStockTest.keySet();
-
-        // assertEquals(needCountTest, 4);
-        // assertEquals(needStockKeys, new HashSet<Double>(Arrays.asList(1000.0)));
-    }
-
-    @Test
-    void calculateCutCount_should_return_correct_count()
-    {
-        // ResultService resultServiceTest = new ResultService();
-
-        // assertEquals(resultServiceTest.calculateCutCount( prepareWorkPiece() ), 8);
-    }
-
-    //getRemainBars
 }
