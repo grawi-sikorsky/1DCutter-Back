@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import pl.printo3d.onedcutter.cutter1d.models.project.CutUnit;
 import pl.printo3d.onedcutter.cutter1d.exceptions.project.ProjectDoesntExistException;
+import pl.printo3d.onedcutter.cutter1d.exceptions.services.NoProjectStorageSpaceException;
 import pl.printo3d.onedcutter.cutter1d.models.project.CutOptions;
 import pl.printo3d.onedcutter.cutter1d.models.project.ProjectModel;
 import pl.printo3d.onedcutter.cutter1d.models.project.StockUnit;
@@ -104,7 +105,7 @@ public class ProjectService {
 
             return userModel.getActiveProjectModel();
         }
-        else throw new RuntimeException("There's no more space for this user");
+        else throw new NoProjectStorageSpaceException("There's no more free project storage for this user.");
     }
 
 
