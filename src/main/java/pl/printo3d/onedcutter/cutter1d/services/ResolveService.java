@@ -16,12 +16,6 @@ import pl.printo3d.onedcutter.cutter1d.models.results.CutterProduct;
 @Service
 public class ResolveService {
 
-    private final ResultService resultService;
-
-    public ResolveService(ResultService resultService){
-        this.resultService = resultService;
-    }
-
     // Tworzy liste elementow do ciecia na podstawie wpisanych danych
     public List<Double> makePartList(List<CutUnit> cutList) {
         List<Double> partsList = new ArrayList<Double>();

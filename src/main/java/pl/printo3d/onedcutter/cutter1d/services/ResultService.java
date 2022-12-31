@@ -26,16 +26,6 @@ public class ResultService {
         this.userService = userService;
     }
 
-    // TODO !!! CALA USLUGA DO PRZEROBIENIA ! 4/5 metod iteruje po
-    // "List<WorkPiece>"!
-
-    /**
-     * Zwraca pelne wyniki obliczen
-     * 
-     * @param cutterProduct
-     * @param incominOrderModel
-     * @return fullResults
-     */
     public ResultModel makeFullResults(CutterProduct cutterProduct, ProjectModel incominOrderModel) {
         ResultModel fullResults = new ResultModel();
         List<WorkPiece> workPieces = cutterProduct.getWorkPiecesList();
