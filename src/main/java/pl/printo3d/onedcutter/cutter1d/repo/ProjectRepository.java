@@ -10,8 +10,6 @@ public interface ProjectRepository extends CrudRepository<ProjectModel, Long>{
 
     ProjectModel findProjectModelById(Long id);
     ProjectModel getById(Long id);
-    ProjectModel getByIdAndUserId(Long id, Long userId);
-    ProjectModel findByIdAndUserId(Long id, Long userId);
     ProjectModel findProjectModelByIdAndUserId(Long id, Long userId);
 
     @Transactional

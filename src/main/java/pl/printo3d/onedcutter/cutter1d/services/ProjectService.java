@@ -38,15 +38,13 @@ public class ProjectService {
 
         UserModel userModel = (UserModel) userService.loadUserByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
 
-        // najpierw czyscimy liste, aby w DB pozbyc sie osieroconych wpisow
-        // dlatego getcutlist.addAll! zamiast setCutlist.add!
         userModel.getSavedProjectModels().get(userModel.getActiveProjectId()).getCutList().clear();
         userModel.getSavedProjectModels().get(userModel.getActiveProjectId()).getCutList().addAll(incomingProject.getCutList());
 
         userModel.getSavedProjectModels().get(userModel.getActiveProjectId()).getStockList().clear();
         userModel.getSavedProjectModels().get(userModel.getActiveProjectId()).getStockList().addAll(incomingProject.getStockList());
 
-        incomingProject.getCutOptions().setId(userModel.getSavedProjectModels().get(userModel.getActiveProjectId()).getCutOptions().getId());// ID odczytaj i przypisz, bo w orderModel jeszcze nie ma..
+        incomingProject.getCutOptions().setId(userModel.getSavedProjectModels().get(userModel.getActiveProjectId()).getCutOptions().getId());
         userModel.getSavedProjectModels().get(userModel.getActiveProjectId()).setCutOptions(incomingProject.getCutOptions());
 
         userModel.getSavedProjectModels().get(userModel.getActiveProjectId()).setProjectName(incomingProject.getProjectName());
@@ -59,19 +57,17 @@ public class ProjectService {
      * Zapisuje do bazy wyłącznie jeden bierzący order - nie zapisuje ich do slotów pamieci usera
      * @param ProjectModel
      */
-    public ProjectModel saveActiveOrder(ProjectModel incomingProject) {
+    public ProjectModel saveActiveProject(ProjectModel incomingProject) {
 
         UserModel userModel = (UserModel) userService.loadUserByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
 
-        // najpierw czyscimy liste, aby w DB pozbyc sie osieroconych wpisow
-        // dlatego getcutlist.addAll! zamiast setCutlist.add!
         userModel.getActiveProjectModel().getCutList().clear();
         userModel.getActiveProjectModel().getCutList().addAll(incomingProject.getCutList());
 
         userModel.getActiveProjectModel().getStockList().clear();
         userModel.getActiveProjectModel().getStockList().addAll(incomingProject.getStockList());
 
-        incomingProject.getCutOptions().setId(userModel.getActiveProjectModel().getCutOptions().getId());// ID odczytaj i przypisz, bo w orderModel jeszcze nie ma..
+        incomingProject.getCutOptions().setId(userModel.getActiveProjectModel().getCutOptions().getId());
         userModel.getActiveProjectModel().setCutOptions(incomingProject.getCutOptions());
 
         userModel.getActiveProjectModel().setProjectName(incomingProject.getProjectName());
@@ -112,8 +108,8 @@ public class ProjectService {
     public ProjectModel editProject(Long projectId, ProjectModel incomingProject) {
         UserModel userModel = (UserModel) userService.loadUserByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
 
-        if( projectRepository.getByIdAndUserId(projectId, userModel.getId()) != null ){
-            ProjectModel project = projectRepository.getByIdAndUserId(projectId, userModel.getId());
+        if( projectRepository.findProjectModelByIdAndUserId(projectId, userModel.getId()) != null ){
+            ProjectModel project = projectRepository.findProjectModelByIdAndUserId(projectId, userModel.getId());
 
             project.getCutList().clear();
             project.getCutList().addAll(incomingProject.getCutList());
@@ -136,9 +132,9 @@ public class ProjectService {
     }
 
 
-    public void removeOrderModel(Long projectId){
+    public void removeProject(Long projectId){
         UserModel userModel = (UserModel) userService.loadUserByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
-        if(projectRepository.findByIdAndUserId(projectId, userModel.getId()) != null){
+        if(projectRepository.findProjectModelByIdAndUserId(projectId, userModel.getId()) != null){
             if(userModel.getSavedProjectModels().size() > 1){
                 userModel.setActiveProjectId( null );
                 userModel.setActiveProjectModel( null );
@@ -159,7 +155,7 @@ public class ProjectService {
     
                 userService.saveUserEntity(userModel);
             } else throw new RuntimeException("Can't remove all projects, must be at least one!");
-        } else throw new RuntimeException("No user or ordermodel");
+        } else throw new ProjectDoesntExistException("No project found for this user!");
         
     }
 

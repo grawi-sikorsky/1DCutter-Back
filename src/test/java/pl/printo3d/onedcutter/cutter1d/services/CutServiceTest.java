@@ -46,7 +46,7 @@ public class CutServiceTest {
 
         cutService.calculateProject(testModel);
 
-        verify(projectService, times(1)).saveActiveOrder(testModel);
+        verify(projectService, times(1)).saveActiveProject(testModel);
         assertEquals(result, cutService.calculateProject(testModel));
     }
 

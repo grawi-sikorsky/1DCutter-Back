@@ -53,7 +53,7 @@ public class ProjectController {
 
     @DeleteMapping("{projectId}")
     public ResponseEntity<Void> removeOrder(@PathVariable Long projectId) {
-        projectService.removeOrderModel(projectId);
+        projectService.removeProject(projectId);
         return ResponseEntity.noContent().build();
     }
 }

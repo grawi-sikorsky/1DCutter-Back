@@ -26,7 +26,7 @@ public class CutService {
      * @return ResultModel
      */
     public ResultModel calculateProject(ProjectModel projectModel) {
-        projectService.saveActiveOrder(projectModel);
+        projectService.saveActiveProject(projectModel);
         CutterProduct cutterProduct = resolveService.firstFit(projectModel);
         if( projectModel.getCutOptions().isOptionAlgo() ){
             cutterProduct = resolveService.newAlgo(cutterProduct, projectModel);

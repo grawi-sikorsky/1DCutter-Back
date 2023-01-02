@@ -1,7 +1,6 @@
 package pl.printo3d.onedcutter.cutter1d.services;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -10,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,7 +30,6 @@ import pl.printo3d.onedcutter.cutter1d.models.project.StockUnit;
 import pl.printo3d.onedcutter.cutter1d.models.user.UserModel;
 import pl.printo3d.onedcutter.cutter1d.repo.ProjectRepository;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ExtendWith(MockitoExtension.class)
 public class ProjectServiceTest {
 
@@ -42,7 +41,6 @@ public class ProjectServiceTest {
 
     @InjectMocks
     private ProjectService projectService;
-
 
     @Test
     void addNewProject_should_addNewProject() {
@@ -81,7 +79,7 @@ public class ProjectServiceTest {
     }
 
     @Test
-    void editProject_should_throwException_when_ProjectisNullwait(){
+    void editProject_should_throwException_when_ProjectIsNull(){
         UserModel testUser = new UserModel();
         testUser.setUsername("testuser");
         testUser.setNumberOfSavedItems(5);
@@ -114,6 +112,31 @@ public class ProjectServiceTest {
         when(userService.loadUserByUsername("testuser")).thenReturn(testUser);
 
         assertThrows(ProjectDoesntExistException.class, () -> { projectService.editProject(0L, testModel); } );
+    }
+
+    @Test
+    void editProject_should_editProject(){
+        ProjectModel testProject = setupProject();
+        ProjectModel projectToChange = setupProject();
+
+        testProject.getCutOptions().setOptionSzrank(4D);
+        testProject.getCutList().add(new CutUnit( "666", "6") );
+
+        UserModel testUser = new UserModel();
+        testUser.setUsername("testuser");
+        testUser.setActiveProjectModel(testProject);
+
+        Authentication auth = Mockito.mock(Authentication.class);
+        when(auth.getPrincipal()).thenReturn(testUser);
+        SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+        when(securityContext.getAuthentication()).thenReturn(auth);
+        SecurityContextHolder.setContext(securityContext);
+
+        when(userService.loadUserByUsername("testuser")).thenReturn(testUser);
+        when(projectRepository.findProjectModelByIdAndUserId(0L, testUser.getId())).thenReturn(projectToChange);
+
+        assertFalse(projectToChange.getProjectModified().equals( projectService.editProject( 0L, testProject ).getProjectModified() ));
+        assertEquals( projectToChange.getCutList().size(), testProject.getCutList().size() );
     }
 
     @Test
@@ -159,6 +182,7 @@ public class ProjectServiceTest {
     void getProject_should_throwException() {
         ProjectModel testModel = setupProject();
         UserModel testUser = new UserModel();
+        testUser.setId(666L);
         testUser.setUsername("testuser");
         testUser.setSavedProjectModels(Arrays.asList(testModel));
 
@@ -174,13 +198,72 @@ public class ProjectServiceTest {
     }
 
     @Test
-    void testRemoveOrderModel() {
+    void removeProject_should_throw_ProjectDoesntExistException() {
+        ProjectModel testModel = setupProject();
+        ProjectModel testModel1 = setupProject();
+        UserModel testUser = new UserModel();
+        testUser.setId(666L);
+        testUser.setUsername("testuser");
+        testUser.setSavedProjectModels(Arrays.asList(testModel,testModel1));
+
+        Authentication auth = Mockito.mock(Authentication.class);
+        when(auth.getPrincipal()).thenReturn(testUser);
+        SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+        when(securityContext.getAuthentication()).thenReturn(auth);
+        SecurityContextHolder.setContext(securityContext);
+
+        when(userService.loadUserByUsername("testuser")).thenReturn(testUser);
+
+        assertThrows(ProjectDoesntExistException.class, () -> { projectService.removeProject(0L); } );
+    }
+
+    @Test
+    void removeProject_should_removeProject() {
+        ProjectModel testProject = setupProject();
+        ProjectModel testProject1 = setupProject();
+        testProject.setId(0L);
+        testProject1.setId(1L);
+        UserModel testUser = new UserModel();
+        testUser.setId(666L);
+        testUser.setUsername("testuser");
+        testUser.getSavedProjectModels().addAll(Arrays.asList(testProject,testProject1));
+
+        Authentication auth = Mockito.mock(Authentication.class);
+        when(auth.getPrincipal()).thenReturn(testUser);
+        SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+        when(securityContext.getAuthentication()).thenReturn(auth);
+        SecurityContextHolder.setContext(securityContext);
+
+        when(userService.loadUserByUsername("testuser")).thenReturn(testUser);
+        when(projectRepository.findProjectModelByIdAndUserId(0L, testUser.getId())).thenReturn(testProject);
+
+        projectService.removeProject(0L);
+
+        assertEquals( 1, testUser.getSavedProjectModels().size() );
 
     }
 
     @Test
-    void testSaveActiveOrder() {
+    void saveActiveProject_should_saveProject() {
+        ProjectModel existingProject = setupProject();
+        ProjectModel newProject = setupProject();
+        existingProject.setProjectName("old");
+        newProject.setProjectName("new");
 
+        UserModel testUser = new UserModel();
+        testUser.setId(666L);
+        testUser.setUsername("testuser");
+        testUser.setActiveProjectModel(existingProject);
+
+        Authentication auth = Mockito.mock(Authentication.class);
+        when(auth.getPrincipal()).thenReturn(testUser);
+        SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+        when(securityContext.getAuthentication()).thenReturn(auth);
+        SecurityContextHolder.setContext(securityContext);
+
+        when(userService.loadUserByUsername("testuser")).thenReturn(testUser);
+
+        assertEquals(newProject.getProjectName(), projectService.saveActiveProject(newProject).getProjectName() );
     }
 
     @Test
