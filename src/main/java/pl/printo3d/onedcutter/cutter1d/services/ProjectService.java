@@ -9,10 +9,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import pl.printo3d.onedcutter.cutter1d.models.project.CutUnit;
+import pl.printo3d.onedcutter.cutter1d.exceptions.project.NoProjectStorageSpaceException;
 import pl.printo3d.onedcutter.cutter1d.exceptions.project.ProjectDoesntExistException;
-import pl.printo3d.onedcutter.cutter1d.exceptions.services.NoProjectStorageSpaceException;
 import pl.printo3d.onedcutter.cutter1d.models.project.CutOptions;
+import pl.printo3d.onedcutter.cutter1d.models.project.CutUnit;
 import pl.printo3d.onedcutter.cutter1d.models.project.ProjectModel;
 import pl.printo3d.onedcutter.cutter1d.models.project.StockUnit;
 import pl.printo3d.onedcutter.cutter1d.models.user.UserModel;
@@ -114,24 +114,30 @@ public class ProjectService {
 
         if( projectRepository.getByIdAndUserId(projectId, userModel.getId()) != null ){
             ProjectModel project = projectRepository.getByIdAndUserId(projectId, userModel.getId());
-            project.getCutList().clear();
-            project.getCutList().addAll(incomingProject.getCutList());
 
-            project.getStockList().clear();
-            project.getStockList().addAll(incomingProject.getStockList());
-
-            project.setCutOptions(incomingProject.getCutOptions());
-
-            project.setProjectName(incomingProject.getProjectName());
-            project.setProjectModified(LocalDateTime.now());
-
-            project.setProjectResults(incomingProject.getProjectResults());
-
-            projectRepository.save(project);
-
+            try{
+                project.getCutList().clear();
+                project.getCutList().addAll(incomingProject.getCutList());
+    
+                project.getStockList().clear();
+                project.getStockList().addAll(incomingProject.getStockList());
+    
+                project.setCutOptions(incomingProject.getCutOptions());
+    
+                project.setProjectName(incomingProject.getProjectName());
+                project.setProjectModified(LocalDateTime.now());
+    
+                project.setProjectResults(incomingProject.getProjectResults());
+    
+                projectRepository.save(project);
+    
+                
+            } catch (Exception ex) {
+                throw new NullPointerException("Provided project is null/empty");
+            }
             return project;
         }
-        else throw new RuntimeException("User or model not found!");
+        else throw new ProjectDoesntExistException("No such project found, or user don't have access to modify it.");
     }
 
 

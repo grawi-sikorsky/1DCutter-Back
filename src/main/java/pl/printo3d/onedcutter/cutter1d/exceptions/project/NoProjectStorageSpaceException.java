@@ -1,4 +1,4 @@
-package pl.printo3d.onedcutter.cutter1d.exceptions.services;
+package pl.printo3d.onedcutter.cutter1d.exceptions.project;
 
 public class NoProjectStorageSpaceException extends RuntimeException{
 
