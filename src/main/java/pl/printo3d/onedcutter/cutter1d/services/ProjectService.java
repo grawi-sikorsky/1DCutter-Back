@@ -115,26 +115,21 @@ public class ProjectService {
         if( projectRepository.getByIdAndUserId(projectId, userModel.getId()) != null ){
             ProjectModel project = projectRepository.getByIdAndUserId(projectId, userModel.getId());
 
-            try{
-                project.getCutList().clear();
-                project.getCutList().addAll(incomingProject.getCutList());
-    
-                project.getStockList().clear();
-                project.getStockList().addAll(incomingProject.getStockList());
-    
-                project.setCutOptions(incomingProject.getCutOptions());
-    
-                project.setProjectName(incomingProject.getProjectName());
-                project.setProjectModified(LocalDateTime.now());
-    
-                project.setProjectResults(incomingProject.getProjectResults());
-    
-                projectRepository.save(project);
-    
-                
-            } catch (Exception ex) {
-                throw new NullPointerException("Provided project is null/empty");
-            }
+            project.getCutList().clear();
+            project.getCutList().addAll(incomingProject.getCutList());
+
+            project.getStockList().clear();
+            project.getStockList().addAll(incomingProject.getStockList());
+
+            project.setCutOptions(incomingProject.getCutOptions());
+
+            project.setProjectName(incomingProject.getProjectName());
+            project.setProjectModified(LocalDateTime.now());
+
+            project.setProjectResults(incomingProject.getProjectResults());
+
+            projectRepository.save(project);
+
             return project;
         }
         else throw new ProjectDoesntExistException("No such project found, or user don't have access to modify it.");

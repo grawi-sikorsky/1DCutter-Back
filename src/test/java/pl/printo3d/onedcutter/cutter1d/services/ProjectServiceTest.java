@@ -1,5 +1,6 @@
 package pl.printo3d.onedcutter.cutter1d.services;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -28,6 +30,7 @@ import pl.printo3d.onedcutter.cutter1d.models.project.StockUnit;
 import pl.printo3d.onedcutter.cutter1d.models.user.UserModel;
 import pl.printo3d.onedcutter.cutter1d.repo.ProjectRepository;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ExtendWith(MockitoExtension.class)
 public class ProjectServiceTest {
 
@@ -52,6 +55,7 @@ public class ProjectServiceTest {
         SecurityContext securityContext = Mockito.mock(SecurityContext.class);
         when(securityContext.getAuthentication()).thenReturn(auth);
         SecurityContextHolder.setContext(securityContext);
+        
         when(userService.loadUserByUsername("testuser")).thenReturn(testUser);
 
         projectService.addNewProject();
@@ -70,6 +74,7 @@ public class ProjectServiceTest {
         SecurityContext securityContext = Mockito.mock(SecurityContext.class);
         when(securityContext.getAuthentication()).thenReturn(auth);
         SecurityContextHolder.setContext(securityContext);
+
         when(userService.loadUserByUsername("testuser")).thenReturn(testUser);
 
         assertThrows(NoProjectStorageSpaceException.class, () -> { projectService.addNewProject(); } );
@@ -86,9 +91,10 @@ public class ProjectServiceTest {
         SecurityContext securityContext = Mockito.mock(SecurityContext.class);
         when(securityContext.getAuthentication()).thenReturn(auth);
         SecurityContextHolder.setContext(securityContext);
+
         when(userService.loadUserByUsername("testuser")).thenReturn(testUser);
 
-        assertThrows(NullPointerException.class, () -> { projectService.editProject(1L, null); } );
+        assertThrows(ProjectDoesntExistException.class, () -> { projectService.editProject(1L, null); } );
     }
 
     @Test
@@ -104,19 +110,67 @@ public class ProjectServiceTest {
         SecurityContext securityContext = Mockito.mock(SecurityContext.class);
         when(securityContext.getAuthentication()).thenReturn(auth);
         SecurityContextHolder.setContext(securityContext);
+        
         when(userService.loadUserByUsername("testuser")).thenReturn(testUser);
 
         assertThrows(ProjectDoesntExistException.class, () -> { projectService.editProject(0L, testModel); } );
     }
 
     @Test
-    void testGetAllUserProjects() {
+    void getAllUserProjects_should_returnProperProjectQuantity() {
+        ProjectModel testModel = setupProject();
+        ProjectModel testModel1 = setupProject();
+        UserModel testUser = new UserModel();
+        testUser.setUsername("testuser");
+        testUser.setSavedProjectModels(Arrays.asList(testModel,testModel1));
 
+        Authentication auth = Mockito.mock(Authentication.class);
+        when(auth.getPrincipal()).thenReturn(testUser);
+        SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+        when(securityContext.getAuthentication()).thenReturn(auth);
+        SecurityContextHolder.setContext(securityContext);
+
+        when(userService.loadUserByUsername("testuser")).thenReturn(testUser);
+
+        assertEquals(2, projectService.getAllUserProjects().size());
     }
 
     @Test
-    void testGetProject() {
+    void getProject_should_returnProject() {
+        ProjectModel testModel = setupProject();
+        UserModel testUser = new UserModel();
+        testUser.setUsername("testuser");
+        testUser.setSavedProjectModels(Arrays.asList(testModel));
 
+        Authentication auth = Mockito.mock(Authentication.class);
+        when(auth.getPrincipal()).thenReturn(testUser);
+        SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+        when(securityContext.getAuthentication()).thenReturn(auth);
+        SecurityContextHolder.setContext(securityContext);
+
+        when(userService.loadUserByUsername("testuser")).thenReturn(testUser);
+        when(projectRepository.findProjectModelByIdAndUserId(0L, testUser.getId())).thenReturn(testModel);
+        when(projectRepository.findProjectModelById(0L)).thenReturn(testModel);
+
+        assertEquals(testModel, projectService.getProject(0L));
+    }
+
+    @Test
+    void getProject_should_throwException() {
+        ProjectModel testModel = setupProject();
+        UserModel testUser = new UserModel();
+        testUser.setUsername("testuser");
+        testUser.setSavedProjectModels(Arrays.asList(testModel));
+
+        Authentication auth = Mockito.mock(Authentication.class);
+        when(auth.getPrincipal()).thenReturn(testUser);
+        SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+        when(securityContext.getAuthentication()).thenReturn(auth);
+        SecurityContextHolder.setContext(securityContext);
+
+        when(userService.loadUserByUsername("testuser")).thenReturn(testUser);
+
+        assertThrows(ProjectDoesntExistException.class, () -> { projectService.getProject(0L); } );
     }
 
     @Test
