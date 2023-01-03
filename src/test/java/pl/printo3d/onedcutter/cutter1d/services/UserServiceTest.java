@@ -6,8 +6,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import pl.printo3d.onedcutter.cutter1d.dto.UserRegisterDTO;
+import pl.printo3d.onedcutter.cutter1d.exceptions.project.ProjectDoesntExistException;
 import pl.printo3d.onedcutter.cutter1d.exceptions.user.BadCredentialsException;
 import pl.printo3d.onedcutter.cutter1d.exceptions.user.UserExistsException;
 import pl.printo3d.onedcutter.cutter1d.models.user.UserModel;
@@ -15,6 +19,7 @@ import pl.printo3d.onedcutter.cutter1d.repo.UserRepo;
 import pl.printo3d.onedcutter.cutter1d.utility.JWTUtil;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
@@ -89,6 +94,21 @@ class UserServiceTest {
 
     @Test
     void getUser() {
+        UserModel testUser = new UserModel();
+        testUser.setUsername("testuser");
+        testUser.setNumberOfSavedItems(5);
+
+        Authentication auth = Mockito.mock(Authentication.class);
+        when(auth.getPrincipal()).thenReturn(testUser);
+        SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+        when(securityContext.getAuthentication()).thenReturn(auth);
+        SecurityContextHolder.setContext(securityContext);
+
+//        when(userService.loadUserByUsername("testuser")).thenReturn(testUser);
+
+        userService.getUser();
+
+        Mockito.verify( userRepo, Mockito.times(1) ).findByUsername(testUser.getUsername());
     }
 
     @Test

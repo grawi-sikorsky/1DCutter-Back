@@ -15,12 +15,12 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import pl.printo3d.onedcutter.cutter1d.services.UserService;
+import pl.printo3d.onedcutter.cutter1d.services.JwtUserDetailsService;
 
 @Component
 public class JWTFilter extends OncePerRequestFilter {
     @Autowired
-    private UserService uService;
+    private JwtUserDetailsService uService;
 
     @Autowired
     private JWTUtil jwtUtil;

@@ -20,10 +20,10 @@ import pl.printo3d.onedcutter.cutter1d.models.user.UserModel;
 @Service
 public class ResultService {
 
-    private final UserService userService;
+    private final JwtUserDetailsService userDetailsService;
 
-    public ResultService(UserService userService) {
-        this.userService = userService;
+    public ResultService(JwtUserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
     }
 
     public ResultModel makeFullResults(CutterProduct cutterProduct, ProjectModel incominOrderModel) {
@@ -67,7 +67,7 @@ public class ResultService {
      * @return
      */
     private List<ResultBar> getResultsBars(List<WorkPiece> workPieces) {
-        UserModel userModel = (UserModel) userService.loadUserByUsername(
+        UserModel userModel = (UserModel) userDetailsService.loadUserByUsername(
                 ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
         List<ResultBar> resultBars = new ArrayList<ResultBar>();
         ResultBar resultBar = new ResultBar();

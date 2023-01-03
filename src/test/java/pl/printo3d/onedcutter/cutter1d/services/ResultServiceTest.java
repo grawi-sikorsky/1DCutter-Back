@@ -34,7 +34,7 @@ class ResultServiceTest {
     private CutService cutService;
 
     @Mock
-    private UserService userService;
+    private JwtUserDetailsService userDetailsService;
 
     @Spy
     private ResolveService resolveService;
@@ -57,7 +57,7 @@ class ResultServiceTest {
         when(securityContext.getAuthentication()).thenReturn(auth);
         SecurityContextHolder.setContext(securityContext);
 
-        when(userService.loadUserByUsername("testuser")).thenReturn(testuser);
+        when(userDetailsService.loadUserByUsername("testuser")).thenReturn(testuser);
 
         ResultModel actualResults = resultService.makeFullResults(testCutterProduct, projectModel);
 
@@ -78,7 +78,7 @@ class ResultServiceTest {
         when(securityContext.getAuthentication()).thenReturn(auth);
         SecurityContextHolder.setContext(securityContext);
 
-        when(userService.loadUserByUsername("testuser")).thenReturn(testuser);
+        when(userDetailsService.loadUserByUsername("testuser")).thenReturn(testuser);
 
         ResultModel actualResults = resultService.makeFullResults(testCutterProduct, testProjectModel);
 

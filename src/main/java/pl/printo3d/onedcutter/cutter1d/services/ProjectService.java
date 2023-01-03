@@ -17,18 +17,20 @@ import pl.printo3d.onedcutter.cutter1d.models.project.ProjectModel;
 import pl.printo3d.onedcutter.cutter1d.models.project.StockUnit;
 import pl.printo3d.onedcutter.cutter1d.models.user.UserModel;
 import pl.printo3d.onedcutter.cutter1d.repo.ProjectRepository;
+import pl.printo3d.onedcutter.cutter1d.repo.UserRepo;
 
 @Service
 public class ProjectService {
 
-    private final UserService userService;
+    private final JwtUserDetailsService userDetailsService;
     private final ProjectRepository projectRepository;
+    private final UserRepo userRepo;
 
-    public ProjectService(UserService userService, ProjectRepository projectRepository){
-        this.userService = userService;
+    public ProjectService(JwtUserDetailsService userDetailsService, ProjectRepository projectRepository, UserRepo userRepo){
+        this.userDetailsService = userDetailsService;
         this.projectRepository = projectRepository;
+        this.userRepo = userRepo;
     }
-
 
     /**
      * Zapisuje do bazy Order, który ma trafic w "pamiec stala" tj. wolne sloty kazdego usera
@@ -36,7 +38,7 @@ public class ProjectService {
      */
     public void saveUserOrders(ProjectModel incomingProject) {
 
-        UserModel userModel = (UserModel) userService.loadUserByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
+        UserModel userModel = (UserModel) userDetailsService.loadUserByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
 
         userModel.getSavedProjectModels().get(userModel.getActiveProjectId()).getCutList().clear();
         userModel.getSavedProjectModels().get(userModel.getActiveProjectId()).getCutList().addAll(incomingProject.getCutList());
@@ -50,7 +52,7 @@ public class ProjectService {
         userModel.getSavedProjectModels().get(userModel.getActiveProjectId()).setProjectName(incomingProject.getProjectName());
         userModel.getSavedProjectModels().get(userModel.getActiveProjectId()).setProjectModified(LocalDateTime.now());
 
-        userService.saveUserEntity(userModel);
+        userRepo.save(userModel);
     }
 
     /**
@@ -59,7 +61,7 @@ public class ProjectService {
      */
     public ProjectModel saveActiveProject(ProjectModel incomingProject) {
 
-        UserModel userModel = (UserModel) userService.loadUserByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
+        UserModel userModel = (UserModel) userDetailsService.loadUserByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
 
         userModel.getActiveProjectModel().getCutList().clear();
         userModel.getActiveProjectModel().getCutList().addAll(incomingProject.getCutList());
@@ -75,14 +77,14 @@ public class ProjectService {
 
         userModel.getActiveProjectModel().setProjectResults(incomingProject.getProjectResults());
 
-        userService.saveUserEntity(userModel);
+        userRepo.save(userModel);
 
         return userModel.getActiveProjectModel();
     }
 
 
     public ProjectModel addNewProject(){
-        UserModel userModel = (UserModel) userService.loadUserByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
+        UserModel userModel = (UserModel) userDetailsService.loadUserByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
         ProjectModel incomingProject = new ProjectModel();
 
         if(userModel.getNumberOfSavedItems() < 5){
@@ -97,7 +99,7 @@ public class ProjectService {
             userModel.setActiveProjectModel(incomingProject);
             userModel.setNumberOfSavedItems(userModel.getSavedProjectModels().size());
 
-            userService.saveUserEntity(userModel);
+            userRepo.save(userModel);
 
             return userModel.getActiveProjectModel();
         }
@@ -106,7 +108,7 @@ public class ProjectService {
 
 
     public ProjectModel editProject(Long projectId, ProjectModel incomingProject) {
-        UserModel userModel = (UserModel) userService.loadUserByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
+        UserModel userModel = (UserModel) userDetailsService.loadUserByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
 
         if( projectRepository.findProjectModelByIdAndUserId(projectId, userModel.getId()) != null ){
             ProjectModel project = projectRepository.findProjectModelByIdAndUserId(projectId, userModel.getId());
@@ -133,7 +135,7 @@ public class ProjectService {
 
 
     public void removeProject(Long projectId){
-        UserModel userModel = (UserModel) userService.loadUserByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
+        UserModel userModel = (UserModel) userDetailsService.loadUserByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
         if(projectRepository.findProjectModelByIdAndUserId(projectId, userModel.getId()) != null){
             if(userModel.getSavedProjectModels().size() > 1){
                 userModel.setActiveProjectId( null );
@@ -153,7 +155,7 @@ public class ProjectService {
                 userModel.setActiveProjectModel( userModel.getSavedProjectModels().get(index) );
                 userModel.setNumberOfSavedItems(userModel.getSavedProjectModels().size());
     
-                userService.saveUserEntity(userModel);
+                userRepo.save(userModel);
             } else throw new RuntimeException("Can't remove all projects, must be at least one!");
         } else throw new ProjectDoesntExistException("No project found for this user!");
         
@@ -161,7 +163,7 @@ public class ProjectService {
 
 
     public ProjectModel getProject(Long projectId) {
-        UserModel userModel = (UserModel) userService.loadUserByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
+        UserModel userModel = (UserModel) userDetailsService.loadUserByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
         if(projectRepository.findProjectModelByIdAndUserId(projectId, userModel.getId()) != null){
             return projectRepository.findProjectModelById(projectId);
         } else throw new ProjectDoesntExistException("No project found for this user!");
@@ -169,7 +171,7 @@ public class ProjectService {
 
 
     public List<ProjectModel> getAllUserProjects() {
-        UserModel userModel = (UserModel) userService.loadUserByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
+        UserModel userModel = (UserModel) userDetailsService.loadUserByUsername(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() );
         return userModel.getSavedProjectModels();
     }
 }

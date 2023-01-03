@@ -26,7 +26,7 @@ import pl.printo3d.onedcutter.cutter1d.repo.UserRepo;
 import pl.printo3d.onedcutter.cutter1d.utility.JWTUtil;
 
 @Service
-public class UserService implements UserDetailsService {
+public class UserService {
 
     private final UserRepo userRepo;
     private final JWTUtil jwtUtil;
@@ -39,11 +39,6 @@ public class UserService implements UserDetailsService {
     public UserService(UserRepo userRepo, JWTUtil jwtUtil) {
         this.userRepo = userRepo;
         this.jwtUtil = jwtUtil;
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String arg0) throws UsernameNotFoundException {
-        return userRepo.findByUsername(arg0);
     }
 
     /**

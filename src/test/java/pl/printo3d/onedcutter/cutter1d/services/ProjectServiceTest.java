@@ -29,12 +29,16 @@ import pl.printo3d.onedcutter.cutter1d.models.project.ProjectModel;
 import pl.printo3d.onedcutter.cutter1d.models.project.StockUnit;
 import pl.printo3d.onedcutter.cutter1d.models.user.UserModel;
 import pl.printo3d.onedcutter.cutter1d.repo.ProjectRepository;
+import pl.printo3d.onedcutter.cutter1d.repo.UserRepo;
 
 @ExtendWith(MockitoExtension.class)
 public class ProjectServiceTest {
 
     @Mock
-    private UserService userService;
+    private JwtUserDetailsService userDetailsService;
+
+    @Mock
+    private UserRepo userRepo;
 
     @Mock
     private ProjectRepository projectRepository;
@@ -54,11 +58,11 @@ public class ProjectServiceTest {
         when(securityContext.getAuthentication()).thenReturn(auth);
         SecurityContextHolder.setContext(securityContext);
         
-        when(userService.loadUserByUsername("testuser")).thenReturn(testUser);
+        when(userDetailsService.loadUserByUsername("testuser")).thenReturn(testUser);
 
         projectService.addNewProject();
 
-        verify(userService, times(1)).saveUserEntity(testUser);
+        verify(userRepo, times(1)).save(testUser);
     }
 
     @Test
@@ -73,7 +77,7 @@ public class ProjectServiceTest {
         when(securityContext.getAuthentication()).thenReturn(auth);
         SecurityContextHolder.setContext(securityContext);
 
-        when(userService.loadUserByUsername("testuser")).thenReturn(testUser);
+        when(userDetailsService.loadUserByUsername("testuser")).thenReturn(testUser);
 
         assertThrows(NoProjectStorageSpaceException.class, () -> { projectService.addNewProject(); } );
     }
@@ -90,7 +94,7 @@ public class ProjectServiceTest {
         when(securityContext.getAuthentication()).thenReturn(auth);
         SecurityContextHolder.setContext(securityContext);
 
-        when(userService.loadUserByUsername("testuser")).thenReturn(testUser);
+        when(userDetailsService.loadUserByUsername("testuser")).thenReturn(testUser);
 
         assertThrows(ProjectDoesntExistException.class, () -> { projectService.editProject(1L, null); } );
     }
@@ -109,7 +113,7 @@ public class ProjectServiceTest {
         when(securityContext.getAuthentication()).thenReturn(auth);
         SecurityContextHolder.setContext(securityContext);
         
-        when(userService.loadUserByUsername("testuser")).thenReturn(testUser);
+        when(userDetailsService.loadUserByUsername("testuser")).thenReturn(testUser);
 
         assertThrows(ProjectDoesntExistException.class, () -> { projectService.editProject(0L, testModel); } );
     }
@@ -132,7 +136,7 @@ public class ProjectServiceTest {
         when(securityContext.getAuthentication()).thenReturn(auth);
         SecurityContextHolder.setContext(securityContext);
 
-        when(userService.loadUserByUsername("testuser")).thenReturn(testUser);
+        when(userDetailsService.loadUserByUsername("testuser")).thenReturn(testUser);
         when(projectRepository.findProjectModelByIdAndUserId(0L, testUser.getId())).thenReturn(projectToChange);
 
         assertFalse(projectToChange.getProjectModified().equals( projectService.editProject( 0L, testProject ).getProjectModified() ));
@@ -153,7 +157,7 @@ public class ProjectServiceTest {
         when(securityContext.getAuthentication()).thenReturn(auth);
         SecurityContextHolder.setContext(securityContext);
 
-        when(userService.loadUserByUsername("testuser")).thenReturn(testUser);
+        when(userDetailsService.loadUserByUsername("testuser")).thenReturn(testUser);
 
         assertEquals(2, projectService.getAllUserProjects().size());
     }
@@ -171,7 +175,7 @@ public class ProjectServiceTest {
         when(securityContext.getAuthentication()).thenReturn(auth);
         SecurityContextHolder.setContext(securityContext);
 
-        when(userService.loadUserByUsername("testuser")).thenReturn(testUser);
+        when(userDetailsService.loadUserByUsername("testuser")).thenReturn(testUser);
         when(projectRepository.findProjectModelByIdAndUserId(0L, testUser.getId())).thenReturn(testModel);
         when(projectRepository.findProjectModelById(0L)).thenReturn(testModel);
 
@@ -192,7 +196,7 @@ public class ProjectServiceTest {
         when(securityContext.getAuthentication()).thenReturn(auth);
         SecurityContextHolder.setContext(securityContext);
 
-        when(userService.loadUserByUsername("testuser")).thenReturn(testUser);
+        when(userDetailsService.loadUserByUsername("testuser")).thenReturn(testUser);
 
         assertThrows(ProjectDoesntExistException.class, () -> { projectService.getProject(0L); } );
     }
@@ -212,7 +216,7 @@ public class ProjectServiceTest {
         when(securityContext.getAuthentication()).thenReturn(auth);
         SecurityContextHolder.setContext(securityContext);
 
-        when(userService.loadUserByUsername("testuser")).thenReturn(testUser);
+        when(userDetailsService.loadUserByUsername("testuser")).thenReturn(testUser);
 
         assertThrows(ProjectDoesntExistException.class, () -> { projectService.removeProject(0L); } );
     }
@@ -234,7 +238,7 @@ public class ProjectServiceTest {
         when(securityContext.getAuthentication()).thenReturn(auth);
         SecurityContextHolder.setContext(securityContext);
 
-        when(userService.loadUserByUsername("testuser")).thenReturn(testUser);
+        when(userDetailsService.loadUserByUsername("testuser")).thenReturn(testUser);
         when(projectRepository.findProjectModelByIdAndUserId(0L, testUser.getId())).thenReturn(testProject);
 
         projectService.removeProject(0L);
@@ -261,7 +265,7 @@ public class ProjectServiceTest {
         when(securityContext.getAuthentication()).thenReturn(auth);
         SecurityContextHolder.setContext(securityContext);
 
-        when(userService.loadUserByUsername("testuser")).thenReturn(testUser);
+        when(userDetailsService.loadUserByUsername("testuser")).thenReturn(testUser);
 
         assertEquals(newProject.getProjectName(), projectService.saveActiveProject(newProject).getProjectName() );
     }

@@ -13,27 +13,27 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
-import pl.printo3d.onedcutter.cutter1d.services.UserService;
+import pl.printo3d.onedcutter.cutter1d.services.JwtUserDetailsService;
 import pl.printo3d.onedcutter.cutter1d.utility.JWTFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private UserService uService;
+    private JwtUserDetailsService uService;
 
     @Autowired
     JWTFilter jwtFilter;
 
     @Autowired
-    public SecurityConfig(UserService uService) {
+    public SecurityConfig(JwtUserDetailsService uService) {
         this.uService = uService;
     }
 
     public SecurityConfig() {
     }
 
-    /*~~(Migrate manually based on https://spring.io/blog/2022/02/21/spring-security-without-the-websecurityconfigureradapter)~~>*/@Override
+    @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(uService);
     }
