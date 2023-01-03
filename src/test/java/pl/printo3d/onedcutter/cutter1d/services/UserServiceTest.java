@@ -82,8 +82,7 @@ class UserServiceTest {
 
         Mockito.when( userRepo.existsByEmail( testUserDTO.getEmail() ) ).thenReturn(false);
         Mockito.when( userRepo.existsByUsername( testUserDTO.getUsername() ) ).thenReturn(false);
-        Mockito.when( pEncoder.encode(testUserDTO.getPassword()) ).thenReturn("somePasswordString");
-        //Mockito.when( userToSave.getSavedProjectModels() )
+        //Mockito.when( pEncoder.encode(testUserDTO.getPassword()) ).thenReturn("somePasswordString");
 
         //userToSave.setPassword(pEncoder.encode(userRegisterDTO.getPassword()));
 
@@ -104,7 +103,7 @@ class UserServiceTest {
         when(securityContext.getAuthentication()).thenReturn(auth);
         SecurityContextHolder.setContext(securityContext);
 
-//        when(userService.loadUserByUsername("testuser")).thenReturn(testUser);
+        when(userRepo.findByUsername("testuser")).thenReturn(testUser);
 
         userService.getUser();
 
