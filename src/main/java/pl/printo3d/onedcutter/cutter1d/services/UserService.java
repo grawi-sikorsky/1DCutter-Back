@@ -1,5 +1,6 @@
 package pl.printo3d.onedcutter.cutter1d.services;
 
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,9 +36,6 @@ public class UserService implements UserDetailsService {
         return new BCryptPasswordEncoder();
     }
 
-    @Autowired
-    private PasswordEncoder pEncoder;
-
     public UserService(UserRepo userRepo, JWTUtil jwtUtil) {
         this.userRepo = userRepo;
         this.jwtUtil = jwtUtil;
@@ -50,7 +48,7 @@ public class UserService implements UserDetailsService {
 
     /**
      * Logowanko
-     * 
+     *
      * @param aRequest
      * @return
      */
@@ -75,15 +73,13 @@ public class UserService implements UserDetailsService {
      * @return UserDTO
      */
     public UserDTO addUser(UserRegisterDTO userRegisterDTO) {
-        if (!userRegisterDTO.getUsername().equals("") && !userRegisterDTO.getPassword().equals("") && !userRegisterDTO.getEmail().equals("")
-        && userRegisterDTO.getUsername() != null && userRegisterDTO.getPassword() != null && userRegisterDTO.getEmail() != null) {
-
-            if (!userRepo.existsByUsername(userRegisterDTO.getUsername())) { // todo: check fo email
+        if (!userRegisterDTO.getUsername().equals("") && !userRegisterDTO.getPassword().equals("") && !userRegisterDTO.getEmail().equals("")) {
+            if (!userRepo.existsByUsername(userRegisterDTO.getUsername()) && !userRepo.existsByEmail(userRegisterDTO.getEmail())) {
                 UserModel userToSave = new UserModel(userRegisterDTO);
-                userToSave.setPassword(pEncoder.encode(userRegisterDTO.getPassword()));
+                userToSave.setPassword(passwordEncoder().encode(userRegisterDTO.getPassword()));
                 userRepo.save(userToSave);
 
-                userToSave.setActiveProjectId( userToSave.getSavedProjectModels().get(0).getId().intValue());
+                userToSave.setActiveProjectId(userToSave.getSavedProjectModels().get(0).getId().intValue());
                 userRepo.save(userToSave);
                 return new UserDTO(userToSave);
             } else {
@@ -95,24 +91,24 @@ public class UserService implements UserDetailsService {
     }
 
 
-    public UserDTO getUser(){
-        UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return new UserDTO( (UserModel)userRepo.findByUsername(userDetails.getUsername()));
+    public UserDTO getUser() {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return new UserDTO((UserModel) userRepo.findByUsername(userDetails.getUsername()));
     }
 
 
     public UserDTO updateUser(UserUpdateDTO userUpdateDTO) {
-        UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserModel userModel = (UserModel)userRepo.findByUsername(userDetails.getUsername());
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserModel userModel = (UserModel) userRepo.findByUsername(userDetails.getUsername());
 
         if (userRepo.findByUuid(userModel.getUuid()) != null) {
             userModel.setPhone(userUpdateDTO.getPhone());
             userModel.setWebsite(userUpdateDTO.getWebsite());
 
-            if(userUpdateDTO.getactiveProjectId() != null) {
+            if (userUpdateDTO.getactiveProjectId() != null) {
                 userModel.setActiveProjectId(userUpdateDTO.getactiveProjectId());
             }
-            
+
             userModel.setActiveProjectModel(userModel.getSavedProjectModels().stream()
                     .filter(e -> e.getId() == Long.valueOf(userModel.getActiveProjectId())).collect(Collectors.toList())
                     .get(0));

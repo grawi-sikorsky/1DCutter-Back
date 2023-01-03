@@ -5,7 +5,7 @@ Application to cutting optimization. Java+SpringBoot. Have JWT user authorizatio
 
 # Deploy local
 
-1. Create file with your credentials localy inside ".docker/" folder:
+1. Create file named ".env" with your credentials localy inside ".docker/" folder:
 
 MYSQL_NAME=onedcutter
 MYSQL_ROOT_USER=root
