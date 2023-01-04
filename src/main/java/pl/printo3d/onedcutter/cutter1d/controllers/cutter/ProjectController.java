@@ -22,7 +22,7 @@ import pl.printo3d.onedcutter.cutter1d.services.ProjectService;
 @ApiOperation(value = "", authorizations = { @Authorization(value = "jwtToken") })
 @CrossOrigin(origins = { "http://localhost:4200", "http://10.0.2.2:8080" })
 @RestController
-@RequestMapping("/user/project")
+@RequestMapping("/project")
 public class ProjectController {
 
     private final ProjectService projectService;
