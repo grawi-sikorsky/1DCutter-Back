@@ -10,7 +10,8 @@ import pl.printo3d.onedcutter.cutter1d.services.CutOptionsServiceImpl;
 
 import javax.crypto.interfaces.PBEKey;
 
-@RestController("/options")
+@RestController
+@RequestMapping("/options")
 public class CutOptionsController {
     private final CutOptionsService cutOptionsService;
 
