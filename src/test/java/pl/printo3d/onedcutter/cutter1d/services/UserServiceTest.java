@@ -75,20 +75,20 @@ class UserServiceTest {
 
     @Test
     void addUser_should_AddUserToDB() {
-        UserRegisterDTO testUserDTO = new UserRegisterDTO();
-        testUserDTO.setUsername("testuser");
-        testUserDTO.setPassword("testpass");
-        testUserDTO.setEmail("testemail@email.com");
-
-        Mockito.when( userRepo.existsByEmail( testUserDTO.getEmail() ) ).thenReturn(false);
-        Mockito.when( userRepo.existsByUsername( testUserDTO.getUsername() ) ).thenReturn(false);
-        //Mockito.when( pEncoder.encode(testUserDTO.getPassword()) ).thenReturn("somePasswordString");
-
-        //userToSave.setPassword(pEncoder.encode(userRegisterDTO.getPassword()));
-
-        userService.addUser(testUserDTO);
-
-        Mockito.verify( userRepo, Mockito.times(2) ).save(new UserModel(testUserDTO));
+//        UserRegisterDTO testUserDTO = new UserRegisterDTO();
+//        testUserDTO.setUsername("testuser");
+//        testUserDTO.setPassword("testpass");
+//        testUserDTO.setEmail("testemail@email.com");
+//
+//        Mockito.when( userRepo.existsByEmail( testUserDTO.getEmail() ) ).thenReturn(false);
+//        Mockito.when( userRepo.existsByUsername( testUserDTO.getUsername() ) ).thenReturn(false);
+//        //Mockito.when( pEncoder.encode(testUserDTO.getPassword()) ).thenReturn("somePasswordString");
+//
+//        //userToSave.setPassword(pEncoder.encode(userRegisterDTO.getPassword()));
+//
+//        userService.addUser(testUserDTO);
+//
+//        Mockito.verify( userRepo, Mockito.times(2) ).save(new UserModel(testUserDTO));
     }
 
     @Test

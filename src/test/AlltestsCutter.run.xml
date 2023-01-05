@@ -1,0 +1,23 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="AlltestsCutter" type="JUnit" factoryName="JUnit">
+    <module name="cutter1d" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="pl.printo3d.onedcutter.cutter1d.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <option name="PACKAGE_NAME" value="pl.printo3d.onedcutter.cutter1d.services" />
+    <option name="MAIN_CLASS_NAME" value="" />
+    <option name="METHOD_NAME" value="" />
+    <option name="TEST_OBJECT" value="directory" />
+    <envs>
+      <env name="MYSQL_USER" value="klops" />
+      <env name="MYSQL_PASSWORD" value="klops" />
+    </envs>
+    <dir value="$PROJECT_DIR$/src/test/java/pl/printo3d/onedcutter/cutter1d" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

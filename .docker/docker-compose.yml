@@ -1,11 +1,44 @@
 version: "3"
 
 services:
-  mysql:
+  mysqldb:
     image: mysql:latest
     container_name: onedcutter
     restart: always
+    networks:
+      - appnetwork
     ports:
       - "3306:3306"
     env_file:
       - .env
+
+  applikejszyn:
+    image: apkatag:latest
+    container_name: apkacontainer
+    depends_on:
+      - mysqldb
+    networks:
+      - appnetwork
+    ports:
+      - "8080:8080"
+    environment:
+      - spring.datasource.url=jdbc:mysql://mysqldb:3306/onedcutter
+    env_file:
+      - .env
+
+  nginx:
+    container_name: endzinx
+    image: nginx:latest
+    restart: always
+    ports:
+      - "80:80"
+    network_mode: host
+    hostname: localhost
+    volumes:
+      - ./default.conf:/etc/nginx/conf.d
+    depends_on:
+      - applikejszyn
+
+
+networks:
+  appnetwork:
