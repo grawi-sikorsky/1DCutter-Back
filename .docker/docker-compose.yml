@@ -3,7 +3,7 @@ version: "3"
 services:
   mysqldb:
     image: mysql:latest
-    container_name: onedcutter
+    container_name: 1dcutterdb
     restart: always
     networks:
       - appnetwork
@@ -13,8 +13,9 @@ services:
       - .env
 
   applikejszyn:
-    image: apkatag:latest
-    container_name: apkacontainer
+    build: ..
+    # image: apkatag:latest
+    container_name: 1dcutterback
     depends_on:
       - mysqldb
     networks:
@@ -26,18 +27,18 @@ services:
     env_file:
       - .env
 
-  nginx:
-    container_name: endzinx
-    image: nginx:latest
-    restart: always
-    ports:
-      - "80:80"
-    network_mode: host
-    hostname: localhost
-    volumes:
-      - ./default.conf:/etc/nginx/conf.d
-    depends_on:
-      - applikejszyn
+  # nginx:
+  #   container_name: endzinx
+  #   image: nginx:latest
+  #   restart: always
+  #   ports:
+  #     - "80:80"
+  #   network_mode: host
+  #   hostname: localhost
+  #   volumes:
+  #     - ./default.conf:/etc/nginx/conf.d
+  #   depends_on:
+  #     - applikejszyn
 
 
 networks:

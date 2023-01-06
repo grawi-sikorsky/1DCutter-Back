@@ -11,7 +11,7 @@ import pl.printo3d.onedcutter.cutter1d.models.project.ProjectModel;
 import pl.printo3d.onedcutter.cutter1d.models.results.ResultModel;
 import pl.printo3d.onedcutter.cutter1d.services.CutService;
 
-@CrossOrigin(origins = {"http://localhost:4200","http://10.0.2.2:8080"})
+@CrossOrigin(origins = { "http://localhost:4200", "http://10.0.2.2:8080", "http://localhost", "*" })
 @RestController
 public class CutController {
 

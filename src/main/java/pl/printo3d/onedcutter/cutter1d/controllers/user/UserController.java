@@ -15,7 +15,7 @@ import pl.printo3d.onedcutter.cutter1d.dto.UserDTO;
 import pl.printo3d.onedcutter.cutter1d.dto.UserUpdateDTO;
 import pl.printo3d.onedcutter.cutter1d.services.UserService;
 
-@CrossOrigin(origins = { "http://localhost:4200", "http://10.0.2.2:8080" })
+@CrossOrigin(origins = { "http://localhost:4200", "http://10.0.2.2:8080", "http://localhost", "*" })
 @RequestMapping("/user")
 @RestController
 public class UserController {
